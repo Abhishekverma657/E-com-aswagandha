@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1E6D6E;
+  --color-primary-light: #2c9394;
+  --color-secondary: #fdf6eb;
+  --color-accent: #c59a49;
+  --color-accent-dark: #b1883b;
+  --color-dark: #121212;
+  --color-danger: #9b111e;
+  
+  --font-sans: 'Cabin', sans-serif;
+  --font-serif: 'Bodoni Moda', serif;
+
+  --animate-fade-in-up: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in: fadeIn 1.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-secondary text-primary min-h-screen flex flex-col;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
