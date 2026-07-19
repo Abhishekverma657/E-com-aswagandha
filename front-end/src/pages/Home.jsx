@@ -1,49 +1,29 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Star, ShieldCheck, CheckCircle2, ChevronDown, Award, Sparkles } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const featuredProducts = [
-    { 
-      id: 1, 
-      title: "Nagouri Ashwagandha Root Extract (600mg)", 
-      price: 799.00, 
-      originalPrice: 1199.00,
-      image: '/nagori-ashwagandha.png',
-      rating: 4.9,
-      reviewCount: 186
-    },
-    { 
-      id: 2, 
-      title: "Pure Himalayan Shilajit Resin (Gold Grade)", 
-      price: 1699.00, 
-      originalPrice: 2398.00,
-      image: '/himalayan-shilajit.png',
-      rating: 4.95,
-      reviewCount: 312
-    },
-    { 
-      id: 3, 
-      title: "Ashwagandha & Wild Berry Vitality Gummies", 
-      price: 899.00, 
-      originalPrice: 1299.00,
-      image: '/vitality-gummies.png',
-      rating: 4.8,
-      reviewCount: 94
-    },
-    { 
-      id: 4, 
-      title: "Testoboost Combo (Shilajit & Ashwagandha)", 
-      price: 1599.00, 
-      originalPrice: 2398.00,
-      image: '/himalayan-shilajit.png',
-      rating: 4.9,
-      reviewCount: 147
-    },
-  ];
+  useEffect(() => {
+    fetch('/api/products')
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch products");
+        return res.json();
+      })
+      .then(data => {
+        // Slice the first 4 products to display as featured
+        setFeaturedProducts(data.slice(0, 4));
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
 
   const toggles = [
     {
@@ -334,11 +314,18 @@ export default function Home() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map(product => (
-              <ProductCard key={product.id} {...product} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="col-span-full flex flex-col items-center justify-center py-16">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent mb-4"></div>
+              <p className="text-xs font-sans font-medium text-primary/60 uppercase tracking-widest">Loading Featured Products...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
+              {featuredProducts.map(product => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

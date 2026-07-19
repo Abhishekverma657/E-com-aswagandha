@@ -1,99 +1,34 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
-
-const allProducts = [
-  { 
-    id: 1, 
-    title: "Nagouri Ashwagandha Root Extract (600mg)", 
-    price: 799.00, 
-    originalPrice: 1199.00,
-    category: "Ashwagandha", 
-    image: '/nagori-ashwagandha.png',
-    rating: 4.9,
-    reviewCount: 186
-  },
-  { 
-    id: 2, 
-    title: "Pure Himalayan Shilajit Resin (Gold Grade)", 
-    price: 1699.00, 
-    originalPrice: 2398.00,
-    category: "Shilajit", 
-    image: '/himalayan-shilajit.png',
-    rating: 4.95,
-    reviewCount: 312
-  },
-  { 
-    id: 3, 
-    title: "Ashwagandha & Wild Berry Vitality Gummies", 
-    price: 899.00, 
-    originalPrice: 1299.00,
-    category: "Gummies", 
-    image: '/vitality-gummies.png',
-    rating: 4.8,
-    reviewCount: 94
-  },
-  { 
-    id: 4, 
-    title: "Testoboost Combo (Shilajit & Ashwagandha)", 
-    price: 1599.00, 
-    originalPrice: 2398.00,
-    category: "Combos", 
-    image: '/himalayan-shilajit.png',
-    rating: 4.9,
-    reviewCount: 147
-  },
-  { 
-    id: 5, 
-    title: "Nagouri Ashwagandha Churna Powder (200g)", 
-    price: 599.00, 
-    originalPrice: 899.00,
-    category: "Ashwagandha", 
-    image: '/nagori-ashwagandha.png',
-    rating: 4.75,
-    reviewCount: 88
-  },
-  { 
-    id: 6, 
-    title: "Deep Sleep Melatonin-Free Capsules", 
-    price: 1099.00, 
-    originalPrice: 1499.00,
-    category: "Stress & Sleep", 
-    image: '/nagori-ashwagandha.png',
-    rating: 4.85,
-    reviewCount: 112
-  },
-  { 
-    id: 7, 
-    title: "Shilajit Gold Resin with 24k Gold Bhasma", 
-    price: 2099.00, 
-    originalPrice: 2998.00,
-    category: "Shilajit", 
-    image: '/himalayan-shilajit.png',
-    rating: 4.97,
-    reviewCount: 76
-  },
-  { 
-    id: 8, 
-    title: "Ashwagandha KSM-66 & Gokhru-60 Combo", 
-    price: 1199.00, 
-    originalPrice: 1848.00,
-    category: "Combos", 
-    image: '/vitality-gummies.png',
-    rating: 4.9,
-    reviewCount: 135
-  },
-];
 
 const categories = ["All Products", "Ashwagandha", "Shilajit", "Gummies", "Stress & Sleep", "Combos"];
 
 export default function Shop() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortOption, setSortOption] = useState("featured");
 
+  useEffect(() => {
+    fetch('/api/products')
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch products");
+        return res.json();
+      })
+      .then(data => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
   const filteredProducts = useMemo(() => {
-    let result = allProducts;
+    let result = products;
 
     // Filter by Category
     if (selectedCategory !== "All Products") {
@@ -118,7 +53,7 @@ export default function Shop() {
     }
     
     return result;
-  }, [selectedCategory, minPrice, maxPrice, sortOption]);
+  }, [products, selectedCategory, minPrice, maxPrice, sortOption]);
 
   return (
     <div className="min-h-screen bg-secondary pt-24 pb-20">
@@ -213,7 +148,12 @@ export default function Shop() {
             </div>
           </div>
           
-          {filteredProducts.length > 0 ? (
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-32 bg-white border border-primary/5 rounded-sm shadow-sm">
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-accent mb-4"></div>
+              <p className="text-xs font-sans font-medium text-primary/60 uppercase tracking-widest">Loading Formulations...</p>
+            </div>
+          ) : filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProducts.map(product => (
                 <ProductCard key={product.id} {...product} />

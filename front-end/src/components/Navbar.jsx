@@ -1,13 +1,17 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, User, ShoppingBag, Menu, X, ShieldCheck } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { cartCount } = useCart();
+  const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +24,7 @@ export default function Navbar() {
   // Close mobile menu on route change
   useEffect(() => {
     setIsMenuOpen(false);
+    setIsDropdownOpen(false);
   }, [location.pathname]);
 
   return (
@@ -90,9 +95,88 @@ export default function Navbar() {
             <button className="text-primary hover:text-accent transition-transform hover:scale-110 hidden sm:block" aria-label="Search">
               <Search className="w-5 h-5 stroke-[1.5]" />
             </button>
-            <button className="text-primary hover:text-accent transition-transform hover:scale-110 hidden sm:block" aria-label="Account">
-              <User className="w-5 h-5 stroke-[1.5]" />
-            </button>
+
+            {/* Desktop Account Dropdown Trigger */}
+            <div className="relative hidden sm:block">
+              <button 
+                onClick={() => {
+                  if (user) {
+                    setIsDropdownOpen(!isDropdownOpen);
+                  } else {
+                    navigate('/login');
+                  }
+                }}
+                className={`transition-colors flex items-center gap-1.5 py-1 ${isDropdownOpen || location.pathname.includes('/profile') ? 'text-accent' : 'text-primary hover:text-accent'}`}
+                aria-label="Account"
+              >
+                <User className="w-5 h-5 stroke-[1.5]" />
+                {user && <span className="text-[10px] uppercase tracking-wider font-semibold font-sans">{user.name.split(' ')[0]}</span>}
+              </button>
+
+              {user && isDropdownOpen && (
+                <div className="absolute right-0 mt-3 w-48 bg-white border border-primary/5 shadow-lg rounded-sm py-2 z-50 font-sans text-xs animate-fade-in text-left">
+                  <div className="px-4 py-2 text-primary border-b border-primary/5 mb-1">
+                    <span className="text-[10px] text-dark/50 block font-semibold uppercase tracking-wider">Welcome</span>
+                    <span className="font-serif font-bold text-sm block truncate">{user.name}</span>
+                  </div>
+                  {user.role === 'admin' && (
+                    <Link 
+                      to="/admin" 
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="block px-4 py-2.5 text-accent hover:bg-secondary/40 font-bold border-b border-primary/5 transition-colors"
+                    >
+                      Admin Console
+                    </Link>
+                  )}
+                  <Link 
+                    to="/profile" 
+                    onClick={() => setIsDropdownOpen(false)}
+                    className="block px-4 py-2.5 text-primary/80 hover:bg-secondary/40 hover:text-accent transition-colors font-medium border-b border-primary/5"
+                  >
+                    My Account
+                  </Link>
+                  {user.role === 'admin' ? (
+                    <Link 
+                      to="/admin" 
+                      state={{ activeTab: 'orders' }}
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="block px-4 py-2.5 text-primary/80 hover:bg-secondary/40 hover:text-accent transition-colors font-medium"
+                    >
+                      All Orders
+                    </Link>
+                  ) : (
+                    <>
+                      <Link 
+                        to="/saved-products" 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="block px-4 py-2.5 text-primary/80 hover:bg-secondary/40 hover:text-accent transition-colors font-medium"
+                      >
+                        Saved Products
+                      </Link>
+                      <Link 
+                        to="/orders" 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="block px-4 py-2.5 text-primary/80 hover:bg-secondary/40 hover:text-accent transition-colors font-medium"
+                      >
+                        My Orders
+                      </Link>
+                    </>
+                  )}
+                  <div className="border-t border-primary/5 my-1"></div>
+                  <button 
+                    onClick={() => {
+                      logout();
+                      setIsDropdownOpen(false);
+                      navigate('/');
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors font-semibold"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+
             <Link 
               to="/cart" 
               className="text-primary hover:text-accent transition-transform hover:scale-110 relative group p-1"
@@ -121,10 +205,33 @@ export default function Navbar() {
           <Link to="/shop" className="hover:text-accent transition-colors w-full text-center py-2 text-primary font-medium">SHOP</Link>
           <Link to="/about" className="hover:text-accent transition-colors w-full text-center py-2 text-primary font-medium">OUR STORY</Link>
           <Link to="/contact" className="hover:text-accent transition-colors w-full text-center py-2 text-primary font-medium">CONTACT</Link>
-          <div className="flex justify-center space-x-10 pt-4 border-t border-primary/10 w-1/2">
-            <button className="hover:text-accent text-primary"><Search className="w-5 h-5" /></button>
-            <button className="hover:text-accent text-primary"><User className="w-5 h-5" /></button>
-          </div>
+          {user ? (
+            <>
+              {user.role === 'admin' ? (
+                <>
+                  <Link to="/admin" className="hover:text-accent transition-colors w-full text-center py-2 text-accent font-bold">ADMIN CONSOLE</Link>
+                  <Link to="/admin" state={{ activeTab: 'orders' }} className="hover:text-accent transition-colors w-full text-center py-2 text-primary font-medium">ALL ORDERS</Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/profile" className="hover:text-accent transition-colors w-full text-center py-2 text-primary font-medium">MY ACCOUNT</Link>
+                  <Link to="/saved-products" className="hover:text-accent transition-colors w-full text-center py-2 text-primary font-medium">SAVED PRODUCTS</Link>
+                  <Link to="/orders" className="hover:text-accent transition-colors w-full text-center py-2 text-primary font-medium">MY ORDERS</Link>
+                </>
+              )}
+              <button 
+                onClick={() => {
+                  logout();
+                  navigate('/');
+                }}
+                className="hover:text-red-500 transition-colors w-full text-center py-2 text-red-600 font-bold font-sans text-xs tracking-widest uppercase border-t border-primary/10 pt-4 mt-2"
+              >
+                LOGOUT
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="hover:text-accent transition-colors w-full text-center py-2 text-accent font-bold">LOGIN / SIGNUP</Link>
+          )}
         </div>
       </nav>
     </header>

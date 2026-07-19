@@ -1,194 +1,78 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
-import { Star, ShieldCheck, Truck, RefreshCw, Sparkles, Award } from 'lucide-react';
-
-const productsDatabase = {
-  1: {
-    id: 1,
-    title: "Nagouri Ashwagandha Root Extract (600mg)",
-    price: 799.00,
-    originalPrice: 1199.00,
-    image: "/nagori-ashwagandha.png",
-    rating: 4.9,
-    reviewCount: 186,
-    category: "Ashwagandha",
-    description: "Sourced directly from the arid soils of Nagaur, Rajasthan, our premium Ashwagandha extract is standardized to 5% active Withanolides. This high-potency adaptogen is traditionally celebrated for lowering cortisol levels, calming the nervous system, and restoring physical vitality.",
-    benefits: [
-      "Lowers cortisol levels to reduce daily stress and anxiety",
-      "Promotes deep, restful sleep cycles without morning grogginess",
-      "Supports physical endurance, muscle recovery, and stamina",
-      "Standardized to 5% Withanolides for guaranteed therapeutic potency"
-    ],
-    ingredients: "100% Pure Nagouri Ashwagandha (Withania somnifera) Root Extract, standardized to 5% Withanolides. Vegetarian capsule shells (HPMC). No fillers or chemicals.",
-    usage: "Consume 1 capsule twice daily with lukewarm milk or water, preferably after meals, or as directed by an Ayurvedic physician.",
-    sourcing: "Our Ashwagandha is ethically harvested by local farmers in Nagaur, Rajasthan. The dry weather and alkaline soil of this region give Nagouri roots their signature high alkaloid concentration.",
-    shipping: "Free shipping included on this order. Dispatched within 24 hours. Delivered in 3-5 business days with secure tracking."
-  },
-  2: {
-    id: 2,
-    title: "Pure Himalayan Shilajit Resin (Gold Grade)",
-    price: 1699.00,
-    originalPrice: 2398.00,
-    image: "/himalayan-shilajit.png",
-    rating: 4.95,
-    reviewCount: 312,
-    category: "Shilajit",
-    description: "Harvested from the highest altitudes of the Himalayas (above 16,000 ft), our Gold Grade Shilajit resin is purified using traditional Shodhana methods. Rich in 60%+ Fulvic Acid and over 84 trace minerals, it represents the ultimate natural rejuvenator for cellular energy and immune support.",
-    benefits: [
-      "Provides natural, sustained energy boost at a cellular level",
-      "Contains 60%+ Fulvic Acid to enhance nutrient absorption",
-      "Rich in 84+ ionic trace minerals for healthy cognitive function",
-      "WHO-GMP certified purification ensures zero heavy metal contamination"
-    ],
-    ingredients: "100% Pure, Organic Himalayan Shilajit Resin (Gold Grade). Free from artificial additives, heavy metals, or chemical solvents.",
-    usage: "Dissolve a pea-sized portion (250mg - 500mg) in warm water, milk, or herbal tea. Drink on an empty stomach first thing in the morning.",
-    sourcing: "Sourced responsibly from rock clefts in high-altitude Himalayan ranges. Purified using solar evaporation and traditional water wash methods.",
-    shipping: "Free shipping included on this order. Dispatched within 24 hours. Delivered in 3-5 business days with secure tracking."
-  },
-  3: {
-    id: 3,
-    title: "Ashwagandha & Wild Berry Vitality Gummies",
-    price: 899.00,
-    originalPrice: 1299.00,
-    image: "/vitality-gummies.png",
-    rating: 4.8,
-    reviewCount: 94,
-    category: "Gummies",
-    description: "Our delicious, pectin-based wellness gummies combine premium Nagouri Ashwagandha with natural wild berries. Formulated for active lifestyles, they offer a convenient, delicious way to balance stress, support cognitive clarity, and boost vitality on the go.",
-    benefits: [
-      "Delightful natural berry flavor without artificial sweeteners",
-      "100% Vegan & Gluten-Free (pectin-based, no gelatin)",
-      "Supports mental clarity, cognitive focus, and stress management",
-      "Convenient daily nutrition for busy, active lifestyles"
-    ],
-    ingredients: "Nagouri Ashwagandha Extract (300mg per serving), Natural Wild Berry Juice Extract, Pectin, Organic Cane Sugar, Citric Acid, Sodium Citrate.",
-    usage: "Chew 2 gummies daily at any time. No water needed. Do not exceed the recommended daily serving.",
-    sourcing: "Formulated in a state-of-the-art facility using organic berry extracts and certified Rajasthan Ashwagandha roots.",
-    shipping: "Standard shipping charges of ₹50 apply. Free shipping on orders above ₹1500. Expected delivery: 3-5 business days."
-  },
-  4: {
-    id: 4,
-    title: "Testoboost Combo (Shilajit & Ashwagandha)",
-    price: 1599.00,
-    originalPrice: 2398.00,
-    image: "/himalayan-shilajit.png",
-    rating: 4.9,
-    reviewCount: 147,
-    category: "Combos",
-    description: "The ultimate Ayurvedic synergy. This combo combines our high-altitude Himalayan Shilajit Resin (15g) and Nagouri Ashwagandha Capsules (60 count). Together, they regulate stress hormones, optimize mitochondrial energy, and support peak athletic performance.",
-    benefits: [
-      "Synergistic formula boosts stamina, strength, and vitality",
-      "Ashwagandha regulates cortisol while Shilajit rejuvenates cells",
-      "Enhances oxygen uptake and stamina during workouts",
-      "Excellent value combo saving over 30% compared to separate purchases"
-    ],
-    ingredients: "Pack includes: 1 jar of Pure Himalayan Shilajit Resin (15g) and 1 bottle of Nagouri Ashwagandha Extract Capsules (60 capsules).",
-    usage: "Take Shilajit in the morning with warm water. Take 1 Ashwagandha capsule in the afternoon and 1 at night after meals.",
-    sourcing: "Features hand-collected Himalayan Shilajit and farm-direct Nagouri Ashwagandha from Rajasthan.",
-    shipping: "Free shipping included on this order. Dispatched within 24 hours. Delivered in 3-5 business days with secure tracking."
-  },
-  5: {
-    id: 5,
-    title: "Nagouri Ashwagandha Churna Powder (200g)",
-    price: 599.00,
-    originalPrice: 899.00,
-    image: "/nagori-ashwagandha.png",
-    rating: 4.75,
-    reviewCount: 88,
-    category: "Ashwagandha",
-    description: "Pure, single-origin Nagouri Ashwagandha root powder. Ground slowly at low temperatures to preserve natural oils and active alkaloids. Free from preservatives, fillers, or binding agents, this traditional churna is perfect for mixing into milk decoctions.",
-    benefits: [
-      "Traditional churna powder ideal for classic Ayurvedic preparations",
-      "Slow-ground roots retain maximum nutritional integrity",
-      "Supports sleep quality when mixed with warm milk and nutmeg",
-      "100% raw, organic, and unadulterated root powder"
-    ],
-    ingredients: "100% Pure, Organic slow-ground Nagouri Ashwagandha (Withania somnifera) roots. Zero additives.",
-    usage: "Mix 1/2 to 1 teaspoon (3g - 5g) in warm milk, water, or honey. Drink before bedtime for sleep support.",
-    sourcing: "Grown naturally in Rajasthan. Roots are sun-dried and slowly processed in stone mills.",
-    shipping: "Standard shipping charges apply. Free shipping on orders above ₹1500. Expected delivery: 3-5 business days."
-  },
-  6: {
-    id: 6,
-    title: "Deep Sleep Melatonin-Free Capsules",
-    price: 1099.00,
-    originalPrice: 1499.00,
-    image: "/nagori-ashwagandha.png",
-    rating: 4.85,
-    reviewCount: 112,
-    category: "Stress & Sleep",
-    description: "A non-habit-forming herbal sleep aid combining Nagouri Ashwagandha with Shankhpushpi, Tagar (Valerian Root), and Jatamansi. Formulated to calm overactive minds, ease nighttime tension, and regulate natural circadian rhythm without synthetic melatonin.",
-    benefits: [
-      "100% melatonin-free formula prevents dependency and morning grogginess",
-      "Calms mind chatter and racing thoughts at bedtime",
-      "Supports natural circadian rhythms and deep REM sleep phases",
-      "Synergized with traditional calming Ayurvedic herbs"
-    ],
-    ingredients: "Nagouri Ashwagandha extract, Tagar (Valerian root) extract, Shankhpushpi, Jatamansi, Chamomile extract. Vegetarian capsules.",
-    usage: "Take 1-2 capsules 30 minutes before bedtime with warm water or milk.",
-    sourcing: "Formulated using carefully selected calming herbs sourced from high-quality farms in India.",
-    shipping: "Standard shipping charges apply. Free shipping on orders above ₹1500. Expected delivery: 3-5 business days."
-  },
-  7: {
-    id: 7,
-    title: "Shilajit Gold Resin with 24k Gold Bhasma",
-    price: 2099.00,
-    originalPrice: 2998.00,
-    image: "/himalayan-shilajit.png",
-    rating: 4.97,
-    reviewCount: 76,
-    category: "Shilajit",
-    description: "Our signature luxury wellness formulation. We infuse pure Himalayan Shilajit resin with 24k Gold (Swarna Bhasma) and Silver (Rajat Bhasma). This premium blend accelerates tissue renewal, enhances focus, and represents the zenith of Ayurvedic vitality.",
-    benefits: [
-      "Zenith of rejuvenation, infused with pure Swarna Bhasma (Gold)",
-      "Enhances neurological function, memory retention, and focus",
-      "Accelerates cellular healing and supports joint health",
-      "Comes with an elegant premium gold-plated dosage spoon"
-    ],
-    ingredients: "Pure Himalayan Shilajit Resin (Gold Grade), Swarna Bhasma (24k Gold), Rajat Bhasma (Silver), Safed Musli extract.",
-    usage: "Dissolve a pea-sized amount (250mg) in warm milk or consume directly using the gold spoon. Take in the morning.",
-    sourcing: "Hand-harvested from pristine heights and blended with certified Swarna Bhasma prepared through ancient calcination processes.",
-    shipping: "Free shipping included on this order. Dispatched within 24 hours. Delivered in 3-5 business days with secure tracking."
-  },
-  8: {
-    id: 8,
-    title: "Ashwagandha KSM-66 & Gokhru-60 Combo",
-    price: 1199.00,
-    originalPrice: 1848.00,
-    image: "/vitality-gummies.png",
-    rating: 4.9,
-    reviewCount: 135,
-    category: "Combos",
-    description: "An athletic and vitality combination containing KSM-66 Ashwagandha capsules (60 count) and Gokshura capsules (60 count). Specially formulated for bodybuilders and active fitness enthusiasts seeking natural testosterone support, vascularity, and rapid muscle repair.",
-    benefits: [
-      "Optimized for sports performance and muscle synthesis",
-      "Gokshura supports circulatory health and athletic endurance",
-      "Ashwagandha regulates training fatigue and cortisol levels",
-      "100% natural, safe for athletes, tested free from banned substances"
-    ],
-    ingredients: "Pack includes: 1 bottle of Nagouri Ashwagandha Capsules (60 count) and 1 bottle of Pure Gokshura Extract Capsules (60 count).",
-    usage: "Take 1 capsule of Ashwagandha and 1 capsule of Gokshura together twice daily after meals.",
-    sourcing: "Grown in nutrient-dense soils under supervised organic agricultural guidelines.",
-    shipping: "Standard shipping charges apply. Free shipping on orders above ₹1500. Expected delivery: 3-5 business days."
-  }
-};
+import { useAuth } from '../context/AuthContext';
+import { Star, ShieldCheck, Truck, RefreshCw, Sparkles, Award, Heart } from 'lucide-react';
 
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
+  const { user, toggleSavedProduct } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('ingredients');
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  // Load product from database or default to product ID 1
-  const product = useMemo(() => {
-    const productId = parseInt(id) || 1;
-    return productsDatabase[productId] || productsDatabase[1];
+  // Hook must be declared at the top of the component (before early returns)
+  const isSaved = useMemo(() => {
+    if (!user || !user.savedProducts || !product) return false;
+    return user.savedProducts.some(id => String(id) === String(product.id));
+  }, [user, product]);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(false);
+    fetch(`/api/products/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error("Product not found");
+        return res.json();
+      })
+      .then(data => {
+        setProduct(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setError(true);
+        setLoading(false);
+      });
   }, [id]);
 
+  // If loading or error, handle early returns so product is guaranteed below
+  if (loading) {
+    return (
+      <div className="bg-secondary min-h-screen pt-24 pb-20 flex flex-col items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent mb-4"></div>
+        <p className="text-xs font-sans font-medium text-primary/60 uppercase tracking-widest">Loading Formulation Details...</p>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="bg-secondary min-h-[80vh] flex flex-col items-center justify-center px-6 py-24 text-center">
+        <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-primary">Formulation Not Found</h1>
+        <div className="w-16 h-[2px] bg-accent mx-auto mb-6"></div>
+        <p className="text-dark/65 font-light mb-10 max-w-md font-sans text-base">
+          The requested product formulation could not be loaded. Please return to our shop catalog to explore our premium adaptogens.
+        </p>
+        <Link 
+          to="/shop" 
+          className="bg-primary text-secondary hover:bg-primary-light font-bold py-4.5 px-12 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-md"
+        >
+          Return to Shop
+        </Link>
+      </div>
+    );
+  }
+
+  // Safe to compute these since product is loaded and verified
   const displayOriginalPrice = product.originalPrice || Math.round(product.price * 1.4);
   const savings = displayOriginalPrice - product.price;
+  const cartItem = cartItems.find(item => item.id === product.id);
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const handleQuantity = (type) => {
     if (type === 'dec' && quantity > 1) setQuantity(q => q - 1);
@@ -196,12 +80,28 @@ export default function ProductDetails() {
   };
 
   const handleAddToCart = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     addToCart(product, quantity);
   };
 
   const handleBuyNow = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     addToCart(product, quantity);
     navigate('/cart');
+  };
+
+  const handleToggleWishlist = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    await toggleSavedProduct(product.id);
   };
 
   return (
@@ -298,18 +198,35 @@ export default function ProductDetails() {
               {/* Add to Cart button */}
               <button 
                 onClick={handleAddToCart}
-                className="flex-1 bg-primary text-secondary hover:bg-primary-light font-bold py-4.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-md"
+                className={`flex-1 font-bold py-4.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-md ${
+                  quantityInCart > 0 
+                    ? 'bg-accent/10 border border-accent/40 text-accent hover:bg-accent hover:text-primary' 
+                    : 'bg-primary text-secondary hover:bg-primary-light'
+                }`}
               >
-                Add to Cart
+                {quantityInCart > 0 ? `In Cart (${quantityInCart})` : 'Add to Cart'}
               </button>
             </div>
             
             {/* Buy it Now button */}
             <button 
               onClick={handleBuyNow}
-              className="w-full bg-accent text-primary hover:bg-accent-dark font-bold py-4.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 mb-10 rounded-sm shadow-md border border-accent/20"
+              className="w-full bg-accent text-primary hover:bg-accent-dark font-bold py-4.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 mb-4 rounded-sm shadow-md border border-accent/20 cursor-pointer"
             >
               Buy It Now
+            </button>
+
+            {/* Wishlist toggle */}
+            <button 
+              onClick={handleToggleWishlist}
+              className={`w-full font-bold py-4.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 mb-10 rounded-sm shadow-sm border flex items-center justify-center gap-2 cursor-pointer ${
+                isSaved 
+                  ? 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100' 
+                  : 'bg-white border-primary/10 text-primary hover:border-accent'
+              }`}
+            >
+              <Heart className={`w-4 h-4 ${isSaved ? 'fill-current text-red-600' : ''}`} />
+              <span>{isSaved ? 'Saved in Wishlist' : 'Save to Wishlist'}</span>
             </button>
 
             {/* Fast checkout trust signals */}

@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { Trash2, ShieldCheck, Truck, Sparkles } from 'lucide-react';
 
 export default function Cart() {
   const { cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const shippingThreshold = 1500;
   const shippingCost = 50;
   const shipping = cartTotal >= shippingThreshold ? 0 : shippingCost;
@@ -160,7 +163,16 @@ export default function Cart() {
               </div>
               
               {/* Checkout buttons */}
-              <button className="w-full bg-primary text-secondary hover:bg-primary-light font-bold py-4 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-md flex items-center justify-center gap-2">
+              <button 
+                onClick={() => {
+                  if (!user) {
+                    navigate('/login');
+                  } else {
+                    navigate('/checkout');
+                  }
+                }}
+                className="w-full bg-primary text-secondary hover:bg-primary-light font-bold py-4 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
                 <ShieldCheck className="w-4 h-4 text-accent" />
                 <span>Proceed to Checkout</span>
               </button>

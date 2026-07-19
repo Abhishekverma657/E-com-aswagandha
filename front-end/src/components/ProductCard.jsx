@@ -1,9 +1,16 @@
-import { Link } from 'react-router-dom';
-import { ShoppingBag, Star } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingBag, Star, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function ProductCard({ id, title, price, image, rating = 4.9, reviewCount = 124, originalPrice }) {
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const cartItem = cartItems.find(item => item.id === id);
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
+
   // Calculate a mock original price if not provided, to show a realistic premium discount
   const displayOriginalPrice = originalPrice || Math.round(price * 1.4);
   const discountPercent = Math.round(((displayOriginalPrice - price) / displayOriginalPrice) * 100);
@@ -88,12 +95,24 @@ export default function ProductCard({ id, title, price, image, rating = 4.9, rev
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
+              if (!user) {
+                navigate('/login');
+                return;
+              }
               addToCart({ id, title, price, image }, 1);
             }}
-            className="mt-3.5 w-full bg-primary hover:bg-accent text-secondary hover:text-primary font-bold py-3.5 px-4 text-xs uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2 border border-primary hover:border-accent shadow-xs rounded-xs cursor-pointer"
+            className={`mt-3.5 w-full font-bold py-3.5 px-4 text-xs uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2 border shadow-xs rounded-xs cursor-pointer ${
+              quantityInCart > 0 
+                ? 'bg-accent/15 border-accent text-accent hover:bg-accent hover:text-primary' 
+                : 'bg-primary border-primary text-secondary hover:bg-accent hover:border-accent hover:text-primary'
+            }`}
           >
-            <ShoppingBag className="w-4.5 h-4.5 stroke-[1.5]" />
-            <span>Add to Cart</span>
+            {quantityInCart > 0 ? (
+              <Check className="w-4.5 h-4.5 stroke-[2.5]" />
+            ) : (
+              <ShoppingBag className="w-4.5 h-4.5 stroke-[1.5]" />
+            )}
+            <span>{quantityInCart > 0 ? `In Cart (${quantityInCart})` : 'Add to Cart'}</span>
           </button>
         </div>
       </div>

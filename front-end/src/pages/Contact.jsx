@@ -1,6 +1,40 @@
 import { Mail, Clock, Send } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: ''
+   });
+   const [submitting, setSubmitting] = useState(false);
+   const [success, setSuccess] = useState(false);
+   const [error, setError] = useState(null);
+
+   const handleSubmit = async (e) => {
+     e.preventDefault();
+     setSubmitting(true);
+     setError(null);
+     try {
+       const res = await fetch('/api/contacts', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(formData)
+       });
+       const data = await res.json();
+       if (!res.ok) throw new Error(data.error || 'Failed to submit form');
+       
+       setSuccess(true);
+       setFormData({ firstName: '', lastName: '', email: '', message: '' });
+       setTimeout(() => setSuccess(false), 5000); // clear banner after 5 seconds
+     } catch (err) {
+       console.error(err);
+       setError(err.message);
+     } finally {
+       setSubmitting(false);
+     }
+   };
   return (
     <div className="min-h-screen bg-secondary pt-24 pb-20 text-left">
       {/* Header Banner */}
@@ -60,12 +94,25 @@ export default function Contact() {
 
         {/* Contact Form Panel */}
         <div className="w-full lg:w-2/3 bg-white p-8 md:p-10 border border-primary/5 rounded-sm shadow-md">
-          <form className="space-y-6 font-sans text-sm" onSubmit={(e) => e.preventDefault()}>
+          {success && (
+            <div className="mb-6 bg-accent/15 border border-accent/25 text-primary text-sm p-4 rounded-sm font-sans flex items-center gap-2 animate-fade-in">
+              <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+              <span><strong>Message Received!</strong> Our Ayurvedic advisors will reach out to you shortly.</span>
+            </div>
+          )}
+          {error && (
+            <div className="mb-6 bg-red-50 border border-red-200 text-red-700 text-sm p-4 rounded-sm font-sans animate-fade-in">
+              <strong>Submission Error:</strong> {error}
+            </div>
+          )}
+          <form className="space-y-6 font-sans text-sm" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2 text-left">
                 <label className="text-xs font-bold text-primary uppercase tracking-wider block">First Name</label>
                 <input 
                   type="text" 
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                   className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
                   required 
                 />
@@ -74,6 +121,8 @@ export default function Contact() {
                 <label className="text-xs font-bold text-primary uppercase tracking-wider block">Last Name</label>
                 <input 
                   type="text" 
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                   className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
                   required 
                 />
@@ -84,6 +133,8 @@ export default function Contact() {
               <label className="text-xs font-bold text-primary uppercase tracking-wider block">Email Address</label>
               <input 
                 type="email" 
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
                 required 
               />
@@ -93,6 +144,8 @@ export default function Contact() {
               <label className="text-xs font-bold text-primary uppercase tracking-wider block">Your Message</label>
               <textarea 
                 rows="5" 
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
                 placeholder="Enter details about your batch, order, or wholesale inquiries..."
                 required
@@ -101,10 +154,11 @@ export default function Contact() {
 
             <button 
               type="submit" 
-              className="bg-primary text-secondary hover:bg-primary-light font-bold py-4 px-10 uppercase tracking-widest text-xs transition-all duration-300 rounded-sm shadow-md flex items-center gap-2 hover:shadow-lg"
+              disabled={submitting}
+              className="bg-primary text-secondary hover:bg-primary-light font-bold py-4 px-10 uppercase tracking-widest text-xs transition-all duration-300 rounded-sm shadow-md flex items-center gap-2 hover:shadow-lg disabled:opacity-50"
             >
               <Send className="w-3.5 h-3.5 text-accent" />
-              <span>Send Message</span>
+              <span>{submitting ? 'Sending...' : 'Send Message'}</span>
             </button>
           </form>
         </div>
