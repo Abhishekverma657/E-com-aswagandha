@@ -1,10 +1,10 @@
-import { CheckCircle2, HeartHandshake, FileCheck } from 'lucide-react';
+import { CheckCircle2, HeartHandshake, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function TheDifference() {
   return (
-    <section className="py-24 px-4 sm:px-6 bg-[#f8fafc] relative">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+    <section className="py-24 px-4 sm:px-6 bg-secondary relative">
+      <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
         
         {/* Left Content */}
         <motion.div 
@@ -37,9 +37,9 @@ export default function TheDifference() {
           <div className="space-y-4 pt-2">
             
             {/* Box 1 */}
-            <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-[#1e293b] rounded-md p-6 flex items-start gap-5 shadow-lg">
-              <div className="w-12 h-12 bg-white/10 rounded flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-white" />
+            <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-primary rounded-md p-6 flex items-start gap-5 shadow-lg">
+              <div className="bg-white/10 p-3 rounded-full flex-shrink-0">
+                <CheckCircle2 className="w-6 h-6 text-accent" />
               </div>
               <div>
                 <h4 className="font-bold text-white text-lg font-sans">Built To Help You Feel A Real Difference</h4>
@@ -50,9 +50,9 @@ export default function TheDifference() {
             </motion.div>
 
             {/* Box 2 */}
-            <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-[#1e293b] rounded-md p-6 flex items-start gap-5 shadow-lg">
-              <div className="w-12 h-12 bg-white/10 rounded flex items-center justify-center flex-shrink-0">
-                <HeartHandshake className="w-6 h-6 text-white" />
+            <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-primary rounded-md p-6 flex items-start gap-5 shadow-lg">
+              <div className="bg-white/10 p-3 rounded-full flex-shrink-0">
+                <HeartHandshake className="w-6 h-6 text-accent" />
               </div>
               <div>
                 <h4 className="font-bold text-white text-lg font-sans">Something You Can Actually Stick With</h4>
@@ -63,9 +63,9 @@ export default function TheDifference() {
             </motion.div>
 
             {/* Box 3 */}
-            <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-[#1e293b] rounded-md p-6 flex items-start gap-5 shadow-lg">
-              <div className="w-12 h-12 bg-white/10 rounded flex items-center justify-center flex-shrink-0">
-                <FileCheck className="w-6 h-6 text-white" />
+            <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-primary rounded-md p-6 flex items-start gap-5 shadow-lg">
+              <div className="bg-white/10 p-3 rounded-full flex-shrink-0">
+                <Leaf className="w-6 h-6 text-accent" />
               </div>
               <div>
                 <h4 className="font-bold text-white text-lg font-sans">Nothing To Hide. Everything To Show</h4>
@@ -74,7 +74,6 @@ export default function TheDifference() {
                 </p>
               </div>
             </motion.div>
-
           </div>
         </motion.div>
 

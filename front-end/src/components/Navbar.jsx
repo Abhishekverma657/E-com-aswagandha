@@ -34,7 +34,7 @@ export default function Navbar() {
       className="fixed top-0 left-0 w-full z-[100] flex flex-col"
     >
       {/* TIER 1: Top Black Announcement Bar */}
-      <div className="bg-[#0a0a0a] text-white text-center py-1.5 px-4 text-[11px] md:text-[13px] font-sans flex flex-col items-center justify-center relative z-20">
+      <div className="bg-primary text-white text-center py-1.5 px-4 text-[11px] md:text-[13px] font-sans flex flex-col items-center justify-center relative z-20">
         <span className="font-bold tracking-wide">Premium Nagouri Ashwagandha, now GI-Tagged</span>
         <span className="font-light tracking-wide text-gray-300 mt-0.5">Order today, Get it Tomorrow.</span>
       </div>
@@ -98,7 +98,7 @@ export default function Navbar() {
                           <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Magnesium Glycinate - From USA</p>
                           <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Highly absorbable magnesium for sleep & recovery</p>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-[#4a3621] text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
+                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
                             <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.22</span>
                           </div>
                         </div>
@@ -109,7 +109,7 @@ export default function Navbar() {
                           <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Plant-Based Omega-3 - The...</p>
                           <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Vegan Omega-3 Without Fishy Burps</p>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-[#4a3621] text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
+                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
                             <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.23</span>
                           </div>
                         </div>
@@ -129,7 +129,7 @@ export default function Navbar() {
                           <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Testoboost - Lift Harder, Last...</p>
                           <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Supports strength, stamina & sexual performance</p>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-[#4a3621] text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
+                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
                             <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.69</span>
                           </div>
                         </div>
@@ -171,7 +171,7 @@ export default function Navbar() {
                           <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Kashmiri Mongra Saffron/Kesar...</p>
                           <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Only the best A+ certified mongra kesar with the finest flavor</p>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-[#4a3621] text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
+                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
                             <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.80</span>
                           </div>
                         </div>
@@ -202,7 +202,7 @@ export default function Navbar() {
                           <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Curcumin - Triple Power</p>
                           <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">High-strength curcumin for joint comfort & inflammation</p>
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-[#4a3621] text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
+                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
                             <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.91</span>
                           </div>
                         </div>
@@ -271,7 +271,7 @@ export default function Navbar() {
               aria-label="Shopping Cart"
             >
               <ShoppingBag className="w-[18px] h-[18px] md:w-5 md:h-5 stroke-[2]" />
-              <span className="absolute top-0.5 right-0 bg-black text-white text-[9px] md:text-[10px] font-bold w-4 h-4 md:w-[18px] md:h-[18px] rounded-full flex items-center justify-center border-2 border-white">
+              <span className="absolute top-0.5 right-0 bg-primary-dark text-white text-[9px] md:text-[10px] font-bold w-4 h-4 md:w-[18px] md:h-[18px] rounded-full flex items-center justify-center border-2 border-white">
                 {cartCount || 0}
               </span>
             </Link>
@@ -386,7 +386,7 @@ export default function Navbar() {
       </nav>
 
       {/* TIER 3: Bottom Marquee / Info Bar (Auto-scrolling horizontally seamless) */}
-      <div className="bg-[#f7f8f9] border-b border-gray-200 py-2.5 overflow-hidden w-full relative z-10 flex">
+      <div className="bg-secondary border-b border-gray-200 py-2.5 overflow-hidden w-full relative z-10 flex">
         
         <div className="animate-marquee flex shrink-0 whitespace-nowrap text-[10px] md:text-[11px] font-sans font-bold text-gray-600 uppercase tracking-widest min-w-full justify-around">
           <span className="px-4">Same-Day Delivery Is Now Available On Selected Pin Codes</span>

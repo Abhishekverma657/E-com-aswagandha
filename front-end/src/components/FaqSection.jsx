@@ -43,7 +43,7 @@ export default function FaqSection() {
                 onClick={() => setActiveTab(tab)}
                 className={`px-5 py-2 rounded-full text-[13px] font-sans transition-colors ${
                   activeTab === tab 
-                    ? 'bg-[#0f172a] text-white font-bold' 
+                    ? 'bg-primary text-white font-bold' 
                     : 'bg-white text-gray-600 border border-gray-300 hover:border-gray-400 font-medium'
                 }`}
               >
@@ -61,13 +61,13 @@ export default function FaqSection() {
               >
                 <button 
                   onClick={() => setSelectedQuestion(item)}
-                  className={`w-full flex items-center py-5 text-left transition-colors font-sans text-[15px] group ${
-                    selectedQuestion?.id === item.id ? 'text-[#0f172a] font-bold' : 'text-gray-600 font-light hover:text-gray-900'
+                  className={`w-full flex items-center py-5 text-left transition-colors font-sans text-[15px] pr-8 ${
+                    selectedQuestion?.id === item.id ? 'text-primary font-bold' : 'text-gray-600 font-light hover:text-gray-900'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full mr-4 flex-shrink-0 transition-colors ${
-                    selectedQuestion?.id === item.id ? 'bg-[#0f172a]' : 'bg-gray-300 group-hover:bg-gray-400'
-                  }`}></span>
+                  <div className={`w-1.5 h-1.5 rounded-full mr-4 flex-shrink-0 transition-colors ${
+                    selectedQuestion?.id === item.id ? 'bg-primary' : 'bg-gray-300 group-hover:bg-gray-400'
+                  }`}></div>
                   {item.q}
                 </button>
               </div>

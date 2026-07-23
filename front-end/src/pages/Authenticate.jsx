@@ -4,14 +4,14 @@ import { ShieldCheck } from 'lucide-react';
 
 export default function Authenticate() {
   return (
-    <div className="min-h-screen bg-[#f8fafc] pt-32 pb-24 px-6 flex items-center justify-center">
+    <div className="min-h-screen bg-secondary pt-32 pb-24 px-6 flex items-center justify-center">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="max-w-xl w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
       >
-        <div className="bg-[#1e293b] py-8 px-8 text-center text-white relative overflow-hidden">
+        <div className="bg-primary py-8 px-8 text-center text-white relative overflow-hidden">
           {/* Subtle background decoration */}
           <ShieldCheck className="absolute -right-8 -bottom-8 w-40 h-40 text-white opacity-5" />
           
@@ -37,7 +37,7 @@ export default function Authenticate() {
               <input 
                 type="text" 
                 id="authCode" 
-                className="w-full border border-gray-300 rounded px-4 py-3 text-center text-xl tracking-[0.2em] font-medium focus:outline-none focus:border-[#0f172a] focus:ring-1 focus:ring-[#0f172a]"
+                className="w-full border border-gray-300 rounded px-4 py-3 text-center text-xl tracking-[0.2em] font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                 placeholder="XXXX-XXXX-XXXX"
                 maxLength={14}
                 required
@@ -47,7 +47,7 @@ export default function Authenticate() {
             <div className="pt-2">
               <button 
                 type="submit" 
-                className="w-full bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold py-3.5 rounded transition-colors uppercase tracking-widest text-sm flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-primary-light text-white font-bold py-3.5 rounded transition-colors uppercase tracking-widest text-sm flex items-center justify-center gap-2"
               >
                 Verify Product
               </button>

@@ -57,7 +57,7 @@ export default function CustomerReviews() {
     reviews[(currentIndex + 2) % reviews.length]
   ];
   return (
-    <section className="py-24 px-4 sm:px-6 bg-[#f8fafc] relative">
+    <section className="py-24 px-4 sm:px-6 bg-secondary relative">
       <div className="max-w-[1200px] mx-auto">
         
         {/* Header Row */}
@@ -80,7 +80,7 @@ export default function CustomerReviews() {
           </div>
           
           <div className="mt-8 md:mt-0 text-right flex flex-col items-end">
-            <div className="text-5xl md:text-7xl font-sans font-bold text-[#0f172a] leading-none mb-2">4.7</div>
+            <div className="text-5xl md:text-7xl font-sans font-bold text-primary leading-none mb-2">4.7</div>
             <div className="flex text-[#65a30d] mb-1">
               {[...Array(5)].map((_, i) => <Star key={i} className={`w-4 h-4 md:w-5 md:h-5 ${i < 5 ? 'fill-current' : ''} stroke-current`} />)}
             </div>
@@ -106,7 +106,8 @@ export default function CustomerReviews() {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="bg-[#1e293b] rounded-md overflow-hidden relative text-white flex flex-col lg:flex-row shadow-lg"
+          className="bg-primary rounded-md overflow-hidden relative text-white flex flex-col lg:flex-row shadow-lg"
+          style={{ minHeight: '400px' }}
         >
           
           <div className="p-8 md:p-12 lg:w-2/3 flex flex-col justify-between relative z-10">
@@ -125,29 +126,32 @@ export default function CustomerReviews() {
           </div>
 
           {/* Intersecting Circles Graphic (Right Side) */}
-          <div className="lg:w-1/3 min-h-[300px] relative overflow-hidden bg-[#1e293b] hidden md:flex items-center justify-center">
+          <div className="lg:w-1/3 min-h-[300px] relative overflow-hidden bg-primary hidden md:flex items-center justify-center">
              <div className="absolute opacity-20 -right-12 -top-12">
                 {/* Subtle quote watermark */}
                 <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
              </div>
              
-             <div className="relative w-[280px] h-[280px]">
-                {/* Top Circle */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[140px] h-[140px] rounded-full border border-white/20 flex flex-col items-center justify-center text-center z-20 bg-[#1e293b]/50 backdrop-blur-sm">
-                  <span className="font-bold text-sm tracking-wide">WEEK 3</span>
-                  <span className="text-[10px] text-white/70 leading-tight mt-1 px-4">When he first <strong className="text-white">felt results</strong></span>
+              <div className="relative w-[340px] h-[340px] border border-white/10 rounded-full animate-spin-slow flex items-center justify-center">
+                
+                {/* Orbital Element 1 */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[140px] h-[140px] rounded-full border border-white/20 flex flex-col items-center justify-center text-center z-20 bg-primary/50 backdrop-blur-sm">
+                  <span className="font-serif text-3xl font-bold mb-1">10L+</span>
+                  <span className="text-[10px] font-sans font-bold tracking-widest text-white/70 uppercase px-4 leading-tight">Happy Customers</span>
                 </div>
-                {/* Bottom Left Circle */}
-                <div className="absolute bottom-4 left-0 w-[140px] h-[140px] rounded-full border border-white/20 flex flex-col items-center justify-center text-center z-10 bg-[#1e293b]/50 backdrop-blur-sm">
-                  <span className="font-bold text-sm tracking-wide">6 MONTHS</span>
-                  <span className="text-[10px] text-white/70 leading-tight mt-1 px-4">Still a <strong className="text-white">customer</strong></span>
+
+                {/* Orbital Element 2 */}
+                <div className="absolute bottom-4 left-0 w-[140px] h-[140px] rounded-full border border-white/20 flex flex-col items-center justify-center text-center z-10 bg-primary/50 backdrop-blur-sm">
+                  <span className="font-serif text-3xl font-bold mb-1">5★</span>
+                  <span className="text-[10px] font-sans font-bold tracking-widest text-white/70 uppercase px-4 leading-tight">Average Rating</span>
                 </div>
-                {/* Bottom Right Circle */}
-                <div className="absolute bottom-4 right-0 w-[140px] h-[140px] rounded-full border border-white/20 flex flex-col items-center justify-center text-center z-10 bg-[#1e293b]/50 backdrop-blur-sm">
-                  <span className="font-bold text-sm tracking-wide">3 FRIENDS</span>
-                  <span className="text-[10px] text-white/70 leading-tight mt-1 px-4">He's <strong className="text-white">referred since</strong></span>
+
+                {/* Orbital Element 3 */}
+                <div className="absolute bottom-4 right-0 w-[140px] h-[140px] rounded-full border border-white/20 flex flex-col items-center justify-center text-center z-10 bg-primary/50 backdrop-blur-sm">
+                  <span className="font-serif text-3xl font-bold mb-1">#1</span>
+                  <span className="text-[10px] font-sans font-bold tracking-widest text-white/70 uppercase px-4 leading-tight">Trusted Brand</span>
                 </div>
-             </div>
+              </div>
           </div>
         </motion.div>
 
@@ -181,7 +185,7 @@ export default function CustomerReviews() {
                   </p>
                 </div>
                 <div>
-                  <span className="inline-block bg-[#0f172a] text-white text-[9px] font-bold tracking-wider px-3 py-1.5 rounded-full uppercase">
+                  <span className="inline-block bg-primary text-white text-[9px] font-bold tracking-wider px-3 py-1.5 rounded-full uppercase">
                     {review.tag}
                   </span>
                 </div>

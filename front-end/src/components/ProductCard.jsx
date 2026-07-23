@@ -117,8 +117,8 @@ export default function ProductCard({ id, title, subtitle, price, image, rating 
               }}
               className={`flex-1 font-bold py-2 px-3 text-[12px] md:text-[13px] tracking-wide transition-all duration-300 flex items-center justify-center gap-1 rounded-md cursor-pointer ${
                 quantityInCart > 0 
-                  ? 'bg-green-600 text-white hover:bg-green-700' 
-                  : 'bg-[#0f172a] text-white hover:bg-[#1e293b]'
+                  ? 'bg-accent-dark text-white cursor-not-allowed'
+                  : 'bg-primary text-white hover:bg-primary-light'
               }`}
             >
               {quantityInCart > 0 ? (

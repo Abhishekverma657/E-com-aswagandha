@@ -64,7 +64,7 @@ export default function BlogSection() {
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6 bg-[#f8fafc] relative overflow-hidden">
+    <section className="py-24 px-4 sm:px-6 bg-secondary relative overflow-hidden">
       <div className="max-w-[1300px] mx-auto">
         
         {/* Header */}
@@ -79,12 +79,12 @@ export default function BlogSection() {
               <strong className="font-sans font-bold">better health decisions</strong>
             </h2>
           </div>
-          <div className="mt-8 md:mt-0">
+          <div className="mt-8 text-center md:hidden">
             <Link 
-              to="/blogs" 
-              className="inline-block bg-[#0f172a] hover:bg-[#1e293b] text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
+              to="/blog" 
+              className="inline-block bg-primary hover:bg-primary-light text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
             >
-              Explore All Blogs
+              VIEW ALL ARTICLES
             </Link>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default function BlogSection() {
               <button 
                 key={idx} 
                 onClick={() => setCurrentIndex(idx)}
-                className={`rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-2.5 h-2.5 bg-[#0f172a] scale-110' : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'}`}
+                className={`rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-2.5 h-2.5 bg-primary scale-110' : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'}`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}

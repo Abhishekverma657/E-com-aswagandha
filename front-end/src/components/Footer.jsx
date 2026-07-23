@@ -183,11 +183,13 @@ export default function Footer() {
 
       </div>
 
-      {/* Massive Brand Banner at very bottom */}
-      <div ref={bannerRef} className="bg-[#1e293b] w-full py-12 md:py-16 flex items-center justify-center overflow-hidden perspective-1000">
-        <h1 className={`text-white text-3xl sm:text-5xl md:text-6xl lg:text-[5.5vw] font-sans font-bold tracking-[0.15em] md:tracking-[0.25em] uppercase text-center leading-tight px-4 w-full ${isVisible ? 'animate-come-from-behind' : 'opacity-0'}`}>
-          Towards A Better You
-        </h1>
+      {/* Scrolling Text Banner */}
+      <div ref={bannerRef} className="bg-primary w-full py-12 md:py-16 flex items-center justify-center overflow-hidden perspective-1000">
+        <div className="max-w-[1400px] mx-auto w-full relative h-[60px] md:h-[80px]">
+          <h1 className={`text-white text-3xl sm:text-5xl md:text-6xl lg:text-[5.5vw] font-sans font-bold tracking-[0.15em] md:tracking-[0.25em] uppercase text-center leading-tight px-4 w-full ${isVisible ? 'animate-come-from-behind' : 'opacity-0'}`}>
+            Towards A Better You
+          </h1>
+        </div>
       </div>
     </footer>
     </>

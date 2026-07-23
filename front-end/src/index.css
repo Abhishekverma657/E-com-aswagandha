@@ -4,12 +4,29 @@
   --color-primary: #20331f;
   --color-primary-light: #2f5f38;
   --color-primary-dark: #132012;
-  --color-secondary: #fbfaf4;
+  --color-secondary: #F8F3E6;
   --color-accent: #d8b06c;
   --color-accent-dark: #b9823b;
   --color-accent-light: #f7f0df;
   --color-dark: #20331f;
   --color-danger: #B32626;
+
+  /* Map standard dark grays to our primary green for a cohesive theme */
+  --color-gray-900: var(--color-primary);
+  --color-slate-900: var(--color-primary);
+  --color-slate-800: var(--color-primary-light);
+  
+  /* Map black to primary-dark */
+  --color-black: var(--color-primary-dark);
+
+  /* Map blue shades to theme colors to eliminate blue */
+  --color-blue-50: var(--color-secondary);
+  --color-blue-100: var(--color-secondary);
+  --color-blue-200: var(--color-accent-light);
+  --color-blue-500: var(--color-primary);
+  --color-blue-600: var(--color-primary);
+  --color-blue-700: var(--color-primary-light);
+  --color-blue-800: var(--color-primary-dark);
 
   --font-sans: 'Cabin', sans-serif;
   --font-serif: 'Bodoni Moda', serif;

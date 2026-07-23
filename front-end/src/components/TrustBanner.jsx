@@ -10,8 +10,8 @@ export default function TrustBanner() {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 bg-white relative">
-      <div className="max-w-[1200px] mx-auto bg-gradient-to-br from-[#1e293b] to-[#334155] rounded-xl overflow-hidden shadow-2xl py-16 px-6 md:px-12 text-center">
+    <section className="py-24 px-4 sm:px-6">
+      <div className="max-w-[1200px] mx-auto bg-gradient-to-br from-primary-light to-primary rounded-xl overflow-hidden shadow-2xl py-16 px-6 md:px-12 text-center">
         
         <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-sans tracking-tight mb-4">
           <span className="font-light">This is How</span> <strong className="font-bold">Supplements Should Be</strong>
@@ -41,8 +41,8 @@ export default function TrustBanner() {
           <p className="text-white/80 font-sans font-light mb-6">
             We'll help you figure it out
           </p>
-          <button className="bg-white hover:bg-gray-100 text-[#1e293b] font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors shadow-lg">
-            Consult a Nutritionist
+          <button className="bg-white hover:bg-secondary text-primary font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors shadow-lg">
+            VIEW LAB REPORTS
           </button>
         </div>
 

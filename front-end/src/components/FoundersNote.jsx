@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { Star, Leaf } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function FoundersNote() {
@@ -47,9 +47,9 @@ export default function FoundersNote() {
           </div>
 
           {/* Highlight Box */}
-          <div className="bg-gray-100 rounded-md p-6 flex items-start gap-5">
-            <div className="w-12 h-12 bg-[#1e293b] rounded flex items-center justify-center flex-shrink-0">
-              <Star className="w-5 h-5 text-white fill-white" />
+          <div className="flex items-start gap-4 mt-8">
+            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+              <Leaf className="w-5 h-5 text-accent" />
             </div>
             <p className="text-gray-700 text-[15px] leading-relaxed font-sans font-light mt-1">
               Supporting you in becoming a better version of yourself, in ways that feel <strong className="font-bold text-gray-900">simple, consistent, and real.</strong>
@@ -59,9 +59,9 @@ export default function FoundersNote() {
           <div className="pt-4">
             <Link 
               to="/about" 
-              className="inline-block bg-[#0f172a] hover:bg-[#1e293b] text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
+              className="inline-block bg-primary hover:bg-primary-light text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
             >
-              Our Story
+              READ OUR STORY
             </Link>
           </div>
         </div>

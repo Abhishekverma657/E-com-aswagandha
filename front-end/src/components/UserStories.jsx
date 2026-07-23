@@ -73,12 +73,12 @@ export default function UserStories() {
               <span className="font-sans font-light text-gray-400">hear it from others</span>
             </h2>
           </div>
-          <div className="mt-6 md:mt-0">
+          <div className="mt-12 text-center md:hidden">
             <Link 
-              to="/stories" 
-              className="inline-block bg-[#0f172a] hover:bg-[#1e293b] text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
+              to="/reviews" 
+              className="inline-block bg-primary hover:bg-primary-light text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
             >
-              See More Stories
+              VIEW ALL STORIES
             </Link>
           </div>
         </div>
@@ -139,11 +139,11 @@ export default function UserStories() {
                       </div>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button className="bg-[#1e293b] text-white text-[10px] font-bold uppercase py-2.5 rounded hover:bg-black transition-colors">
+                  <div className="flex gap-2">
+                    <button className="bg-primary text-white text-[10px] font-bold uppercase py-2.5 rounded hover:bg-primary-light transition-colors" style={{ flex: 2 }}>
                       Add to Cart
                     </button>
-                    <button className="bg-[#1e293b] text-white text-[10px] font-bold uppercase py-2.5 rounded hover:bg-black transition-colors">
+                    <button className="bg-primary text-white text-[10px] font-bold uppercase py-2.5 rounded hover:bg-primary-light transition-colors" style={{ flex: 1 }}>
                       Buy Now
                     </button>
                   </div>

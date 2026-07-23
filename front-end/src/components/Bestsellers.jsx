@@ -77,12 +77,12 @@ export default function Bestsellers() {
               <strong className="font-sans font-bold">customers</strong> <span className="font-sans font-light text-gray-500">begin</span>
             </h2>
           </div>
-          <div className="mt-6 md:mt-0">
+          <div className="mt-12 text-center md:hidden">
             <Link 
               to="/shop" 
-              className="inline-block bg-[#0f172a] hover:bg-[#1e293b] text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
+              className="inline-block bg-primary hover:bg-primary-light text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
             >
-              View All Bestsellers
+              VIEW ALL PRODUCTS
             </Link>
           </div>
         </motion.div>
