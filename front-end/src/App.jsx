@@ -17,7 +17,9 @@ import Wishlist from './pages/Wishlist';
 import OrdersList from './pages/OrdersList';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
-
+import Blogs from './pages/Blogs';
+import TrackOrder from './pages/TrackOrder';
+import Authenticate from './pages/Authenticate';
 function App() {
   return (
     <CartProvider>
@@ -40,6 +42,9 @@ function App() {
             <Route path="/orders" element={<OrdersList />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/track-order" element={<TrackOrder />} />
+            <Route path="/authenticate" element={<Authenticate />} />
           </Routes>
         </main>
         <Footer />

@@ -27,15 +27,15 @@ const saveBase64Image = (base64Data, originalName) => {
 
     const ext = matches[1];
     const dataBuffer = Buffer.from(matches[2], 'base64');
-    
+
     // Create a safe, unique filename
     const sanitizedName = originalName.replace(/[^a-zA-Z0-9.-]/g, '_');
     const filename = `upload_${Date.now()}_${sanitizedName}`;
-    
+
     // Save path inside front-end/public
     const publicPath = path.join(__dirname, '../front-end/public', filename);
     fs.writeFileSync(publicPath, dataBuffer);
-    
+
     console.log(`Image saved successfully to ${publicPath}`);
     return `/${filename}`;
   } catch (error) {
@@ -54,7 +54,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'nagouri_premium_secret_key_123!';
 connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors(
+
+));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
@@ -442,13 +444,13 @@ app.put('/api/admin/products/:id', auth, admin, async (req, res) => {
     if (title !== undefined) product.title = title;
     if (price !== undefined) product.price = parseFloat(price);
     if (originalPrice !== undefined) product.originalPrice = parseFloat(originalPrice);
-    
+
     if (imageFile && imageName) {
       product.image = saveBase64Image(imageFile, imageName);
     } else if (image !== undefined) {
       product.image = image;
     }
-    
+
     if (category !== undefined) product.category = category;
     if (description !== undefined) product.description = description;
     if (benefits !== undefined) product.benefits = benefits;

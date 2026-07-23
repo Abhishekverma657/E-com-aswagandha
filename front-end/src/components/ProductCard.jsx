@@ -1,9 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Star, Check } from 'lucide-react';
+import { ShoppingBag, Star, Check, Truck, ChevronDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
-export default function ProductCard({ id, title, price, image, rating = 4.9, reviewCount = 124, originalPrice }) {
+export default function ProductCard({ id, title, subtitle, price, image, rating = 4.7, reviewCount = 300, originalPrice, categoryTag, badge }) {
   const { addToCart, cartItems } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -11,18 +11,21 @@ export default function ProductCard({ id, title, price, image, rating = 4.9, rev
   const cartItem = cartItems.find(item => item.id === id);
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
-  // Calculate a mock original price if not provided, to show a realistic premium discount
+  // Calculate a mock original price if not provided
   const displayOriginalPrice = originalPrice || Math.round(price * 1.4);
-  const discountPercent = Math.round(((displayOriginalPrice - price) / displayOriginalPrice) * 100);
   const savingsAmount = displayOriginalPrice - price;
+  
+  // Dummy data based on Rasayanam screenshot if not provided
+  const displaySubtitle = subtitle || "Clinically proven dosage for stress relief, strength & recovery";
+  const displayTag = categoryTag || "STRESS RELIEF";
 
   return (
-    <div className="group flex flex-col bg-white border border-primary/5 rounded-sm overflow-hidden shadow-[0_4px_20px_rgba(12,60,38,0.03)] hover:shadow-[0_10px_30px_rgba(12,60,38,0.08)] hover:border-accent/30 transition-all duration-500 text-left">
+    <div className="group flex flex-col bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 text-left relative">
       
       {/* Product Image Area */}
       <Link 
         to={`/product/${id}`} 
-        className="w-full relative overflow-hidden aspect-[4/5] bg-secondary/20 flex items-center justify-center border-b border-primary/5"
+        className="w-full relative overflow-hidden aspect-[4/3] sm:aspect-[4/5] bg-gray-50 flex items-center justify-center"
       >
         {image ? (
           <img 
@@ -32,88 +35,109 @@ export default function ProductCard({ id, title, price, image, rating = 4.9, rev
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full bg-secondary/50 flex items-center justify-center text-primary/30">
+          <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-300">
             <ShoppingBag className="w-12 h-12 stroke-[1]" />
           </div>
         )}
 
-        {/* Sale & Category Badges */}
-        <span className="absolute top-4 left-4 bg-accent text-primary text-[10px] font-bold py-1 px-2.5 uppercase tracking-wider rounded-xs shadow-sm">
-          -{discountPercent}% OFF
-        </span>
+        {/* Top-Left Badge (e.g. BEST SELLER) */}
+        {badge && (
+          <span className="absolute top-3 left-3 bg-white/20 backdrop-blur-md border border-white/40 text-white text-[10px] font-bold py-1 px-3 uppercase tracking-wider rounded-full shadow-sm z-10">
+            {badge}
+          </span>
+        )}
 
-        {/* Quick View Hover Overlay */}
-        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end justify-center pb-6">
-          <button className="bg-secondary text-primary hover:bg-accent hover:text-primary font-bold py-3 px-6 uppercase text-[11px] tracking-widest transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg border border-primary/5">
-            Quick View
-          </button>
-        </div>
+        {/* Category Tag Overlay (Bottom Left) */}
+        <span className="absolute bottom-3 left-3 bg-[#111827] text-white text-[9px] md:text-[10px] font-bold py-1 px-3 uppercase tracking-wider rounded-md shadow-md z-10">
+          {displayTag}
+        </span>
       </Link>
 
       {/* Product Details Area */}
-      <div className="p-5 flex-grow flex flex-col justify-between">
-        <div className="space-y-2">
-          {/* Reviews Star Ribbon */}
-          <div className="flex items-center gap-1">
-            <div className="flex text-accent">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-current stroke-current" />
-              ))}
-            </div>
-            <span className="text-[11px] text-dark/65 font-medium ml-1">
-              {rating} ({reviewCount})
-            </span>
-          </div>
-
+      <div className="p-4 md:p-5 flex-grow flex flex-col justify-between">
+        <div className="space-y-1.5">
           {/* Title */}
           <Link to={`/product/${id}`} className="block">
-            <h3 className="font-serif text-base text-primary font-bold hover:text-accent transition-colors duration-300 leading-snug line-clamp-2 min-h-[44px]">
+            <h3 className="font-sans text-[15px] md:text-[16px] text-gray-900 font-bold hover:text-accent transition-colors duration-300 leading-tight">
               {title}
             </h3>
           </Link>
+          
+          {/* Subtitle */}
+          <p className="text-[12px] md:text-[13px] text-gray-500 font-sans font-light leading-snug line-clamp-2">
+            {displaySubtitle}
+          </p>
+
+          {/* Reviews Star Ribbon */}
+          <div className="flex items-center gap-1 pt-2">
+            <div className="flex text-[#65a30d]">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(rating) ? 'fill-current' : 'fill-transparent'} stroke-current`} />
+              ))}
+            </div>
+            <span className="text-[12px] text-gray-900 font-bold ml-1">{rating}</span>
+            <span className="text-[12px] text-gray-500 font-sans ml-1">{reviewCount} ratings</span>
+          </div>
         </div>
 
-        {/* Prices & Action Button */}
-        <div>
-          <div className="mt-4 pt-3 border-t border-primary/5 flex items-center justify-between">
-            <div className="flex flex-wrap items-baseline gap-1.5">
-              <span className="text-primary font-bold text-base">₹{price.toLocaleString('en-IN')}</span>
-              <span className="text-dark/45 line-through text-xs font-light">₹{displayOriginalPrice.toLocaleString('en-IN')}</span>
-              <span className="text-[10px] text-accent font-semibold ml-0.5">
-                (₹{savingsAmount.toLocaleString('en-IN')} OFF)
-              </span>
+        {/* Prices & Action Row */}
+        <div className="mt-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-baseline gap-2">
+              <span className="text-gray-900 font-bold text-xl md:text-2xl">₹{price.toLocaleString('en-IN')}</span>
+              <span className="text-gray-400 line-through text-sm">₹{displayOriginalPrice.toLocaleString('en-IN')}</span>
             </div>
+            {/* Discount Tag */}
+            <span className="bg-[#f0fdf4] text-[#166534] font-bold text-[11px] px-2 py-1 rounded-sm">
+              ₹{savingsAmount.toLocaleString('en-IN')} OFF
+            </span>
           </div>
 
-          {/* Delivery Coordinates */}
-          <div className="mt-2.5 flex items-center gap-1.5 text-[10px] text-dark/50 font-sans font-light">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent/80"></span>
-            <span>Delivery in 3-4 days • COD Available</span>
+          {/* Delivery Info */}
+          <div className="mt-3 flex items-center gap-1.5 text-[11px] md:text-[12px] text-gray-600 font-sans">
+            <Truck className="w-4 h-4 text-gray-700" />
+            <span>Estimated Delivery in 2-3 Days</span>
           </div>
 
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (!user) {
-                navigate('/login');
-                return;
-              }
-              addToCart({ id, title, price, image }, 1);
-            }}
-            className={`mt-3.5 w-full font-bold py-3.5 px-4 text-xs uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-2 border shadow-xs rounded-xs cursor-pointer ${
-              quantityInCart > 0 
-                ? 'bg-accent/15 border-accent text-accent hover:bg-accent hover:text-primary' 
-                : 'bg-primary border-primary text-secondary hover:bg-accent hover:border-accent hover:text-primary'
-            }`}
-          >
-            {quantityInCart > 0 ? (
-              <Check className="w-4.5 h-4.5 stroke-[2.5]" />
-            ) : (
-              <ShoppingBag className="w-4.5 h-4.5 stroke-[1.5]" />
-            )}
-            <span>{quantityInCart > 0 ? `In Cart (${quantityInCart})` : 'Add to Cart'}</span>
-          </button>
+          {/* Action Buttons Row */}
+          <div className="mt-4 flex gap-2 w-full">
+            <button className="flex-1 flex items-center justify-between border border-gray-300 rounded-md px-3 py-2 text-[12px] md:text-[13px] font-sans font-medium text-gray-800 hover:border-gray-400 transition-colors bg-white">
+              Pack of 2
+              <ChevronDown className="w-4 h-4 text-gray-500" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!user) {
+                  navigate('/login');
+                  return;
+                }
+                addToCart({ id, title, price, image }, 1);
+              }}
+              className={`flex-1 font-bold py-2 px-3 text-[12px] md:text-[13px] tracking-wide transition-all duration-300 flex items-center justify-center gap-1 rounded-md cursor-pointer ${
+                quantityInCart > 0 
+                  ? 'bg-green-600 text-white hover:bg-green-700' 
+                  : 'bg-[#0f172a] text-white hover:bg-[#1e293b]'
+              }`}
+            >
+              {quantityInCart > 0 ? (
+                <>
+                  <Check className="w-4 h-4" /> Added
+                </>
+              ) : (
+                <>
+                  <span className="text-lg leading-none mb-0.5">+</span> ADD
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Bottom Tags */}
+          <div className="mt-3 flex justify-between items-center text-[10px] md:text-[11px] font-sans font-bold">
+            <span className="text-[#65a30d]">+₹70 OFF on Prepaid</span>
+            <span className="text-gray-400 font-normal">COD Available</span>
+          </div>
         </div>
       </div>
     </div>

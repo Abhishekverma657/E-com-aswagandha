@@ -28,7 +28,7 @@ export default function Animated3DBackground() {
           '--delay': `${Math.random() * -20}s`,
           animation: 'float-dust var(--dur) infinite linear',
           animationDelay: 'var(--delay)',
-          backgroundColor: '#D4AF37',
+          backgroundColor: 'var(--color-accent)',
           filter: 'blur(1px)',
           borderRadius: '50%',
           opacity: 0.3,

@@ -83,7 +83,7 @@ export default function OrderConfirmation() {
       <div className="max-w-4xl mx-auto px-6">
         {/* Success Header Card */}
         <div className="bg-white p-8 md:p-12 border border-primary/5 rounded-sm shadow-md text-center mb-10 space-y-6 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(#C5A880_1px,transparent_1px)] [background-size:24px_24px] opacity-5"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(var(--color-accent)_1px,transparent_1px)] [background-size:24px_24px] opacity-5"></div>
           
           <div className="w-20 h-20 bg-accent/15 rounded-full flex items-center justify-center mx-auto animate-scale-in">
             <CheckCircle2 className="w-12 h-12 text-accent stroke-[1.5]" />
