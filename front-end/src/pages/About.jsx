@@ -45,7 +45,7 @@ export default function About() {
           >
             <div className="w-12 h-[1px] bg-accent"></div>
             <h2 className="text-4xl md:text-5xl font-serif text-primary leading-tight">
-              The Genesis of <br className="hidden md:block" /><span className="italic font-light">Nagouri</span>
+              The Genesis of <br className="hidden md:block" /><span className="italic font-light">Nagori</span>
             </h2>
             <p className="text-lg text-dark/80 leading-relaxed font-light">
               What started as a humble pursuit to harness the true power of Ayurveda has blossomed into a movement for transparent, uncompromising wellness. We realized that modern supplements lacked the soul and purity of ancient practices.

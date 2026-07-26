@@ -20,7 +20,7 @@ export default function FoundersNote() {
             </h4>
             <div className="w-full h-px bg-gray-200 my-2"></div>
             <p className="font-sans font-light text-gray-500 text-[11px] uppercase tracking-wide">
-              Founder & CEO, Nagouri
+              Founder & CEO, Nagori
             </p>
           </div>
         </div>
@@ -40,7 +40,7 @@ export default function FoundersNote() {
               {/* Optional: large quote mark watermark */}
               <span className="absolute -left-6 md:-left-8 text-5xl text-gray-200 top-[-10px] font-serif">“</span>
               <p className="text-gray-700 font-sans font-light leading-relaxed text-base md:text-lg relative z-10">
-                I started Nagouri Ayurveda after realising how hard it is to trust supplements. Labels looked convincing, but I was never sure what was actually inside or if it would actually help. So we built things differently - using clinically studied ingredients in the right forms & doses. Something you can take daily without doubt, and see real progress over time.
+                I started Nagori Ayurveda after realising how hard it is to trust supplements. Labels looked convincing, but I was never sure what was actually inside or if it would actually help. So we built things differently - using clinically studied ingredients in the right forms & doses. Something you can take daily without doubt, and see real progress over time.
               </p>
               <span className="text-5xl text-gray-200 font-serif absolute -bottom-6 right-0 leading-none">”</span>
             </div>

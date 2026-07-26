@@ -30,7 +30,7 @@ export default function TheDifference() {
               <strong className="font-sans font-bold">Choose Us</strong>
             </h2>
             <p className="text-gray-600 font-sans font-light leading-relaxed max-w-md text-[15px]">
-              <strong className="font-bold text-gray-900">10 lakh+ customers</strong> have made Nagouri Ayurveda part of their lifestyle - not because of big claims, but because it simply works for them, day after day.
+              <strong className="font-bold text-gray-900">10 lakh+ customers</strong> have made Nagori Ayurveda part of their lifestyle - not because of big claims, but because it simply works for them, day after day.
             </p>
           </motion.div>
 
@@ -92,7 +92,7 @@ export default function TheDifference() {
           />
           {/* Product overlay simulation like in screenshot */}
           <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-40 h-48 md:w-48 md:h-56 bg-secondary p-2 rounded shadow-2xl overflow-hidden flex flex-col justify-end pb-4 border border-gray-100">
-             <img src="https://images.unsplash.com/photo-1596541223130-5d31a73fb6c6?q=80&w=400&auto=format&fit=crop" alt="Nagouri Ashwagandha" className="w-full h-full object-cover rounded" />
+             <img src="https://images.unsplash.com/photo-1596541223130-5d31a73fb6c6?q=80&w=400&auto=format&fit=crop" alt="Nagori Ashwagandha" className="w-full h-full object-cover rounded" />
           </div>
         </motion.div>
 

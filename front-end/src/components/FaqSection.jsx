@@ -10,11 +10,11 @@ export default function FaqSection() {
 
   const questions = [
     { id: 1, q: "Do I Need Supplements If I Eat A Normal Diet?", a: "While a balanced diet is ideal, our modern food sources often lack essential trace minerals. Supplements help bridge that gap, especially for targeted needs like stress management or high-performance recovery." },
-    { id: 2, q: "What Makes Nagouri Different From Others?", a: "Nagouri focuses on standardized extracts, ensuring you get clinically effective doses of active compounds like withanolides in Ashwagandha, unlike mass-market raw powders." },
+    { id: 2, q: "What Makes Nagori Different From Others?", a: "Nagori focuses on standardized extracts, ensuring you get clinically effective doses of active compounds like withanolides in Ashwagandha, unlike mass-market raw powders." },
     { id: 3, q: "How Do I Know Which Supplement Is Right For Me?", a: "It depends on your goals. For stress and sleep, Ashwagandha KSM-66 is ideal. For energy and stamina, Testoboost or Shilajit is recommended." },
     { id: 4, q: "Do Your Supplements Contain Artificial Colors, Flavors Or Preservatives?", a: "No, our supplements are 100% vegetarian and free from unnecessary additives, fillers, or artificial preservatives." },
-    { id: 5, q: "Do I Need A Doctor's Prescription To Use Nagouri Supplements?", a: "No prescription is required as these are dietary supplements, but we always recommend consulting a physician if you have existing health conditions." },
-    { id: 6, q: "Are Nagouri Supplements Approved By Any Authority?", a: "Yes, our products are Ayush Department licensed and rigorously tested in NABL-accredited laboratories." }
+    { id: 5, q: "Do I Need A Doctor's Prescription To Use Nagori Supplements?", a: "No prescription is required as these are dietary supplements, but we always recommend consulting a physician if you have existing health conditions." },
+    { id: 6, q: "Are Nagori Supplements Approved By Any Authority?", a: "Yes, our products are Ayush Department licensed and rigorously tested in NABL-accredited laboratories." }
   ];
 
   return (
@@ -88,7 +88,7 @@ export default function FaqSection() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-bold font-sans text-sm">Nagouri Support</h4>
+                  <h4 className="font-bold font-sans text-sm">Nagori Support</h4>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className="w-2 h-2 bg-[#22c55e] rounded-full"></span>
                     <span className="text-white/70 text-[11px] font-sans font-light">Online - Typically replies instantly</span>
@@ -115,7 +115,7 @@ export default function FaqSection() {
                 </div>
                 <div>
                   <div className="bg-secondary rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
-                    <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagouri</span>
+                    <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagori</span>
                     <p className="text-gray-800 text-sm font-sans font-light leading-relaxed">
                       Hey 👋 Tap a question, and the answer will appear below 👇
                     </p>
@@ -134,7 +134,7 @@ export default function FaqSection() {
                   </div>
                   <div>
                     <div className="bg-secondary rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
-                      <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagouri</span>
+                      <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagori</span>
                       <p className="text-gray-800 text-sm font-sans font-medium mb-2 border-b border-gray-100 pb-2">
                         {selectedQuestion.q}
                       </p>

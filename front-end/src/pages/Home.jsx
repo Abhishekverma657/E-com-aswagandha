@@ -19,12 +19,12 @@ export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const heroSlides = [
+    // {
+    //   id: 1,
+    //   image: Slider2
+    // },
     {
       id: 1,
-      image: Slider2
-    },
-    {
-      id: 2,
       image: Slider1
     }
   ];
@@ -100,7 +100,7 @@ export default function Home() {
       </section>
 
       {/* 2.5 CLARITY TYPOGRAPHY SECTION */}
-      <section className="py-20 md:py-32 px-6 bg-secondary relative text-center flex flex-col items-center justify-center">
+      <section className="py-20 md:py-15 px-6 bg-secondary relative text-center flex flex-col items-center justify-center">
         <div className="max-w-4xl mx-auto space-y-8">
           
           {/* Main Headline */}
@@ -126,7 +126,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg md:text-xl text-gray-700 font-sans font-light max-w-3xl mx-auto leading-relaxed pt-6"
           >
-            Too many choices. Too many promises. Not enough clarity. That's why we built <strong className="font-bold text-gray-900">Nagouri Ayurveda</strong> — to keep <strong className="font-bold text-gray-900">supplements transparent, decisions easier.</strong>
+            Too many choices. Too many promises. Not enough clarity. That's why we built <strong className="font-bold text-gray-900">Nagori Ayurveda</strong> — to keep <strong className="font-bold text-gray-900">supplements transparent, decisions easier.</strong>
           </motion.p>
 
           {/* Divider with text */}
@@ -157,7 +157,7 @@ export default function Home() {
       </section>
 
       {/* 3. PRODUCT TABS SECTION */}
-      <section className="py-24 px-6 bg-secondary relative">
+      <section className="py-10 px-6 bg-secondary relative">
         <div className="max-w-7xl mx-auto">
           <ProductTabs />
           

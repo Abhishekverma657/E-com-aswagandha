@@ -22,7 +22,7 @@ export default function Cart() {
         <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6 text-primary">Your Cart is Empty</h1>
         <div className="w-16 h-[2px] bg-accent mx-auto mb-6"></div>
         <p className="text-dark/65 font-light mb-10 max-w-md font-sans text-base">
-          Unlock your body's natural balance. Explore our farm-direct Nagouri Ashwagandha and Himalayan Shilajit catalog to start your wellness journey.
+          Unlock your body's natural balance. Explore our farm-direct Nagori Ashwagandha and Himalayan Shilajit catalog to start your wellness journey.
         </p>
         <Link 
           to="/shop" 

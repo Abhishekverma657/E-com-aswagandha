@@ -57,7 +57,7 @@ export default function Footer() {
           {/* Brand & Socials */}
           <div>
             <Link to="/" className="block mb-6">
-              <h2 className="font-serif text-3xl font-bold tracking-widest text-gray-900 leading-none">NAGOURI<sup className="text-sm font-sans">®</sup></h2>
+              <h2 className="font-serif text-3xl font-bold tracking-widest text-gray-900 leading-none">nagori<sup className="text-sm font-sans">®</sup></h2>
               <span className="font-sans font-light tracking-[0.2em] text-[10px] text-gray-500 uppercase mt-1 block">NATURE'S BEST</span>
             </Link>
             
@@ -178,7 +178,7 @@ export default function Footer() {
 
         {/* Footer Bottom */}
         <div className="py-8 border-t border-[#e6e2d6] text-center font-sans font-light text-[12px] text-gray-500">
-          <p>© {new Date().getFullYear()} Nagouri Pure Ayurveda. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Nagori Pure Ayurveda. All rights reserved.</p>
         </div>
 
       </div>

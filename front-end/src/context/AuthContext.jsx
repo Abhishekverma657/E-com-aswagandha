@@ -4,7 +4,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(() => localStorage.getItem('nagouri_token'));
+  const [token, setToken] = useState(() => localStorage.getItem('nagori_token'));
   const [loading, setLoading] = useState(true);
 
   // Validate token and fetch user on load
@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Failed to login');
 
-    localStorage.setItem('nagouri_token', data.token);
+    localStorage.setItem('nagori_token', data.token);
     setToken(data.token);
     setUser(data.user);
     return data.user;
@@ -60,14 +60,14 @@ export function AuthProvider({ children }) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Failed to sign up');
 
-    localStorage.setItem('nagouri_token', data.token);
+    localStorage.setItem('nagori_token', data.token);
     setToken(data.token);
     setUser(data.user);
     return data.user;
   };
 
   const logout = () => {
-    localStorage.removeItem('nagouri_token');
+    localStorage.removeItem('nagori_token');
     setToken(null);
     setUser(null);
   };
