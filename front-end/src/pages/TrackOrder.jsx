@@ -9,7 +9,7 @@ export default function TrackOrder() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-xl w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+        className="max-w-xl w-full bg-secondary rounded-xl shadow-sm border border-gray-100 overflow-hidden"
       >
         <div className="bg-primary py-8 px-8 text-center text-white">
           <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2">Track Your Order</h1>

@@ -124,7 +124,7 @@ export default function Shop() {
   ];
 
   return (
-    <div className="bg-white min-h-screen pt-24 pb-20">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-20">
       
       {/* Hero Banner Section */}
       <div className="w-full relative bg-[#050505] min-h-[300px] md:min-h-[400px] flex items-center overflow-hidden">
@@ -175,7 +175,7 @@ export default function Shop() {
               className={`flex items-center gap-1.5 px-5 py-2 rounded-full border text-[13px] font-sans transition-all duration-300 ${
                 activeCategory === cat.name 
                 ? 'bg-[#1a232c] text-white border-[#1a232c]' 
-                : 'bg-white text-gray-700 border-gray-600 hover:border-gray-900'
+                : 'bg-secondary text-gray-700 border-gray-600 hover:border-gray-900'
               }`}
             >
               <span className="font-medium">{cat.name}</span>
@@ -187,7 +187,7 @@ export default function Shop() {
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 gap-y-10">
           {products.map((product) => (
-            <div key={product.id} className="group border border-gray-100 bg-white hover:shadow-xl transition-shadow duration-300 flex flex-col h-full rounded-sm overflow-hidden">
+            <div key={product.id} className="group border border-gray-100 bg-secondary hover:shadow-xl transition-shadow duration-300 flex flex-col h-full rounded-sm overflow-hidden">
               
               {/* Image */}
               <Link to={`/product/${product.id}`} className="relative aspect-[4/5] bg-[#f5f5f5] w-full block overflow-hidden">
@@ -240,7 +240,7 @@ export default function Shop() {
 
                   {/* Add to Cart Controls */}
                   <div className="flex h-11 border border-gray-200 rounded-sm overflow-hidden mb-2">
-                    <button className="flex-1 bg-white text-gray-700 font-sans text-sm font-medium flex items-center justify-between px-3 hover:bg-gray-50 transition-colors">
+                    <button className="flex-1 bg-secondary text-gray-700 font-sans text-sm font-medium flex items-center justify-between px-3 hover:bg-gray-50 transition-colors">
                       Pack of 2 <ChevronDown className="w-4 h-4 text-gray-400" />
                     </button>
                     <div className="w-[1px] bg-gray-200"></div>

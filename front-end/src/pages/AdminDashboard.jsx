@@ -252,8 +252,8 @@ export default function AdminDashboard() {
   // Guard for Non-Admin access
   if (!isAuthorized) {
     return (
-      <div className="bg-secondary min-h-screen pt-24 pb-20 flex items-center justify-center px-6 text-left">
-        <div className="max-w-md w-full bg-white p-8 md:p-10 border border-primary/5 rounded-sm shadow-md text-center space-y-6">
+      <div className="bg-secondary min-h-screen pt-[184px] pb-20 flex items-center justify-center px-6 text-left">
+        <div className="max-w-md w-full bg-secondary p-8 md:p-10 border border-primary/5 rounded-sm shadow-md text-center space-y-6">
           <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto">
             <AlertTriangle className="w-8 h-8" />
           </div>
@@ -274,7 +274,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="bg-secondary min-h-screen pt-28 pb-24 text-left font-sans text-sm text-primary">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-24 text-left font-sans text-sm text-primary">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header Section */}
@@ -296,7 +296,7 @@ export default function AdminDashboard() {
 
         {/* Analytics Dashboard Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <div className="bg-white p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
+          <div className="bg-secondary p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
             <div className="p-3.5 bg-accent/15 rounded-full text-accent">
               <TrendingUp className="w-6 h-6" />
             </div>
@@ -305,7 +305,7 @@ export default function AdminDashboard() {
               <span className="text-xl font-bold font-serif">₹{metrics.totalSales.toLocaleString('en-IN')}</span>
             </div>
           </div>
-          <div className="bg-white p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
+          <div className="bg-secondary p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
             <div className="p-3.5 bg-accent/15 rounded-full text-accent">
               <Clipboard className="w-6 h-6" />
             </div>
@@ -314,7 +314,7 @@ export default function AdminDashboard() {
               <span className="text-xl font-bold font-serif">{metrics.totalOrders}</span>
             </div>
           </div>
-          <div className="bg-white p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
+          <div className="bg-secondary p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
             <div className="p-3.5 bg-yellow-50 text-yellow-600 rounded-full">
               <Clock className="w-6 h-6" />
             </div>
@@ -323,7 +323,7 @@ export default function AdminDashboard() {
               <span className="text-xl font-bold font-serif">{metrics.pendingOrders}</span>
             </div>
           </div>
-          <div className="bg-white p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
+          <div className="bg-secondary p-6 border border-primary/5 rounded-sm shadow-xs flex items-center gap-4">
             <div className="p-3.5 bg-green-50 text-green-600 rounded-full">
               <Package className="w-6 h-6" />
             </div>
@@ -365,7 +365,7 @@ export default function AdminDashboard() {
         {activeTab === 'inventory' && (
           <div className="space-y-8 animate-fade-in">
             {editingProduct && (
-              <div className="bg-white p-8 border border-accent/20 rounded-sm shadow-md space-y-6">
+              <div className="bg-secondary p-8 border border-accent/20 rounded-sm shadow-md space-y-6">
                 <div className="flex justify-between items-center border-b border-primary/5 pb-4">
                   <h3 className="font-serif text-2xl font-bold text-primary">
                     {editingProduct === 'new' ? 'Create New Formulation' : 'Modify Formulation'}
@@ -384,7 +384,7 @@ export default function AdminDashboard() {
                         value={productForm.title}
                         onChange={(e) => setProductForm(prev => ({ ...prev, title: e.target.value }))}
                         placeholder="e.g. Pure Himalayan Shilajit Gold Resin"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                         required 
                       />
                     </div>
@@ -393,7 +393,7 @@ export default function AdminDashboard() {
                       <select 
                         value={productForm.category}
                         onChange={(e) => setProductForm(prev => ({ ...prev, category: e.target.value }))}
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs"
+                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs"
                       >
                         <option value="Ashwagandha">Ashwagandha</option>
                         <option value="Shilajit">Shilajit</option>
@@ -412,7 +412,7 @@ export default function AdminDashboard() {
                         value={productForm.price}
                         onChange={(e) => setProductForm(prev => ({ ...prev, price: e.target.value }))}
                         placeholder="799"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                         required 
                       />
                     </div>
@@ -423,7 +423,7 @@ export default function AdminDashboard() {
                         value={productForm.originalPrice}
                         onChange={(e) => setProductForm(prev => ({ ...prev, originalPrice: e.target.value }))}
                         placeholder="1199"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                       />
                     </div>
                     <div className="space-y-2">
@@ -446,7 +446,7 @@ export default function AdminDashboard() {
                             value={productForm.image}
                             onChange={(e) => setProductForm(prev => ({ ...prev, image: e.target.value }))}
                             placeholder="/nagori-ashwagandha.png"
-                            className="w-full border border-primary/10 bg-secondary/15 p-2 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs text-[10px]" 
+                            className="w-full border border-primary/10 bg-secondary/15 p-2 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs text-[10px]" 
                           />
                         </div>
                         {productForm.imageName && (
@@ -463,7 +463,7 @@ export default function AdminDashboard() {
                       value={productForm.benefitsInput}
                       onChange={(e) => setProductForm(prev => ({ ...prev, benefitsInput: e.target.value }))}
                       placeholder="Lowers Cortisol, Supports sleep, Boosts stamina"
-                      className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                      className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     />
                   </div>
 
@@ -474,7 +474,7 @@ export default function AdminDashboard() {
                       onChange={(e) => setProductForm(prev => ({ ...prev, description: e.target.value }))}
                       placeholder="Detailed sourcing explanation and benefits of this formulation..."
                       rows="4"
-                      className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs resize-none" 
+                      className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
                       required 
                     />
                   </div>
@@ -487,7 +487,7 @@ export default function AdminDashboard() {
                         onChange={(e) => setProductForm(prev => ({ ...prev, ingredients: e.target.value }))}
                         placeholder="100% pure standardized Withanolides..."
                         rows="2"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs resize-none" 
+                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
                       />
                     </div>
                     <div className="space-y-2">
@@ -497,7 +497,7 @@ export default function AdminDashboard() {
                         onChange={(e) => setProductForm(prev => ({ ...prev, usage: e.target.value }))}
                         placeholder="Take 1 capsule twice daily..."
                         rows="2"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs resize-none" 
+                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
                       />
                     </div>
                     <div className="space-y-2">
@@ -507,7 +507,7 @@ export default function AdminDashboard() {
                         onChange={(e) => setProductForm(prev => ({ ...prev, sourcing: e.target.value }))}
                         placeholder="Directly harvested from dry soils of Nagaur, Rajasthan..."
                         rows="2"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs resize-none" 
+                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
                       />
                     </div>
                   </div>
@@ -524,7 +524,7 @@ export default function AdminDashboard() {
                     <button 
                       type="button" 
                       onClick={closeProductForm}
-                      className="bg-white border border-primary/10 hover:border-accent text-primary font-bold py-3.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-xs cursor-pointer"
+                      className="bg-secondary border border-primary/10 hover:border-accent text-primary font-bold py-3.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-xs cursor-pointer"
                     >
                       Cancel
                     </button>
@@ -534,12 +534,12 @@ export default function AdminDashboard() {
             )}
 
             {loadingProducts ? (
-              <div className="text-center py-20 bg-white border border-primary/5 rounded-sm">
+              <div className="text-center py-20 bg-secondary border border-primary/5 rounded-sm">
                 <Loader2 className="w-8 h-8 text-accent animate-spin mx-auto mb-2" />
                 <span className="text-xs uppercase font-bold text-dark/50">Fetching catalog...</span>
               </div>
             ) : (
-              <div className="bg-white border border-primary/5 rounded-sm shadow-md overflow-hidden">
+              <div className="bg-secondary border border-primary/5 rounded-sm shadow-md overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left border-collapse">
                     <thead>
@@ -599,16 +599,16 @@ export default function AdminDashboard() {
         {activeTab === 'orders' && (
           <div className="animate-fade-in space-y-6">
             {loadingOrders ? (
-              <div className="text-center py-20 bg-white border border-primary/5 rounded-sm">
+              <div className="text-center py-20 bg-secondary border border-primary/5 rounded-sm">
                 <Loader2 className="w-8 h-8 text-accent animate-spin mx-auto mb-2" />
                 <span className="text-xs uppercase font-bold text-dark/50">Fetching orders...</span>
               </div>
             ) : orders.length === 0 ? (
-              <div className="bg-white p-12 text-center border border-primary/5 rounded-sm shadow-md">
+              <div className="bg-secondary p-12 text-center border border-primary/5 rounded-sm shadow-md">
                 <p className="text-dark/50 font-light mb-2">No customer orders recorded in the system.</p>
               </div>
             ) : (
-              <div className="bg-white border border-primary/5 rounded-sm shadow-md overflow-hidden">
+              <div className="bg-secondary border border-primary/5 rounded-sm shadow-md overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left border-collapse">
                     <thead>

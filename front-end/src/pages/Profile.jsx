@@ -147,7 +147,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-secondary min-h-screen pt-28 pb-24 text-left font-sans">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-24 text-left font-sans">
       <div className="max-w-5xl mx-auto px-6">
         {/* Back Link */}
         <Link to="/shop" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-primary/60 hover:text-accent font-bold mb-8 transition-colors">
@@ -164,7 +164,7 @@ export default function Profile() {
               className={`flex items-center gap-3 px-5 py-4 text-xs font-bold uppercase tracking-widest border transition-all rounded-xs text-left cursor-pointer ${
                 activeTab === 'details'
                   ? 'bg-primary text-secondary border-primary shadow-md'
-                  : 'bg-white text-primary border-primary/10 hover:border-accent'
+                  : 'bg-secondary text-primary border-primary/10 hover:border-accent'
               }`}
             >
               <User className="w-4 h-4" />
@@ -175,7 +175,7 @@ export default function Profile() {
               className={`flex items-center gap-3 px-5 py-4 text-xs font-bold uppercase tracking-widest border transition-all rounded-xs text-left cursor-pointer ${
                 activeTab === 'addresses'
                   ? 'bg-primary text-secondary border-primary shadow-md'
-                  : 'bg-white text-primary border-primary/10 hover:border-accent'
+                  : 'bg-secondary text-primary border-primary/10 hover:border-accent'
               }`}
             >
               <MapPin className="w-4 h-4" />
@@ -183,7 +183,7 @@ export default function Profile() {
             </button>
             <Link
               to="/orders"
-              className="flex items-center gap-3 px-5 py-4 text-xs font-bold uppercase tracking-widest border bg-white text-primary border-primary/10 hover:border-accent rounded-xs"
+              className="flex items-center gap-3 px-5 py-4 text-xs font-bold uppercase tracking-widest border bg-secondary text-primary border-primary/10 hover:border-accent rounded-xs"
             >
               <ShieldCheck className="w-4 h-4 text-accent" />
               <span>Order History</span>
@@ -195,7 +195,7 @@ export default function Profile() {
             
             {/* TAB: PROFILE DETAILS */}
             {activeTab === 'details' && (
-              <div className="bg-white p-8 border border-primary/5 rounded-sm shadow-md space-y-6">
+              <div className="bg-secondary p-8 border border-primary/5 rounded-sm shadow-md space-y-6">
                 <div className="border-b border-primary/5 pb-4">
                   <h2 className="font-serif text-2xl font-bold text-primary">Edit Profile</h2>
                   <p className="text-dark/50 text-xs mt-1">Keep your credentials up to date for fast checkout support.</p>
@@ -215,7 +215,7 @@ export default function Profile() {
                         type="text" 
                         value={profileForm.name}
                         onChange={(e) => setProfileForm(prev => ({ ...prev, name: e.target.value }))}
-                        className="w-full border border-primary/10 bg-secondary/15 px-4 py-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                        className="w-full border border-primary/10 bg-secondary/15 px-4 py-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                         required 
                       />
                     </div>
@@ -225,7 +225,7 @@ export default function Profile() {
                         type="email" 
                         value={profileForm.email}
                         onChange={(e) => setProfileForm(prev => ({ ...prev, email: e.target.value }))}
-                        className="w-full border border-primary/10 bg-secondary/15 px-4 py-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary/70 font-medium rounded-xs cursor-not-allowed bg-secondary/5" 
+                        className="w-full border border-primary/10 bg-secondary/15 px-4 py-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary/70 font-medium rounded-xs cursor-not-allowed bg-secondary/5" 
                         disabled 
                         title="Email cannot be changed"
                       />
@@ -249,7 +249,7 @@ export default function Profile() {
               <div className="space-y-6">
                 
                 {/* Header card with Add Address option */}
-                <div className="bg-white p-6 border border-primary/5 rounded-sm shadow-md flex justify-between items-center">
+                <div className="bg-secondary p-6 border border-primary/5 rounded-sm shadow-md flex justify-between items-center">
                   <div>
                     <h2 className="font-serif text-2xl font-bold text-primary">Saved Addresses</h2>
                     <p className="text-dark/50 text-xs mt-1">Manage multiple addresses for family shipments.</p>
@@ -267,7 +267,7 @@ export default function Profile() {
 
                 {/* Add/Edit address inline form panel */}
                 {editingAddress && (
-                  <div className="bg-white p-8 border border-accent/20 rounded-sm shadow-md space-y-6 animate-fade-in">
+                  <div className="bg-secondary p-8 border border-accent/20 rounded-sm shadow-md space-y-6 animate-fade-in">
                     <div className="flex justify-between items-center border-b border-primary/5 pb-4">
                       <h3 className="font-serif text-xl font-bold text-primary">
                         {editingAddress === 'new' ? 'Add Shipping Address' : 'Edit Shipping Address'}
@@ -291,7 +291,7 @@ export default function Profile() {
                             type="text" 
                             value={addressForm.firstName}
                             onChange={(e) => setAddressForm(prev => ({ ...prev, firstName: e.target.value }))}
-                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                             required 
                           />
                         </div>
@@ -301,7 +301,7 @@ export default function Profile() {
                             type="text" 
                             value={addressForm.lastName}
                             onChange={(e) => setAddressForm(prev => ({ ...prev, lastName: e.target.value }))}
-                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                             required 
                           />
                         </div>
@@ -314,7 +314,7 @@ export default function Profile() {
                           value={addressForm.address}
                           onChange={(e) => setAddressForm(prev => ({ ...prev, address: e.target.value }))}
                           placeholder="House No, Apartment, Street Name"
-                          className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                          className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                           required 
                         />
                       </div>
@@ -326,7 +326,7 @@ export default function Profile() {
                             type="text" 
                             value={addressForm.city}
                             onChange={(e) => setAddressForm(prev => ({ ...prev, city: e.target.value }))}
-                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                             required 
                           />
                         </div>
@@ -336,7 +336,7 @@ export default function Profile() {
                             type="text" 
                             value={addressForm.state}
                             onChange={(e) => setAddressForm(prev => ({ ...prev, state: e.target.value }))}
-                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                             required 
                           />
                         </div>
@@ -346,7 +346,7 @@ export default function Profile() {
                             type="text" 
                             value={addressForm.zipCode}
                             onChange={(e) => setAddressForm(prev => ({ ...prev, zipCode: e.target.value }))}
-                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                             required 
                           />
                         </div>
@@ -360,7 +360,7 @@ export default function Profile() {
                             value={addressForm.phone}
                             onChange={(e) => setAddressForm(prev => ({ ...prev, phone: e.target.value }))}
                             placeholder="10-digit number"
-                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                            className="w-full border border-primary/10 bg-secondary/10 px-4 py-3 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                             required 
                           />
                         </div>
@@ -389,7 +389,7 @@ export default function Profile() {
                         <button 
                           type="button" 
                           onClick={closeAddressForm}
-                          className="bg-white border border-primary/10 hover:border-accent text-primary font-bold py-3.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-xs cursor-pointer"
+                          className="bg-secondary border border-primary/10 hover:border-accent text-primary font-bold py-3.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-xs cursor-pointer"
                         >
                           Cancel
                         </button>
@@ -400,7 +400,7 @@ export default function Profile() {
 
                 {/* Grid list of addresses */}
                 {addresses.length === 0 ? (
-                  <div className="bg-white p-12 text-center border border-primary/5 rounded-sm shadow-md font-sans">
+                  <div className="bg-secondary p-12 text-center border border-primary/5 rounded-sm shadow-md font-sans">
                     <p className="text-dark/65 font-light text-sm mb-4">No shipping addresses saved yet.</p>
                   </div>
                 ) : (
@@ -408,7 +408,7 @@ export default function Profile() {
                     {addresses.map((addr) => (
                       <div 
                         key={addr._id} 
-                        className={`bg-white p-6 border rounded-sm shadow-xs flex flex-col justify-between space-y-4 transition-all hover:shadow-md ${
+                        className={`bg-secondary p-6 border rounded-sm shadow-xs flex flex-col justify-between space-y-4 transition-all hover:shadow-md ${
                           addr.isDefault ? 'border-accent ring-1 ring-accent/20' : 'border-primary/5'
                         }`}
                       >

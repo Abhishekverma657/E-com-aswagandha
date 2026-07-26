@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import logoImage from '../assets/logo.png';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,18 +35,40 @@ export default function Navbar() {
       className="fixed top-0 left-0 w-full z-[100] flex flex-col"
     >
       {/* TIER 1: Top Black Announcement Bar */}
-      <div className="bg-primary text-white text-center py-1.5 px-4 text-[11px] md:text-[13px] font-sans flex flex-col items-center justify-center relative z-20">
-        <span className="font-bold tracking-wide">Premium Nagouri Ashwagandha, now GI-Tagged</span>
-        <span className="font-light tracking-wide text-gray-300 mt-0.5">Order today, Get it Tomorrow.</span>
+      <div className="bg-[#0a110a] text-white text-center py-2 px-4 text-[12px] md:text-[14px] font-sans flex flex-col items-center justify-center relative z-20 overflow-hidden">
+        
+        {/* Particle Animation Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(40)].map((_, i) => (
+            <div 
+              key={i} 
+              className="particle" 
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDuration: `${Math.random() * 5 + 3}s`,
+                animationDelay: `-${Math.random() * 5}s`,
+                opacity: Math.random() * 0.7 + 0.3,
+                transform: `scale(${Math.random() * 0.6 + 0.4})`
+              }}
+            ></div>
+          ))}
+        </div>
+
+        {/* Text Content */}
+        <div className="relative z-10 flex flex-col items-center">
+          <span className="font-bold tracking-wide border-b border-white pb-0.5 mb-1 inline-block">Ashwagandha KSM-66, now at 600 mg</span>
+          <span className="font-medium tracking-wide text-gray-200 text-[11px] md:text-[12px]">Order today, Get it Tomorrow.</span>
+        </div>
       </div>
 
       {/* TIER 2: Main Navbar */}
       <nav 
-        className={`w-full transition-all duration-300 bg-white relative z-20 ${
+        className={`w-full transition-all duration-300 bg-secondary relative z-20 ${
           scrolled ? 'shadow-md border-b border-gray-200' : 'border-b border-gray-100'
         }`}
       >
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between px-4 md:px-8 py-3 md:py-4">
+        <div className="w-full mx-auto flex items-center justify-between px-4 md:px-6 xl:px-8 py-3 md:py-4">
           
           {/* Mobile Menu Button */}
           <button 
@@ -61,166 +84,19 @@ export default function Navbar() {
             to="/" 
             className="flex flex-col items-center justify-center text-center lg:min-w-[150px] mr-4"
           >
-            {/* SVG Mountain/Sun placeholder for logo matching the screenshot vibe */}
-            <svg width="40" height="24" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="mb-1">
-              <path d="M50 5 L35 30 L65 30 Z" fill="#20331f"/>
-              <path d="M30 15 L15 30 L45 30 Z" fill="#2f5f38"/>
-              <path d="M70 15 L55 30 L85 30 Z" fill="#2f5f38"/>
-              <circle cx="50" cy="15" r="8" fill="#d8b06c" opacity="0.6" className="animate-pulse-subtle"/>
-            </svg>
-            <span className="font-serif text-lg md:text-xl font-bold text-gray-900 tracking-wider leading-none uppercase">Nagouri</span>
-            <span className="font-sans text-[8px] md:text-[9px] text-gray-500 tracking-[0.2em] uppercase mt-1">Nature's Best</span>
+            <img src={logoImage} alt="Nagori Logo" className="h-10 md:h-12 object-contain mb-1" />
           </Link>
 
           {/* Desktop Navigation (Center) */}
           <div className="hidden lg:flex flex-1 justify-center space-x-6 xl:space-x-8 items-center font-sans text-[13px] font-semibold text-gray-800 h-full">
             
-            {/* SHOP Dropdown (Mega Menu) */}
-            <div className="group h-full flex items-center py-2 cursor-pointer" key={`shop-${location.pathname}`}>
-              <Link to="/shop" className="flex items-center gap-1 hover:text-accent transition-colors">
-                SHOP
-                <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
-              </Link>
-              
-              {/* Mega Menu Container */}
-              <div className="absolute top-[100%] left-0 w-full bg-white border-t border-gray-100 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 translate-y-2 group-hover:translate-y-0">
-                <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 flex gap-8">
-                  
-                  {/* Column 1: Daily Essentials */}
-                  <div className="flex-1">
-                    <h3 className="font-sans font-bold text-[13px] text-gray-900 uppercase tracking-wide mb-6 flex items-center justify-between border-b border-gray-100 pb-2">
-                      DAILY ESSENTIALS <span className="text-gray-400 font-normal">→</span>
-                    </h3>
-                    <div className="space-y-6">
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Magnesium" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Magnesium Glycinate - From USA</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Highly absorbable magnesium for sleep & recovery</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.22</span>
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Omega 3" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Plant-Based Omega-3 - The...</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Vegan Omega-3 Without Fishy Burps</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.23</span>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Column 2: Men's Health */}
-                  <div className="flex-1">
-                    <h3 className="font-sans font-bold text-[13px] text-gray-900 uppercase tracking-wide mb-6 flex items-center justify-between border-b border-gray-100 pb-2">
-                      MEN'S HEALTH <span className="text-gray-400 font-normal">→</span>
-                    </h3>
-                    <div className="space-y-6">
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1577401239170-897942555fb3?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Testoboost" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Testoboost - Lift Harder, Last...</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Supports strength, stamina & sexual performance</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.69</span>
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Multivitamin" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Multivitamin Tablets for Men</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Complete daily nutrition for energy, immunity & performance</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-white border border-gray-300 text-gray-800 text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">NEW & BETTER 🔥</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.25</span>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Column 3: Women's Health */}
-                  <div className="flex-1">
-                    <h3 className="font-sans font-bold text-[13px] text-gray-900 uppercase tracking-wide mb-6 flex items-center justify-between border-b border-gray-100 pb-2">
-                      WOMEN'S HEALTH <span className="text-gray-400 font-normal">→</span>
-                    </h3>
-                    <div className="space-y-6">
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Women Multi" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Multivitamin for Women</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Daily 360° nutrition for energy, hormones & overall wellness</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-white border border-gray-300 text-gray-800 text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">NEW LAUNCH 🔥</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.55</span>
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1608248593842-83b38c234a92?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Saffron" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Kashmiri Mongra Saffron/Kesar...</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Only the best A+ certified mongra kesar with the finest flavor</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.80</span>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Column 4: Targeted Support */}
-                  <div className="flex-1">
-                    <h3 className="font-sans font-bold text-[13px] text-gray-900 uppercase tracking-wide mb-6 flex items-center justify-between border-b border-gray-100 pb-2">
-                      TARGETED SUPPORT <span className="text-gray-400 font-normal">→</span>
-                    </h3>
-                    <div className="space-y-6">
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Liver Detox" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Liver Detox - 360° Liver Support</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Supports liver health & function</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-white border border-gray-300 text-gray-800 text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">NEW LAUNCH 🔥</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.60</span>
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to="/shop" className="flex gap-4 group/item">
-                        <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=150&auto=format&fit=crop" className="w-[72px] h-[72px] object-cover rounded bg-gray-100" alt="Curcumin" />
-                        <div>
-                          <p className="font-sans font-bold text-[13px] text-gray-900 group-hover/item:text-accent transition-colors line-clamp-1">Curcumin - Triple Power</p>
-                          <p className="font-sans text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">High-strength curcumin for joint comfort & inflammation</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="bg-accent-dark text-white text-[9px] font-bold px-2 py-0.5 rounded-sm tracking-wider uppercase">BEST SELLER ★</span>
-                            <span className="bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold px-1.5 py-0.5 rounded-sm">★ 4.91</span>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
             {/* ALL PRODUCTS Dropdown */}
             <div className="group h-full flex items-center py-2 cursor-pointer relative" key={`products-${location.pathname}`}>
               <span className="flex items-center gap-1 hover:text-accent transition-colors">
                 ALL PRODUCTS
                 <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
               </span>
-              <div className="absolute top-[100%] left-0 w-48 bg-white border border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2 translate-y-2 group-hover:translate-y-0">
+              <div className="absolute top-[100%] left-0 w-48 bg-secondary border border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2 translate-y-2 group-hover:translate-y-0">
                 <ul className="flex flex-col space-y-0">
                   <li><Link to="/shop" className="block px-5 py-2 hover:bg-gray-50 hover:text-accent transition-colors text-sm font-medium text-gray-700">Browse All</Link></li>
                   <li><Link to="/shop?category=immunity" className="block px-5 py-2 hover:bg-gray-50 hover:text-accent transition-colors text-sm font-medium text-gray-700">Immunity</Link></li>
@@ -228,10 +104,6 @@ export default function Navbar() {
                 </ul>
               </div>
             </div>
-
-            <Link to="/build-box" className="hover:text-accent transition-colors py-2 uppercase">
-              BUILD YOUR OWN BOX
-            </Link>
 
             <Link to="/blogs" className="hover:text-accent transition-colors py-2 uppercase">
               BLOGS
@@ -243,7 +115,7 @@ export default function Navbar() {
                 VERIFY ORDER
                 <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
               </span>
-              <div className="absolute top-[100%] left-0 w-[220px] bg-white border border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-1 rounded-b-md translate-y-2 group-hover:translate-y-0">
+              <div className="absolute top-[100%] left-0 w-[220px] bg-secondary border border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-1 rounded-b-md translate-y-2 group-hover:translate-y-0">
                 <ul className="flex flex-col space-y-0">
                   <li><Link to="/track-order" className="block px-5 py-3 hover:bg-gray-50 hover:text-accent transition-colors text-[13px] font-medium text-gray-700 border-b border-gray-50">Track Your Order</Link></li>
                   <li><Link to="/authenticate" className="block px-5 py-3 hover:bg-gray-50 hover:text-accent transition-colors text-[13px] font-medium text-gray-700">Authenticate Your Product</Link></li>
@@ -289,7 +161,7 @@ export default function Navbar() {
               </button>
 
               {user && (
-                <div className="absolute right-0 top-[100%] mt-2 w-48 bg-white border border-gray-100 shadow-xl rounded-md py-2 z-50 font-sans text-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-left">
+                <div className="absolute right-0 top-[100%] mt-2 w-48 bg-secondary border border-gray-100 shadow-xl rounded-md py-2 z-50 font-sans text-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-left">
                   <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50 mb-1 rounded-t-md">
                     <span className="text-[10px] text-gray-500 block font-bold uppercase tracking-wider">Signed in as</span>
                     <span className="font-serif font-bold text-gray-900 block truncate mt-0.5">{user.name}</span>
@@ -335,18 +207,14 @@ export default function Navbar() {
 
         {/* Mobile Menu Drawer */}
         <div 
-          className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-gray-100 flex flex-col overflow-hidden transition-all duration-300 ease-in-out z-40 ${
+          className={`lg:hidden absolute top-full left-0 w-full bg-secondary shadow-2xl border-t border-gray-100 flex flex-col overflow-hidden transition-all duration-300 ease-in-out z-40 ${
             isMenuOpen ? 'max-h-screen py-4 opacity-100' : 'max-h-0 py-0 opacity-0 pointer-events-none'
           }`}
         >
           <div className="w-full px-6 flex flex-col space-y-1 font-sans text-sm font-semibold tracking-wide text-gray-800">
              <Link to="/shop" className="w-full py-4 border-b border-gray-100 flex justify-between items-center">
-               SHOP <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90" />
-             </Link>
-             <Link to="/shop" className="w-full py-4 border-b border-gray-100 flex justify-between items-center">
                ALL PRODUCTS <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90" />
              </Link>
-             <Link to="/build-box" className="w-full py-4 border-b border-gray-100">BUILD YOUR OWN BOX</Link>
              <Link to="/blogs" className="w-full py-4 border-b border-gray-100">BLOGS</Link>
              <Link to="/track-order" className="w-full py-4 border-b border-gray-100 flex justify-between items-center">
                VERIFY ORDER <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90" />

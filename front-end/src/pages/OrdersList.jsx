@@ -59,7 +59,7 @@ export default function OrdersList() {
 
   if (loading) {
     return (
-      <div className="bg-secondary min-h-screen pt-24 pb-20 flex flex-col items-center justify-center">
+      <div className="bg-secondary min-h-screen pt-[184px] pb-20 flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 text-accent animate-spin mb-4" />
         <p className="text-xs font-sans font-medium text-primary/60 uppercase tracking-widest">Loading Order History...</p>
       </div>
@@ -67,7 +67,7 @@ export default function OrdersList() {
   }
 
   return (
-    <div className="bg-secondary min-h-screen pt-28 pb-24 text-left">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-24 text-left">
       <div className="max-w-4xl mx-auto px-6">
         {/* Back Link */}
         <Link to="/shop" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-primary/60 hover:text-accent font-bold mb-8 transition-colors">
@@ -83,7 +83,7 @@ export default function OrdersList() {
         )}
 
         {orders.length === 0 ? (
-          <div className="bg-white p-12 md:p-20 text-center border border-primary/5 rounded-sm shadow-md max-w-xl mx-auto space-y-6">
+          <div className="bg-secondary p-12 md:p-20 text-center border border-primary/5 rounded-sm shadow-md max-w-xl mx-auto space-y-6">
             <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
               <ClipboardList className="w-8 h-8 text-accent stroke-[1.5]" />
             </div>
@@ -104,7 +104,7 @@ export default function OrdersList() {
               const currentStep = getStatusStep(order.status);
               
               return (
-                <div key={order.orderId} className="bg-white border border-primary/5 rounded-sm shadow-md overflow-hidden font-sans">
+                <div key={order.orderId} className="bg-secondary border border-primary/5 rounded-sm shadow-md overflow-hidden font-sans">
                   
                   {/* Order Top Bar Header */}
                   <div className="bg-secondary/45 px-6 py-4 border-b border-primary/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
@@ -158,7 +158,7 @@ export default function OrdersList() {
 
                       {/* Step 1: Confirmed */}
                       <div className="z-10 flex flex-col items-center gap-2">
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 1 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/40'}`}>
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 1 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/40'}`}>
                           <Check className="w-4 h-4 stroke-[2.5]" />
                         </div>
                         <span className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 1 ? 'text-primary' : 'text-primary/40'}`}>Confirmed</span>
@@ -166,7 +166,7 @@ export default function OrdersList() {
 
                       {/* Step 2: Processing */}
                       <div className="z-10 flex flex-col items-center gap-2">
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 2 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/40'}`}>
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 2 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/40'}`}>
                           <Clock className="w-4 h-4 stroke-[2.5]" />
                         </div>
                         <span className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 2 ? 'text-primary' : 'text-primary/40'}`}>Processing</span>
@@ -174,7 +174,7 @@ export default function OrdersList() {
 
                       {/* Step 3: Shipped */}
                       <div className="z-10 flex flex-col items-center gap-2">
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 3 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/40'}`}>
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 3 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/40'}`}>
                           <Truck className="w-4 h-4 stroke-[2.5]" />
                         </div>
                         <span className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 3 ? 'text-primary' : 'text-primary/40'}`}>Shipped</span>
@@ -182,7 +182,7 @@ export default function OrdersList() {
 
                       {/* Step 4: Delivered */}
                       <div className="z-10 flex flex-col items-center gap-2">
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 4 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/40'}`}>
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${currentStep >= 4 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/40'}`}>
                           <Package className="w-4 h-4 stroke-[2.5]" />
                         </div>
                         <span className={`text-[10px] font-bold uppercase tracking-wider ${currentStep >= 4 ? 'text-primary' : 'text-primary/40'}`}>Delivered</span>

@@ -96,7 +96,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="bg-secondary min-h-screen pt-28 pb-24 text-left">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-24 text-left">
       <div className="max-w-7xl mx-auto px-6">
         {/* Back Link */}
         <Link to="/cart" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-primary/60 hover:text-accent font-bold mb-8 transition-colors">
@@ -107,7 +107,7 @@ export default function Checkout() {
 
         <div className="flex flex-col lg:flex-row gap-16">
           {/* Checkout Form */}
-          <div className="w-full lg:w-2/3 bg-white p-8 md:p-10 border border-primary/5 rounded-sm shadow-md">
+          <div className="w-full lg:w-2/3 bg-secondary p-8 md:p-10 border border-primary/5 rounded-sm shadow-md">
             <h2 className="font-serif text-2xl font-bold text-primary border-b border-primary/5 pb-4 mb-6 tracking-wide">Shipping Address</h2>
 
             {user && user.addresses && user.addresses.length > 0 && (
@@ -131,7 +131,7 @@ export default function Checkout() {
                           paymentMethod: formData.paymentMethod
                         });
                       }}
-                      className="bg-white p-4 border border-primary/10 hover:border-accent transition-all text-left text-xs rounded-xs font-sans space-y-1.5 cursor-pointer shadow-xs hover:shadow-md"
+                      className="bg-secondary p-4 border border-primary/10 hover:border-accent transition-all text-left text-xs rounded-xs font-sans space-y-1.5 cursor-pointer shadow-xs hover:shadow-md"
                     >
                       <div className="font-bold text-primary flex justify-between">
                         <span>{addr.firstName} {addr.lastName}</span>
@@ -161,7 +161,7 @@ export default function Checkout() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     required 
                   />
                 </div>
@@ -172,7 +172,7 @@ export default function Checkout() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     required 
                   />
                 </div>
@@ -186,7 +186,7 @@ export default function Checkout() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     required 
                   />
                 </div>
@@ -198,7 +198,7 @@ export default function Checkout() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="e.g. +91 98765 43210"
-                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     required 
                   />
                 </div>
@@ -212,7 +212,7 @@ export default function Checkout() {
                   value={formData.address}
                   onChange={handleInputChange}
                   placeholder="Street name, apartment, unit, etc."
-                  className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                  className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                   required 
                 />
               </div>
@@ -225,7 +225,7 @@ export default function Checkout() {
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     required 
                   />
                 </div>
@@ -236,7 +236,7 @@ export default function Checkout() {
                     name="state"
                     value={formData.state}
                     onChange={handleInputChange}
-                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     required 
                   />
                 </div>
@@ -247,7 +247,7 @@ export default function Checkout() {
                     name="zipCode"
                     value={formData.zipCode}
                     onChange={handleInputChange}
-                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                    className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                     required 
                   />
                 </div>
@@ -301,16 +301,16 @@ export default function Checkout() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <label className="text-[10px] font-bold text-primary/70 uppercase">Card Number</label>
-                      <input type="text" placeholder="xxxx xxxx xxxx xxxx" className="w-full border border-primary/10 bg-white p-2.5 outline-none rounded-xs" disabled />
+                      <input type="text" placeholder="xxxx xxxx xxxx xxxx" className="w-full border border-primary/10 bg-secondary p-2.5 outline-none rounded-xs" disabled />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
                         <label className="text-[10px] font-bold text-primary/70 uppercase">Expiry Date</label>
-                        <input type="text" placeholder="MM/YY" className="w-full border border-primary/10 bg-white p-2.5 outline-none rounded-xs" disabled />
+                        <input type="text" placeholder="MM/YY" className="w-full border border-primary/10 bg-secondary p-2.5 outline-none rounded-xs" disabled />
                       </div>
                       <div className="space-y-1">
                         <label className="text-[10px] font-bold text-primary/70 uppercase">CVV</label>
-                        <input type="password" placeholder="***" className="w-full border border-primary/10 bg-white p-2.5 outline-none rounded-xs" disabled />
+                        <input type="password" placeholder="***" className="w-full border border-primary/10 bg-secondary p-2.5 outline-none rounded-xs" disabled />
                       </div>
                     </div>
                   </div>
@@ -331,7 +331,7 @@ export default function Checkout() {
 
           {/* Sidebar Order Summary */}
           <div className="w-full lg:w-1/3">
-            <div className="bg-white p-8 border border-primary/5 shadow-md rounded-sm sticky top-36 space-y-6 text-left">
+            <div className="bg-secondary p-8 border border-primary/5 shadow-md rounded-sm sticky top-36 space-y-6 text-left">
               <h2 className="font-serif text-2xl font-bold text-primary border-b border-primary/5 pb-4 tracking-wide">Items Summary</h2>
               
               <div className="max-h-[300px] overflow-y-auto pr-2 space-y-5">

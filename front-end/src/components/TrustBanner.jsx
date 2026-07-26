@@ -24,7 +24,7 @@ export default function TrustBanner() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-4 mb-16">
           {features.map((feature, idx) => (
             <div key={idx} className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center shadow-inner backdrop-blur-sm">
+              <div className="w-16 h-16 rounded-full bg-secondary/10 border border-white/20 flex items-center justify-center shadow-inner backdrop-blur-sm">
                 {feature.icon}
               </div>
               <h4 className="text-white font-sans text-sm font-medium max-w-[120px]">
@@ -41,7 +41,7 @@ export default function TrustBanner() {
           <p className="text-white/80 font-sans font-light mb-6">
             We'll help you figure it out
           </p>
-          <button className="bg-white hover:bg-secondary text-primary font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors shadow-lg">
+          <button className="bg-secondary hover:bg-secondary text-primary font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors shadow-lg">
             VIEW LAB REPORTS
           </button>
         </div>

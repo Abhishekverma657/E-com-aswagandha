@@ -100,7 +100,7 @@ export default function BlogSection() {
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.9, x: -20 }}
                 transition={{ duration: 0.4 }}
-                className={`bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex-col group cursor-pointer ${idx === 1 ? 'hidden md:flex' : idx === 2 ? 'hidden lg:flex' : 'flex'}`}
+                className={`bg-secondary rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100 flex-col group cursor-pointer ${idx === 1 ? 'hidden md:flex' : idx === 2 ? 'hidden lg:flex' : 'flex'}`}
               >
                 
                 {/* Image Box */}
@@ -141,7 +141,7 @@ export default function BlogSection() {
 
         {/* Carousel Navigation */}
         <div className="flex justify-center items-center gap-4 mt-12">
-          <button onClick={handlePrev} className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-50 shadow-sm transition-all">
+          <button onClick={handlePrev} className="w-10 h-10 rounded-full bg-secondary border border-gray-200 flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-50 shadow-sm transition-all">
             <ChevronLeft className="w-4 h-4" />
           </button>
           
@@ -156,7 +156,7 @@ export default function BlogSection() {
             ))}
           </div>
 
-          <button onClick={handleNext} className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-50 shadow-sm transition-all">
+          <button onClick={handleNext} className="w-10 h-10 rounded-full bg-secondary border border-gray-200 flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-50 shadow-sm transition-all">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>

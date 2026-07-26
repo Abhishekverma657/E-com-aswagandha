@@ -38,7 +38,7 @@ export default function TheDifference() {
             
             {/* Box 1 */}
             <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-primary rounded-md p-6 flex items-start gap-5 shadow-lg">
-              <div className="bg-white/10 p-3 rounded-full flex-shrink-0">
+              <div className="bg-secondary/10 p-3 rounded-full flex-shrink-0">
                 <CheckCircle2 className="w-6 h-6 text-accent" />
               </div>
               <div>
@@ -51,7 +51,7 @@ export default function TheDifference() {
 
             {/* Box 2 */}
             <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-primary rounded-md p-6 flex items-start gap-5 shadow-lg">
-              <div className="bg-white/10 p-3 rounded-full flex-shrink-0">
+              <div className="bg-secondary/10 p-3 rounded-full flex-shrink-0">
                 <HeartHandshake className="w-6 h-6 text-accent" />
               </div>
               <div>
@@ -64,7 +64,7 @@ export default function TheDifference() {
 
             {/* Box 3 */}
             <motion.div variants={{ hidden: { opacity: 0, x: -30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } }} className="bg-primary rounded-md p-6 flex items-start gap-5 shadow-lg">
-              <div className="bg-white/10 p-3 rounded-full flex-shrink-0">
+              <div className="bg-secondary/10 p-3 rounded-full flex-shrink-0">
                 <Leaf className="w-6 h-6 text-accent" />
               </div>
               <div>
@@ -91,7 +91,7 @@ export default function TheDifference() {
             className="absolute inset-0 w-full h-full object-cover object-left-top"
           />
           {/* Product overlay simulation like in screenshot */}
-          <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-40 h-48 md:w-48 md:h-56 bg-white p-2 rounded shadow-2xl overflow-hidden flex flex-col justify-end pb-4 border border-gray-100">
+          <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 w-40 h-48 md:w-48 md:h-56 bg-secondary p-2 rounded shadow-2xl overflow-hidden flex flex-col justify-end pb-4 border border-gray-100">
              <img src="https://images.unsplash.com/photo-1596541223130-5d31a73fb6c6?q=80&w=400&auto=format&fit=crop" alt="Nagouri Ashwagandha" className="w-full h-full object-cover rounded" />
           </div>
         </motion.div>

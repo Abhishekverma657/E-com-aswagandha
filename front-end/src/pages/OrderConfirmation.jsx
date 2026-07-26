@@ -51,7 +51,7 @@ export default function OrderConfirmation() {
 
   if (loading) {
     return (
-      <div className="bg-secondary min-h-screen pt-24 pb-20 flex flex-col items-center justify-center">
+      <div className="bg-secondary min-h-screen pt-[184px] pb-20 flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 text-accent animate-spin mb-4" />
         <p className="text-xs font-sans font-medium text-primary/60 uppercase tracking-widest">Retrieving Order Details...</p>
       </div>
@@ -79,10 +79,10 @@ export default function OrderConfirmation() {
   const currentStep = getStatusStep(order.status);
 
   return (
-    <div className="bg-secondary min-h-screen pt-28 pb-24 text-left">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-24 text-left">
       <div className="max-w-4xl mx-auto px-6">
         {/* Success Header Card */}
-        <div className="bg-white p-8 md:p-12 border border-primary/5 rounded-sm shadow-md text-center mb-10 space-y-6 relative overflow-hidden">
+        <div className="bg-secondary p-8 md:p-12 border border-primary/5 rounded-sm shadow-md text-center mb-10 space-y-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(var(--color-accent)_1px,transparent_1px)] [background-size:24px_24px] opacity-5"></div>
           
           <div className="w-20 h-20 bg-accent/15 rounded-full flex items-center justify-center mx-auto animate-scale-in">
@@ -107,7 +107,7 @@ export default function OrderConfirmation() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
           
           {/* Left Column: Shipment & Delivery Info */}
-          <div className="bg-white p-8 border border-primary/5 rounded-sm shadow-md space-y-6 flex flex-col justify-between">
+          <div className="bg-secondary p-8 border border-primary/5 rounded-sm shadow-md space-y-6 flex flex-col justify-between">
             <div>
               <h3 className="font-serif text-xl font-bold text-primary border-b border-primary/5 pb-3.5 tracking-wide flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-accent" /> Delivery Status
@@ -152,28 +152,28 @@ export default function OrderConfirmation() {
                 </div>
 
                 <div className="z-10 flex flex-col items-center">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 1 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/45'}`}>
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 1 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/45'}`}>
                     ✓
                   </div>
                   <span className="text-[8px] font-bold uppercase tracking-wider mt-1 text-primary/70">Placed</span>
                 </div>
 
                 <div className="z-10 flex flex-col items-center">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 2 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/45'}`}>
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 2 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/45'}`}>
                     ⏱
                   </div>
                   <span className="text-[8px] font-bold uppercase tracking-wider mt-1 text-primary/70">Process</span>
                 </div>
 
                 <div className="z-10 flex flex-col items-center">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 3 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/45'}`}>
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 3 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/45'}`}>
                     🚚
                   </div>
                   <span className="text-[8px] font-bold uppercase tracking-wider mt-1 text-primary/70">Shipped</span>
                 </div>
 
                 <div className="z-10 flex flex-col items-center">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 4 ? 'bg-accent border-accent text-primary' : 'bg-white border-primary/20 text-primary/45'}`}>
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all duration-300 ${currentStep >= 4 ? 'bg-accent border-accent text-primary' : 'bg-secondary border-primary/20 text-primary/45'}`}>
                     📦
                   </div>
                   <span className="text-[8px] font-bold uppercase tracking-wider mt-1 text-primary/70">Arrived</span>
@@ -184,7 +184,7 @@ export default function OrderConfirmation() {
           </div>
 
           {/* Right Column: Order Items & Cost Details */}
-          <div className="bg-white p-8 border border-primary/5 rounded-sm shadow-md space-y-6">
+          <div className="bg-secondary p-8 border border-primary/5 rounded-sm shadow-md space-y-6">
             <h3 className="font-serif text-xl font-bold text-primary border-b border-primary/5 pb-3.5 tracking-wide flex items-center gap-2">
               <Mail className="w-5 h-5 text-accent" /> Items Ordered
             </h3>
@@ -231,7 +231,7 @@ export default function OrderConfirmation() {
           </Link>
           <Link 
             to="/" 
-            className="bg-white text-primary border border-primary/10 hover:border-accent font-bold py-4 px-12 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-xs text-center"
+            className="bg-secondary text-primary border border-primary/10 hover:border-accent font-bold py-4 px-12 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-xs text-center"
           >
             Back to Home
           </Link>

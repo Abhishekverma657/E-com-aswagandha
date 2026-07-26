@@ -88,7 +88,7 @@ export default function Blogs() {
   ];
 
   return (
-    <div className="bg-white min-h-screen pt-36 pb-20">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-20">
       
       {/* Breadcrumb */}
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6 mb-8">
@@ -114,7 +114,7 @@ export default function Blogs() {
               className={`px-6 py-2.5 rounded text-sm font-sans font-medium transition-all duration-300 border ${
                 activeCategory === category 
                 ? 'bg-[#352516] text-white border-[#352516]' 
-                : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                : 'bg-secondary text-gray-700 border-gray-300 hover:border-gray-400'
               }`}
             >
               {category}

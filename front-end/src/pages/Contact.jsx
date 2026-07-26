@@ -93,7 +93,7 @@ export default function Contact() {
         </div>
 
         {/* Contact Form Panel */}
-        <div className="w-full lg:w-2/3 bg-white p-8 md:p-10 border border-primary/5 rounded-sm shadow-md">
+        <div className="w-full lg:w-2/3 bg-secondary p-8 md:p-10 border border-primary/5 rounded-sm shadow-md">
           {success && (
             <div className="mb-6 bg-accent/15 border border-accent/25 text-primary text-sm p-4 rounded-sm font-sans flex items-center gap-2 animate-fade-in">
               <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
@@ -113,7 +113,7 @@ export default function Contact() {
                   type="text" 
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                  className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                   required 
                 />
               </div>
@@ -123,7 +123,7 @@ export default function Contact() {
                   type="text" 
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                  className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                   required 
                 />
               </div>
@@ -135,7 +135,7 @@ export default function Contact() {
                 type="email" 
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                 required 
               />
             </div>
@@ -146,7 +146,7 @@ export default function Contact() {
                 rows="5" 
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                className="w-full border border-primary/10 bg-secondary/10 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                 placeholder="Enter details about your batch, order, or wholesale inquiries..."
                 required
               ></textarea>

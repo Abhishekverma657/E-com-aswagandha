@@ -86,7 +86,7 @@ export default function ProductDetails() {
 
   if (loading) {
     return (
-      <div className="bg-white min-h-screen pt-24 pb-20 flex flex-col items-center justify-center">
+      <div className="bg-secondary min-h-screen pt-[184px] pb-20 flex flex-col items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 mb-4"></div>
         <p className="text-xs font-sans font-medium text-gray-500 uppercase tracking-widest">Loading Product...</p>
       </div>
@@ -95,7 +95,7 @@ export default function ProductDetails() {
 
   if (error || !product) {
     return (
-      <div className="bg-white min-h-screen flex flex-col items-center justify-center px-6">
+      <div className="bg-secondary min-h-screen flex flex-col items-center justify-center px-6">
         <h1 className="text-3xl font-bold mb-4 text-gray-900">Product Not Found</h1>
         <Link to="/shop" className="bg-gray-900 text-white font-bold py-3 px-8 rounded">
           Return to Shop
@@ -175,7 +175,7 @@ export default function ProductDetails() {
   };
 
   return (
-    <div className="bg-white min-h-screen pt-[140px] pb-32 font-sans text-gray-900 overflow-x-hidden">
+    <div className="bg-secondary min-h-screen pt-[140px] pb-32 font-sans text-gray-900 overflow-x-hidden">
       
       {/* Breadcrumb - Spans full width */}
       <div className="bg-[#f9fafb] border-b border-gray-100 py-3">
@@ -225,7 +225,7 @@ export default function ProductDetails() {
             {/* Hover Lens */}
             {zoom.show && (
               <div 
-                className="absolute border border-gray-400 bg-white/20 pointer-events-none z-30 shadow-[0_0_0_9999px_rgba(255,255,255,0.4)]"
+                className="absolute border border-gray-400 bg-secondary/20 pointer-events-none z-30 shadow-[0_0_0_9999px_rgba(255,255,255,0.4)]"
                 style={{ 
                   width: '120px', 
                   height: '120px', 
@@ -243,7 +243,7 @@ export default function ProductDetails() {
             {/* Zoomed Image Portal (shows on the right) */}
             {zoom.show && (
               <div 
-                className="absolute top-0 left-[102%] w-full aspect-square bg-white z-50 border border-gray-200 shadow-2xl rounded pointer-events-none"
+                className="absolute top-0 left-[102%] w-full aspect-square bg-secondary z-50 border border-gray-200 shadow-2xl rounded pointer-events-none"
                 style={{
                   backgroundImage: `url(${activeImage})`,
                   backgroundPosition: `${zoom.bgX}% ${zoom.bgY}%`,
@@ -296,27 +296,27 @@ export default function ProductDetails() {
             </div>
             <div className="bg-[#f2f9f8] p-5 grid grid-cols-2 gap-y-6 gap-x-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#2b5d61] shadow-sm"><Activity className="w-4 h-4"/></div>
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-[#2b5d61] shadow-sm"><Activity className="w-4 h-4"/></div>
                 <span className="text-[#1a2936] text-[13px] font-medium leading-snug pt-1">Premium Extract<br/>Maximum Potency</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#2b5d61] shadow-sm font-bold text-sm">%</div>
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-[#2b5d61] shadow-sm font-bold text-sm">%</div>
                 <span className="text-[#1a2936] text-[13px] font-medium leading-snug pt-1">100% RDA in Every Serving</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#2b5d61] shadow-sm"><Droplets className="w-4 h-4"/></div>
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-[#2b5d61] shadow-sm"><Droplets className="w-4 h-4"/></div>
                 <span className="text-[#1a2936] text-[13px] font-medium leading-snug pt-1">Natural Herbs & Antioxidants</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#2b5d61] shadow-sm"><Zap className="w-4 h-4"/></div>
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-[#2b5d61] shadow-sm"><Zap className="w-4 h-4"/></div>
                 <span className="text-[#1a2936] text-[13px] font-medium leading-snug pt-1">Boosts Daily Energy & Vitality</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#2b5d61] shadow-sm"><Shield className="w-4 h-4"/></div>
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-[#2b5d61] shadow-sm"><Shield className="w-4 h-4"/></div>
                 <span className="text-[#1a2936] text-[13px] font-medium leading-snug pt-1">Supports Physical & Mental<br/>Wellness</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#2b5d61] shadow-sm"><Activity className="w-4 h-4"/></div>
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-[#2b5d61] shadow-sm"><Activity className="w-4 h-4"/></div>
                 <span className="text-[#1a2936] text-[13px] font-medium leading-snug pt-1">Tailored for Fast Results</span>
               </div>
             </div>
@@ -331,7 +331,7 @@ export default function ProductDetails() {
                 className={`relative border rounded cursor-pointer transition-all p-4 flex items-center justify-between ${
                   selectedPack === pack.id 
                   ? 'border-green-600 bg-[#f4fbf8]' 
-                  : 'border-gray-200 bg-white hover:border-gray-300'
+                  : 'border-gray-200 bg-secondary hover:border-gray-300'
                 }`}
               >
                 {/* Badge if exists */}
@@ -343,7 +343,7 @@ export default function ProductDetails() {
                 
                 {/* Left side: Image and details */}
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded flex items-center justify-center p-1 border border-gray-100">
+                  <div className="w-12 h-12 bg-secondary rounded flex items-center justify-center p-1 border border-gray-100">
                     <img src={product.image} className="w-full h-full object-contain mix-blend-multiply" alt="pack" />
                   </div>
                   <div className="flex flex-col">
@@ -394,7 +394,7 @@ export default function ProductDetails() {
             <button onClick={handleAddToCart} className="flex-1 bg-[#3a2c1f] hover:bg-[#2b1f15] text-white font-bold py-4 rounded-sm flex items-center justify-center gap-2 transition-colors text-sm">
                ADD TO CART
             </button>
-            <button onClick={handleBuyNow} className="flex-1 bg-white border border-[#3a2c1f] hover:bg-gray-50 text-[#3a2c1f] font-bold py-4 rounded-sm transition-colors text-sm">
+            <button onClick={handleBuyNow} className="flex-1 bg-secondary border border-[#3a2c1f] hover:bg-gray-50 text-[#3a2c1f] font-bold py-4 rounded-sm transition-colors text-sm">
               BUY NOW
             </button>
           </div>
@@ -417,7 +417,7 @@ export default function ProductDetails() {
 
           {/* Pincode Checker */}
           <div className="bg-[#24424e] rounded-t overflow-hidden relative mb-0">
-            <div className="flex items-center bg-white m-1 rounded-sm border border-gray-200 p-1 pl-3 gap-2">
+            <div className="flex items-center bg-secondary m-1 rounded-sm border border-gray-200 p-1 pl-3 gap-2">
               <Truck className="w-4 h-4 text-gray-400" />
               <input 
                 type="text" 
@@ -534,7 +534,7 @@ export default function ProductDetails() {
           </div>
           
           <div className="flex-[0.8] flex justify-center">
-            <div className="w-64 h-64 bg-white rounded-full shadow-xl relative p-2 flex items-center justify-center">
+            <div className="w-64 h-64 bg-secondary rounded-full shadow-xl relative p-2 flex items-center justify-center">
               <img src="https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover rounded-full mix-blend-multiply" alt="Salad plate" />
             </div>
           </div>
@@ -569,15 +569,15 @@ export default function ProductDetails() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_15px_rgba(0,0,0,0.05)] z-50"
+            className="fixed bottom-0 left-0 right-0 bg-secondary border-t border-gray-200 shadow-[0_-4px_15px_rgba(0,0,0,0.05)] z-50"
           >
         <div className="max-w-[1300px] mx-auto px-4 py-3 flex items-center justify-between">
           
           <div className="flex items-center gap-4 flex-1">
-            <img src={product.image} className="w-12 h-12 object-contain p-1 rounded border border-gray-100 bg-white mix-blend-multiply" alt="Thumb" />
+            <img src={product.image} className="w-12 h-12 object-contain p-1 rounded border border-gray-100 bg-secondary mix-blend-multiply" alt="Thumb" />
             <span className="font-bold text-[15px] text-[#1a2936] hidden md:block max-w-[300px] truncate">{product.title}</span>
             
-            <div className="ml-auto md:ml-4 border border-gray-200 rounded flex items-center px-3 py-2 bg-white min-w-[140px] cursor-pointer hover:border-gray-300">
+            <div className="ml-auto md:ml-4 border border-gray-200 rounded flex items-center px-3 py-2 bg-secondary min-w-[140px] cursor-pointer hover:border-gray-300">
               <span className="text-[13px] font-medium text-[#1a2936] flex-1">{currentPackData.name}</span>
               <ChevronDown className="w-4 h-4 text-gray-400" />
             </div>

@@ -20,7 +20,7 @@ export default function ProductCard({ id, title, subtitle, price, image, rating 
   const displayTag = categoryTag || "STRESS RELIEF";
 
   return (
-    <div className="group flex flex-col bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 text-left relative">
+    <div className="group flex flex-col bg-secondary border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 text-left relative">
       
       {/* Product Image Area */}
       <Link 
@@ -42,7 +42,7 @@ export default function ProductCard({ id, title, subtitle, price, image, rating 
 
         {/* Top-Left Badge (e.g. BEST SELLER) */}
         {badge && (
-          <span className="absolute top-3 left-3 bg-white/20 backdrop-blur-md border border-white/40 text-white text-[10px] font-bold py-1 px-3 uppercase tracking-wider rounded-full shadow-sm z-10">
+          <span className="absolute top-3 left-3 bg-secondary/20 backdrop-blur-md border border-white/40 text-white text-[10px] font-bold py-1 px-3 uppercase tracking-wider rounded-full shadow-sm z-10">
             {badge}
           </span>
         )}
@@ -101,7 +101,7 @@ export default function ProductCard({ id, title, subtitle, price, image, rating 
 
           {/* Action Buttons Row */}
           <div className="mt-4 flex gap-2 w-full">
-            <button className="flex-1 flex items-center justify-between border border-gray-300 rounded-md px-3 py-2 text-[12px] md:text-[13px] font-sans font-medium text-gray-800 hover:border-gray-400 transition-colors bg-white">
+            <button className="flex-1 flex items-center justify-between border border-gray-300 rounded-md px-3 py-2 text-[12px] md:text-[13px] font-sans font-medium text-gray-800 hover:border-gray-400 transition-colors bg-secondary">
               Pack of 2
               <ChevronDown className="w-4 h-4 text-gray-500" />
             </button>

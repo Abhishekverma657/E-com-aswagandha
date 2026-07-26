@@ -166,7 +166,7 @@ export default function CustomerReviews() {
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.9, x: -20 }}
                 transition={{ duration: 0.4 }}
-                className={`bg-white p-6 rounded-md shadow-sm border border-gray-100 flex-col justify-between ${idx === 1 ? 'hidden md:flex' : idx === 2 ? 'hidden lg:flex' : 'flex'}`}
+                className={`bg-secondary p-6 rounded-md shadow-sm border border-gray-100 flex-col justify-between ${idx === 1 ? 'hidden md:flex' : idx === 2 ? 'hidden lg:flex' : 'flex'}`}
               >
                 <div>
                   <div className="flex justify-between items-start mb-4">
@@ -196,7 +196,7 @@ export default function CustomerReviews() {
 
         {/* Carousel Dots */}
         <div className="flex justify-center items-center gap-2 mt-8">
-          <button onClick={handlePrev} className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-50 shadow-sm transition-all">
+          <button onClick={handlePrev} className="w-8 h-8 rounded-full bg-secondary border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-50 shadow-sm transition-all">
             <ChevronDown className="w-4 h-4 rotate-90" />
           </button>
           <div className="flex items-center gap-2 mx-2">
@@ -209,7 +209,7 @@ export default function CustomerReviews() {
               />
             ))}
           </div>
-          <button onClick={handleNext} className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-50 shadow-sm transition-all">
+          <button onClick={handleNext} className="w-8 h-8 rounded-full bg-secondary border border-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-50 shadow-sm transition-all">
             <ChevronDown className="w-4 h-4 -rotate-90" />
           </button>
         </div>

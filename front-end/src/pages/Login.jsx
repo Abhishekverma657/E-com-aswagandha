@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-secondary pt-24 pb-20 flex items-center justify-center px-6">
-      <div className="max-w-md w-full bg-white p-8 md:p-10 border border-primary/5 rounded-sm shadow-md space-y-8 text-left">
+      <div className="max-w-md w-full bg-secondary p-8 md:p-10 border border-primary/5 rounded-sm shadow-md space-y-8 text-left">
         {/* Title */}
         <div className="text-center space-y-2">
           <span className="text-accent uppercase tracking-[0.25em] text-[10px] font-bold font-sans">Welcome Back</span>
@@ -55,7 +55,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full border border-primary/10 bg-secondary/10 pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                className="w-full border border-primary/10 bg-secondary/10 pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                 required 
               />
             </div>
@@ -74,7 +74,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full border border-primary/10 bg-secondary/10 pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:bg-white transition-all text-primary font-medium rounded-xs" 
+                className="w-full border border-primary/10 bg-secondary/10 pl-11 pr-4 py-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
                 required 
               />
             </div>

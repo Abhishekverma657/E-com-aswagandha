@@ -58,7 +58,7 @@ export default function UserStories() {
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6 bg-white relative overflow-hidden">
+    <section className="py-24 px-4 sm:px-6 bg-secondary relative overflow-hidden">
       <div className="max-w-[1400px] mx-auto relative">
         
         {/* Header Area */}
@@ -87,7 +87,7 @@ export default function UserStories() {
         <div className="relative group">
           
           {/* Left Navigation Arrow */}
-          <button className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_0_15px_rgba(0,0,0,0.1)] flex items-center justify-center text-gray-600 hover:text-black hidden md:flex">
+          <button className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-12 h-12 bg-secondary rounded-full shadow-[0_0_15px_rgba(0,0,0,0.1)] flex items-center justify-center text-gray-600 hover:text-black hidden md:flex">
             <ChevronLeft className="w-6 h-6" />
           </button>
 
@@ -111,50 +111,23 @@ export default function UserStories() {
                 {/* Center Quote & Play Button */}
                 <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-6">
                   {story.quote && (
-                    <div className="bg-white text-black font-bold text-sm px-4 py-2 rounded-sm shadow-md mb-6 transform -rotate-2">
+                    <div className="bg-secondary text-black font-bold text-sm px-4 py-2 rounded-sm shadow-md mb-6 transform -rotate-2">
                       {story.quote}
                     </div>
                   )}
-                  <div className="w-16 h-16 rounded-full border border-white/40 bg-white/10 backdrop-blur-md flex items-center justify-center transition-transform group-hover:scale-110">
+                  <div className="w-16 h-16 rounded-full border border-white/40 bg-secondary/10 backdrop-blur-md flex items-center justify-center transition-transform group-hover:scale-110">
                     <Play className="w-6 h-6 text-white fill-white ml-1" />
                   </div>
                 </div>
 
-                {/* Bottom Product Info Block */}
-                <div className="relative z-20 bg-white m-2 rounded-lg p-3 shadow-md flex flex-col gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-200">
-                      <img src={story.product.image} alt="product" className="w-full h-full object-cover" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h5 className="font-bold text-[11px] leading-snug text-gray-900 truncate">{story.product.title}</h5>
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <div className="border border-gray-300 rounded text-[10px] px-2 py-0.5 flex items-center gap-1 cursor-pointer hover:bg-gray-50">
-                          Pack of 2 <ChevronDown className="w-3 h-3" />
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-bold text-gray-900 text-[13px]">₹{story.product.price}</span>
-                          <span className="text-gray-400 text-[10px] line-through">₹{story.product.originalPrice}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button className="bg-primary text-white text-[10px] font-bold uppercase py-2.5 rounded hover:bg-primary-light transition-colors" style={{ flex: 2 }}>
-                      Add to Cart
-                    </button>
-                    <button className="bg-primary text-white text-[10px] font-bold uppercase py-2.5 rounded hover:bg-primary-light transition-colors" style={{ flex: 1 }}>
-                      Buy Now
-                    </button>
-                  </div>
-                </div>
+
 
               </div>
             ))}
           </div>
 
           {/* Right Navigation Arrow */}
-          <button className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-[0_0_15px_rgba(0,0,0,0.1)] flex items-center justify-center text-gray-600 hover:text-black hidden md:flex">
+          <button className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20 w-12 h-12 bg-secondary rounded-full shadow-[0_0_15px_rgba(0,0,0,0.1)] flex items-center justify-center text-gray-600 hover:text-black hidden md:flex">
             <ChevronRight className="w-6 h-6" />
           </button>
 

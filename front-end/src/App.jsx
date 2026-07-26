@@ -3,6 +3,7 @@ import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import WhatsAppFAB from './components/WhatsAppFAB';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
@@ -47,6 +48,7 @@ function App() {
             <Route path="/authenticate" element={<Authenticate />} />
           </Routes>
         </main>
+        <WhatsAppFAB />
         <Footer />
       </Router>
     </CartProvider>

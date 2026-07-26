@@ -18,7 +18,7 @@ export default function FaqSection() {
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6 bg-white relative">
+    <section className="py-24 px-4 sm:px-6 bg-secondary relative">
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
         
         {/* Left Content - FAQ List */}
@@ -44,7 +44,7 @@ export default function FaqSection() {
                 className={`px-5 py-2 rounded-full text-[13px] font-sans transition-colors ${
                   activeTab === tab 
                     ? 'bg-primary text-white font-bold' 
-                    : 'bg-white text-gray-600 border border-gray-300 hover:border-gray-400 font-medium'
+                    : 'bg-secondary text-gray-600 border border-gray-300 hover:border-gray-400 font-medium'
                 }`}
               >
                 {tab}
@@ -82,7 +82,7 @@ export default function FaqSection() {
             {/* Chat Header */}
             <div className="bg-[#1a3626] p-4 flex items-center justify-between text-white">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1 overflow-hidden">
+                <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center p-1 overflow-hidden">
                   <div className="w-full h-full bg-gray-100 rounded-full flex items-center justify-center">
                     <span className="text-[#1a3626] font-bold text-xs font-serif italic">N</span>
                   </div>
@@ -95,7 +95,7 @@ export default function FaqSection() {
                   </div>
                 </div>
               </div>
-              <button className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors">
+              <button className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-secondary/10 transition-colors">
                 <Phone className="w-4 h-4 text-white" />
               </button>
             </div>
@@ -103,18 +103,18 @@ export default function FaqSection() {
             {/* Chat Body */}
             <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto">
               <div className="flex justify-center">
-                <span className="bg-white/60 text-gray-500 text-[10px] font-sans font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                <span className="bg-secondary/60 text-gray-500 text-[10px] font-sans font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                   Today
                 </span>
               </div>
               
               {/* Default Message */}
               <div className="flex gap-3 max-w-[90%]">
-                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-100">
+                <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-100">
                   <span className="text-[#1a3626] font-bold text-[10px] font-serif italic">N</span>
                 </div>
                 <div>
-                  <div className="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
+                  <div className="bg-secondary rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
                     <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagouri</span>
                     <p className="text-gray-800 text-sm font-sans font-light leading-relaxed">
                       Hey 👋 Tap a question, and the answer will appear below 👇
@@ -129,11 +129,11 @@ export default function FaqSection() {
               {/* Dynamic Answer Message */}
               {selectedQuestion && (
                 <div className="flex gap-3 max-w-[90%] animate-fade-in-up">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-100">
+                  <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 shadow-sm border border-gray-100">
                     <span className="text-[#1a3626] font-bold text-[10px] font-serif italic">N</span>
                   </div>
                   <div>
-                    <div className="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
+                    <div className="bg-secondary rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
                       <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagouri</span>
                       <p className="text-gray-800 text-sm font-sans font-medium mb-2 border-b border-gray-100 pb-2">
                         {selectedQuestion.q}
@@ -152,8 +152,8 @@ export default function FaqSection() {
             </div>
 
             {/* Chat Input */}
-            <div className="p-4 bg-white/50 border-t border-gray-200/50">
-              <div className="bg-white h-12 rounded-full shadow-sm border border-gray-200 flex items-center px-2">
+            <div className="p-4 bg-secondary/50 border-t border-gray-200/50">
+              <div className="bg-secondary h-12 rounded-full shadow-sm border border-gray-200 flex items-center px-2">
                 <input 
                   type="text" 
                   placeholder="Type your question..." 

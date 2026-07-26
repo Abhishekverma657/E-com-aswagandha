@@ -56,7 +56,7 @@ export default function Bestsellers() {
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6 bg-white relative">
+    <section className="py-24 px-4 sm:px-6 bg-secondary relative">
       <div className="max-w-[1200px] mx-auto">
         
         {/* Header Area */}

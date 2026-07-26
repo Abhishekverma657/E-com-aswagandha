@@ -9,7 +9,7 @@ export default function Authenticate() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-xl w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+        className="max-w-xl w-full bg-secondary rounded-xl shadow-sm border border-gray-100 overflow-hidden"
       >
         <div className="bg-primary py-8 px-8 text-center text-white relative overflow-hidden">
           {/* Subtle background decoration */}

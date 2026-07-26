@@ -50,7 +50,7 @@ export default function Wishlist() {
 
   if (loading) {
     return (
-      <div className="bg-secondary min-h-screen pt-24 pb-20 flex flex-col items-center justify-center">
+      <div className="bg-secondary min-h-screen pt-[184px] pb-20 flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 text-accent animate-spin mb-4" />
         <p className="text-xs font-sans font-medium text-primary/60 uppercase tracking-widest">Loading Saved Products...</p>
       </div>
@@ -58,7 +58,7 @@ export default function Wishlist() {
   }
 
   return (
-    <div className="bg-secondary min-h-screen pt-28 pb-24 text-left">
+    <div className="bg-secondary min-h-screen pt-[184px] pb-24 text-left">
       <div className="max-w-7xl mx-auto px-6">
         {/* Back Link */}
         <Link to="/shop" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-primary/60 hover:text-accent font-bold mb-8 transition-colors">
@@ -74,7 +74,7 @@ export default function Wishlist() {
         )}
 
         {savedItems.length === 0 ? (
-          <div className="bg-white p-12 md:p-20 text-center border border-primary/5 rounded-sm shadow-md max-w-xl mx-auto space-y-6">
+          <div className="bg-secondary p-12 md:p-20 text-center border border-primary/5 rounded-sm shadow-md max-w-xl mx-auto space-y-6">
             <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
               <Heart className="w-8 h-8 text-accent stroke-[1.5]" />
             </div>
@@ -92,7 +92,7 @@ export default function Wishlist() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {savedItems.map((product) => (
-              <div key={product.id} className="relative group bg-white border border-primary/5 rounded-sm overflow-hidden shadow-xs hover:shadow-md transition-all duration-500 flex flex-col justify-between">
+              <div key={product.id} className="relative group bg-secondary border border-primary/5 rounded-sm overflow-hidden shadow-xs hover:shadow-md transition-all duration-500 flex flex-col justify-between">
                 <ProductCard {...product} />
                 
                 {/* Overlay actions */}

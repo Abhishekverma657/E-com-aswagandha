@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, ShieldCheck, CheckCircle2, ChevronDown, Award, ArrowRight, Leaf, Beaker, Heart, Check } from 'lucide-react';
+import Slider1 from '../assets/Slider1.jpeg';
+import Slider2 from '../assets/slider.png';
 import ProductTabs from '../components/ProductTabs';
 import Bestsellers from '../components/Bestsellers';
-import CustomerReviews from '../components/CustomerReviews';
+import Gallery from '../components/Gallery';
 import UserStories from '../components/UserStories';
 import TheDifference from '../components/TheDifference';
 import FoundersNote from '../components/FoundersNote';
@@ -19,45 +21,11 @@ export default function Home() {
   const heroSlides = [
     {
       id: 1,
-      image: "/hero-banner.png",
-      subtitle: "Clean Nutrition for Everyday Wellness",
-      titleHTML: (
-        <>
-          Rooted in Nature.<br/>
-          <span className="italic font-light">Backed by Science.</span>
-        </>
-      ),
-      description: "Clean, vegetarian formulations made with real ingredients, transparent testing, and no unnecessary additives — because what you take daily should feel safe, simple, and honest.",
-      buttonText: "Shop All Products",
-      link: "/shop"
+      image: Slider2
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=1500&auto=format&fit=crop",
-      subtitle: "Exclusive Bundles",
-      titleHTML: (
-        <>
-          SHOP MORE,<br/>
-          <span className="font-bold">SAVE MORE</span>
-        </>
-      ),
-      description: "Buy 3 Supplements @ ₹1699. Buy 4 Supplements @ ₹2299. Stock up on your daily essentials and save big.",
-      buttonText: "Shop Now",
-      link: "/shop"
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=1500&auto=format&fit=crop",
-      subtitle: "New Arrival",
-      titleHTML: (
-        <>
-          Restful Sleep,<br/>
-          <span className="italic font-light">Naturally.</span>
-        </>
-      ),
-      description: "Discover our new highly absorbable Magnesium Glycinate formula designed to improve sleep quality and muscle recovery.",
-      buttonText: "Explore Now",
-      link: "/shop"
+      image: Slider1
     }
   ];
 
@@ -70,53 +38,22 @@ export default function Home() {
   }, [heroSlides.length]);
 
   return (
-    <div className="w-full bg-white overflow-hidden pt-28">
+    <div className="w-full bg-secondary overflow-hidden pt-[184px]">
       {/* 1. HERO SECTION (SLIDER) */}
-      <section className="relative min-h-[85vh] flex items-center bg-secondary/30 overflow-hidden">
+      <section className="grid relative w-full bg-secondary/30 overflow-hidden">
         
         {heroSlides.map((slide, index) => (
           <div 
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
+            className={`col-start-1 row-start-1 transition-opacity duration-1000 ${
               index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <img 
-                src={slide.image} 
-                alt={slide.subtitle} 
-                className="w-full h-full object-cover object-center"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-secondary/95 via-secondary/70 to-transparent md:w-2/3"></div>
-            </div>
-            
-            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full h-full flex items-center justify-start">
-              {index === currentSlide && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="flex flex-col space-y-6 text-left max-w-2xl"
-                >
-                  <span className="text-primary font-bold uppercase tracking-widest text-xs md:text-sm">{slide.subtitle}</span>
-                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold text-primary leading-[1.1]">
-                    {slide.titleHTML}
-                  </h1>
-                  <p className="text-base sm:text-lg leading-relaxed text-dark/80 font-sans font-light max-w-xl">
-                    {slide.description}
-                  </p>
-                  <div className="pt-6">
-                    <Link 
-                      to={slide.link} 
-                      className="inline-flex items-center justify-center bg-primary text-white font-bold text-sm py-4 px-10 uppercase tracking-[0.2em] transition-all duration-300 hover:bg-primary-light hover:shadow-xl"
-                    >
-                      {slide.buttonText}
-                    </Link>
-                  </div>
-                </motion.div>
-              )}
-            </div>
+            <img 
+              src={slide.image} 
+              alt={`Slide ${slide.id}`} 
+              className="w-full h-auto block"
+            />
           </div>
         ))}
 
@@ -128,7 +65,7 @@ export default function Home() {
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full border-2 transition-all duration-300 ${
                 index === currentSlide 
-                  ? 'bg-white border-white scale-110' 
+                  ? 'bg-secondary border-white scale-110' 
                   : 'bg-transparent border-white/60 hover:border-white'
               }`}
               aria-label={`Go to slide ${index + 1}`}
@@ -163,7 +100,7 @@ export default function Home() {
       </section>
 
       {/* 2.5 CLARITY TYPOGRAPHY SECTION */}
-      <section className="py-20 md:py-32 px-6 bg-white relative text-center flex flex-col items-center justify-center">
+      <section className="py-20 md:py-32 px-6 bg-secondary relative text-center flex flex-col items-center justify-center">
         <div className="max-w-4xl mx-auto space-y-8">
           
           {/* Main Headline */}
@@ -220,7 +157,7 @@ export default function Home() {
       </section>
 
       {/* 3. PRODUCT TABS SECTION */}
-      <section className="py-24 px-6 bg-white relative">
+      <section className="py-24 px-6 bg-secondary relative">
         <div className="max-w-7xl mx-auto">
           <ProductTabs />
           
@@ -232,8 +169,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3.25 CUSTOMER REVIEWS */}
-      <CustomerReviews />
+      {/* 3.25 GALLERY */}
+      <Gallery />
 
       {/* 3.5 BESTSELLERS */}
       <Bestsellers />

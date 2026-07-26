@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function FoundersNote() {
   return (
-    <section className="py-24 px-4 sm:px-6 bg-white relative">
+    <section className="py-24 px-4 sm:px-6 bg-secondary relative">
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
         
         {/* Left Content - Image with Nameplate */}
@@ -14,7 +14,7 @@ export default function FoundersNote() {
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
           {/* Floating Nameplate */}
-          <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 bg-white px-8 py-5 shadow-2xl flex flex-col items-center">
+          <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 bg-secondary px-8 py-5 shadow-2xl flex flex-col items-center">
             <h4 className="font-sans font-bold text-gray-900 tracking-widest text-[13px] uppercase">
               ABHISHEK NAGORI
             </h4>
