@@ -4,7 +4,9 @@ const orderItemSchema = new mongoose.Schema({
   id: { type: Number, required: true }, // The product's sequential ID (e.g. 1-8)
   title: { type: String, required: true },
   price: { type: Number, required: true },
-  quantity: { type: Number, required: true }
+  quantity: { type: Number, required: true },
+  packName: { type: String },
+  isRated: { type: Boolean, default: false }
 });
 
 const orderSchema = new mongoose.Schema({
@@ -22,7 +24,25 @@ const orderSchema = new mongoose.Schema({
   items: [orderItemSchema],
   shippingCost: { type: Number, required: true },
   totalAmount: { type: Number, required: true },
-  status: { type: String, default: 'Processing', enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'] }
+  isRated: { type: Boolean, default: false },
+  status: { 
+    type: String, 
+    default: 'Order in process', 
+    enum: [
+      'Order in process', 
+      'Order accepted', 
+      'Order rejected', 
+      'Packed', 
+      'Dispatch', 
+      'On road', 
+      'Delivering today', 
+      'Delivered', 
+      'Out of stock', 
+      'Order cancel from admin', 
+      'Order cancel'
+    ] 
+  },
+  isRated: { type: Boolean, default: false }
 }, { timestamps: true });
 
 export default mongoose.model('Order', orderSchema);

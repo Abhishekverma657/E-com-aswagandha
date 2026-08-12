@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Product from './models/Product.js';
 import User from './models/User.js';
+import ContentSettings from './models/ContentSettings.js';
 import bcrypt from 'bcryptjs';
 
 const initialProducts = [
@@ -202,6 +203,68 @@ export async function connectDB() {
       });
       await adminUser.save();
       console.log('Default admin account seeded successfully (admin@nagouri.com / AdminPassword123!)');
+    }
+
+    // Seed default ContentSettings if empty
+    const contentSettingsCount = await ContentSettings.countDocuments();
+    if (contentSettingsCount === 0) {
+      const defaultContentSettings = {
+        branding: {
+          logoUrl: '',
+          siteTitle: 'Nagouri'
+        },
+        heroSliders: [
+          { image: '/slider.png', altText: 'Slide 1', link: '/shop' },
+          { image: '/Slider1.jpeg', altText: 'Slide 2', link: '/shop' }
+        ],
+        trustBadges: [
+          { iconName: 'ShieldCheck', text: 'Ayush Dept. Licensed' },
+          { iconName: 'CheckCircle2', text: 'NABL Lab Tested' },
+          { iconName: 'Leaf', text: '100% Vegetarian' },
+          { iconName: 'Award', text: 'Over 1 Lakh Happy Customers' }
+        ],
+        userStories: [
+          { image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200', name: 'Priya S.', location: 'Mumbai', quote: 'The most authentic ashwagandha I have used. My sleep quality has improved dramatically.' },
+          { image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200', name: 'Rajeev M.', location: 'Delhi', quote: 'I can feel the difference in my energy levels. Highly recommend their premium root extract.' },
+          { image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200', name: 'Anita K.', location: 'Bangalore', quote: 'Finally, a brand that focuses on real Ayurvedic principles. The quality is unmatched.' }
+        ],
+        theDifference: {
+          title: 'Why Nagouri is Different',
+          subtitle: 'We do not compromise on authenticity. Our ashwagandha is sourced directly from the arid soils of Nagaur, ensuring the highest concentration of active withanolides.',
+          items: [
+            { iconName: 'Beaker', title: 'High Withanolide Content', description: 'Our Nagouri roots naturally yield a higher percentage of active alkaloids compared to standard ashwagandha.' },
+            { iconName: 'Leaf', title: 'Sun-Dried Processing', description: 'Roots are sun-dried traditionally to retain their natural potency and avoid degradation from artificial heating.' },
+            { iconName: 'CheckCircle2', title: 'Strict Quality Control', description: 'Every batch undergoes rigorous lab testing to ensure zero heavy metals or pesticide residue.' }
+          ]
+        },
+        foundersNote: {
+          image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&q=80&w=600',
+          name: 'Vikram Singh',
+          title: 'Founder, Nagouri',
+          quote: '"Our mission is to bring the unadulterated power of Nagaur\'s soil directly to your home."',
+          text: 'Growing up in Rajasthan, I saw firsthand the incredible potency of the local Ashwagandha. But looking at the modern market, I realized most commercial products were heavily processed, diluted, or sourced from inferior soils. I started Nagouri with a simple premise: to offer the purest, most potent Ashwagandha root extract, honoring the ancient Ayurvedic traditions of my homeland.'
+        },
+        faqSection: [
+          { question: 'What makes Nagouri Ashwagandha different?', answer: 'Our ashwagandha is exclusively sourced from Nagaur, Rajasthan. The unique dry climate and alkaline soil of this region produce roots with exceptionally high withanolide content, making it more potent than standard varieties.' },
+          { question: 'How should I consume the capsules?', answer: 'For best results, we recommend taking one capsule twice daily with warm milk or water, preferably after meals. However, we always advise consulting with an Ayurvedic practitioner for personalized dosage.' },
+          { question: 'Are your products lab tested?', answer: 'Yes. Every single batch is tested in NABL-accredited laboratories for purity, heavy metals, and active compound concentration. We ensure you get exactly what is on the label.' },
+          { question: 'Do you ship internationally?', answer: 'Currently, we ship across all states in India. We are working diligently on expanding our operations to serve our international customers soon.' }
+        ],
+        blogSection: [
+          { image: 'https://images.unsplash.com/photo-1512069772995-ec65ed45afd6?auto=format&fit=crop&q=80&w=600', title: 'The Science Behind Nagouri Ashwagandha', date: 'October 12, 2023', excerpt: 'Discover why the arid climate of Nagaur produces the most potent ashwagandha roots in the world, and what the latest research says about withanolides.', link: '#' },
+          { image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80&w=600', title: '5 Natural Ways to Lower Cortisol', date: 'September 28, 2023', excerpt: 'Chronic stress affects millions. Learn how integrating adaptogens with simple lifestyle changes can drastically reduce your stress hormone levels.', link: '#' },
+          { image: 'https://images.unsplash.com/photo-1515023115689-589c33041d3c?auto=format&fit=crop&q=80&w=600', title: 'Ayurveda & Modern Fitness', date: 'September 15, 2023', excerpt: 'How athletes and bodybuilders are turning to ancient Ayurvedic herbs like Ashwagandha and Gokshura for safe, natural performance enhancement.', link: '#' }
+        ],
+        footer: {
+          aboutText: 'Nagouri is dedicated to providing the highest quality, authentic Ayurvedic formulations sourced directly from the heartlands of India.',
+          address: '123 Heritage Lane, Rajasthan, India',
+          phone: '+91 98765 43210',
+          email: 'support@nagouri.com',
+          socialLinks: { instagram: '#', facebook: '#', twitter: '#' }
+        }
+      };
+      await ContentSettings.create(defaultContentSettings);
+      console.log('ContentSettings seeded successfully');
     }
   } catch (error) {
     console.error('Database connection failed:', error.message);

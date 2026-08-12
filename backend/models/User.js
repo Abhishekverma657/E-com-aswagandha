@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const cartItemSchema = new mongoose.Schema({
   id: { type: Number, required: true },
-  quantity: { type: Number, required: true, default: 1 }
+  quantity: { type: Number, required: true, default: 1 },
+  packName: { type: String }
 });
 
 const addressSchema = new mongoose.Schema({
