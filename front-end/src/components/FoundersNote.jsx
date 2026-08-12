@@ -1,7 +1,13 @@
 import { Star, Leaf } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useContent } from '../context/ContentContext';
 
 export default function FoundersNote() {
+  const { content } = useContent();
+
+  const foundersNote = content?.foundersNote;
+
+  if (!foundersNote) return null;
   return (
     <section className="py-24 px-4 sm:px-6 bg-secondary relative">
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
@@ -9,18 +15,18 @@ export default function FoundersNote() {
         {/* Left Content - Image with Nameplate */}
         <div className="relative h-[500px] lg:h-[700px] rounded-lg overflow-hidden">
           <img 
-            src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1000&auto=format&fit=crop" 
-            alt="Founder" 
+            src={foundersNote.image || "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1000&auto=format&fit=crop"} 
+            alt={foundersNote.name} 
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
           {/* Floating Nameplate */}
           <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 bg-secondary px-8 py-5 shadow-2xl flex flex-col items-center">
             <h4 className="font-sans font-bold text-gray-900 tracking-widest text-[13px] uppercase">
-              ABHISHEK NAGORI
+              {foundersNote.name}
             </h4>
             <div className="w-full h-px bg-gray-200 my-2"></div>
             <p className="font-sans font-light text-gray-500 text-[11px] uppercase tracking-wide">
-              Founder & CEO, Nagouri
+              {foundersNote.title}
             </p>
           </div>
         </div>
@@ -33,14 +39,13 @@ export default function FoundersNote() {
               <span className="text-[11px] font-sans font-bold text-gray-600 tracking-[0.2em] uppercase">Founder's Note</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl text-gray-900 leading-[1.1] tracking-tight mb-8">
-              <span className="font-sans font-light text-gray-500">From</span> <strong className="font-sans font-bold">Frustration</strong> <span className="font-sans font-light text-gray-500">to</span><br/>
-              <strong className="font-sans font-bold">Formulation</strong>
+              <strong className="font-sans font-bold">{foundersNote.quote}</strong>
             </h2>
             <div className="relative">
               {/* Optional: large quote mark watermark */}
               <span className="absolute -left-6 md:-left-8 text-5xl text-gray-200 top-[-10px] font-serif">“</span>
               <p className="text-gray-700 font-sans font-light leading-relaxed text-base md:text-lg relative z-10">
-                I started Nagouri Ayurveda after realising how hard it is to trust supplements. Labels looked convincing, but I was never sure what was actually inside or if it would actually help. So we built things differently - using clinically studied ingredients in the right forms & doses. Something you can take daily without doubt, and see real progress over time.
+                {foundersNote.text}
               </p>
               <span className="text-5xl text-gray-200 font-serif absolute -bottom-6 right-0 leading-none">”</span>
             </div>

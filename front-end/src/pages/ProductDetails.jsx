@@ -3,20 +3,24 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { Star, ShieldCheck, Truck, RotateCcw, ChevronDown, Check, Search, Droplets, Zap, Activity, Shield, Pill, HeartPulse } from 'lucide-react';
+import { Star, ShieldCheck, Truck, RotateCcw, ChevronDown, Check, Search, Droplets, Zap, Activity, Shield, Pill, HeartPulse, Loader2 } from 'lucide-react';
 
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
   const { user } = useAuth();
   
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const [activeImage, setActiveImage] = useState("");
-  const [selectedPack, setSelectedPack] = useState(2); // Default to Pack of 2
+  const [activeImage, setActiveImage] = useState(null);
+  const [selectedPack, setSelectedPack] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [addedSuccess, setAddedSuccess] = useState(false);
+  const [isBuyingNow, setIsBuyingNow] = useState(false);
   const [showStickyBar, setShowStickyBar] = useState(false);
 
   // Zoom state
@@ -56,13 +60,14 @@ export default function ProductDetails() {
     setLoading(true);
     setError(false);
     fetch(`/api/products/${id}`)
-      .then(res => {
+      .then(async (res) => {
         if (!res.ok) throw new Error("Product not found");
-        return res.json();
-      })
-      .then(data => {
+        const data = await res.json();
         setProduct(data);
         setActiveImage(data.image);
+        if (data.packs && data.packs.length > 0) {
+          setSelectedPack(data.packs[0].name);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -104,73 +109,79 @@ export default function ProductDetails() {
     );
   }
 
-  // Thumbnails array (first is real image, rest are placeholders to show gallery feature)
   const thumbnails = [
     product.image,
-    "https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=1500&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=1500&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=1500&auto=format&fit=crop"
+    ...(product.images || [])
   ];
 
-  // Dynamic pricing based on fetched product price
-  const basePrice = product.price;
-  const baseOriginalPrice = product.originalPrice || Math.round(product.price * 1.4);
+  const hasPacks = product?.packs && product.packs.length > 0;
+  
+  // Find recommended pack id (if any) to use as default fallback
+  const recommendedPackId = hasPacks ? product.packs.find(p => p.isRecommended)?.name : null;
 
-  const packs = [
-    {
-      id: 1,
-      name: "Pack of 1",
-      subtitle: "1 Month Supply",
-      tag: `SAVE ₹${baseOriginalPrice - basePrice}`,
-      tagColor: "bg-green-600 text-white",
-      mrpDisplay: baseOriginalPrice,
-      priceDisplay: basePrice,
-      savePercent: `${Math.round(((baseOriginalPrice - basePrice) / baseOriginalPrice) * 100)}%`,
-      quantity: 1
-    },
-    {
-      id: 2,
-      name: "Pack of 2",
-      subtitle: "2 Months Supply",
-      tag: `SAVE ₹${(baseOriginalPrice * 2) - Math.round(basePrice * 1.8)}`,
-      tagColor: "bg-[#457b76] text-white",
-      badge: "MOST POPULAR",
-      mrpDisplay: baseOriginalPrice * 2,
-      priceDisplay: Math.round(basePrice * 1.8), // 20% discount on bulk
-      savePercent: `${Math.round((((baseOriginalPrice * 2) - Math.round(basePrice * 1.8)) / (baseOriginalPrice * 2)) * 100)}%`,
-      quantity: 2
-    },
-    {
-      id: 3,
-      name: "Pack of 3",
-      subtitle: "3 Months Supply",
-      tag: `SAVE ₹${(baseOriginalPrice * 3) - Math.round(basePrice * 2.5)}`,
-      tagColor: "bg-green-700 text-white",
-      badge: "BEST VALUE",
-      mrpDisplay: baseOriginalPrice * 3,
-      priceDisplay: Math.round(basePrice * 2.5), // 25% discount on bulk
-      savePercent: `${Math.round((((baseOriginalPrice * 3) - Math.round(basePrice * 2.5)) / (baseOriginalPrice * 3)) * 100)}%`,
-      quantity: 3
-    }
-  ];
+  const packs = hasPacks ? product.packs.map((p, index) => ({
+    id: p.name,
+    name: p.name,
+    subtitle: p.subtitle || "",
+    tag: p.originalPrice > p.price ? `SAVE ₹${p.originalPrice - p.price}` : '',
+    tagColor: index === 0 ? "bg-green-600 text-white" : "bg-[#457b76] text-white",
+    badge: p.isRecommended ? "RECOMMENDED" : "",
+    mrpDisplay: p.originalPrice || p.price,
+    priceDisplay: p.price,
+    savePercent: p.originalPrice > p.price ? `${Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)}%` : '',
+    quantity: 1, // Treat each pack as a single unit in cart with modified price
+    stockQuantity: p.stockQuantity
+  })) : [{
+    id: 'base',
+    name: 'Standard Pack',
+    subtitle: '',
+    tag: '',
+    tagColor: "bg-green-600 text-white",
+    badge: '',
+    mrpDisplay: product?.originalPrice || product?.price,
+    priceDisplay: product?.price,
+    savePercent: product?.originalPrice > product?.price ? `${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%` : '',
+    quantity: 1,
+    stockQuantity: product?.stockQuantity || 0
+  }];
 
-  const currentPackData = packs.find(p => p.id === selectedPack);
-  const perPackPrice = Math.round(currentPackData.priceDisplay / selectedPack);
+  const currentPackData = packs.find(p => p.id === (selectedPack || recommendedPackId || packs[0].id)) || packs[0];
+  const isOutOfStock = currentPackData.stockQuantity <= 0;
 
-  const handleAddToCart = () => {
+  const packMatch = currentPackData.name.match(/\d+/);
+  const packMultiplier = packMatch ? parseInt(packMatch[0], 10) : 1;
+  const perPackPrice = Math.round(currentPackData.priceDisplay / packMultiplier);
+
+  const quantityInCart = (() => {
+    if (!cartItems || !product || !currentPackData) return 0;
+    const item = cartItems.find(i => i.id === product.id && i.packName === (hasPacks ? currentPackData.name : null));
+    return item ? item.quantity : 0;
+  })();
+
+
+
+  const handleAddToCart = async () => {
+    if (isOutOfStock) return;
     if (!user) {
       navigate('/login');
       return;
     }
-    addToCart(product, currentPackData.quantity);
+    setIsAddingToCart(true);
+    await addToCart(product, quantity, hasPacks ? currentPackData.name : null);
+    setIsAddingToCart(false);
+    setAddedSuccess(true);
+    setTimeout(() => setAddedSuccess(false), 2000);
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
+    if (isOutOfStock) return;
     if (!user) {
       navigate('/login');
       return;
     }
-    addToCart(product, currentPackData.quantity);
+    setIsBuyingNow(true);
+    await addToCart(product, quantity, hasPacks ? currentPackData.name : null);
+    setIsBuyingNow(false);
     navigate('/cart');
   };
 
@@ -383,19 +394,60 @@ export default function ProductDetails() {
           </div>
 
           {/* Offer Box */}
-          <div className="bg-[#f6eedd] border border-[#e8dcb9] rounded flex items-center justify-center py-2.5 gap-2 mb-6">
-            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm">OFFER</span>
-            <div className="w-4 h-4 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-[10px] font-bold">%</div>
-            <span className="text-[12px] text-[#3c3021]">Flat <strong>5% OFF</strong> on Prepaid Orders</span>
-          </div>
+          {product.offerText && (
+            <div className="bg-[#f6eedd] border border-[#e8dcb9] rounded flex items-center justify-center py-2.5 gap-2 mb-6">
+              <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm">OFFER</span>
+              <div className="w-4 h-4 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-[10px] font-bold">%</div>
+              <span className="text-[12px] text-[#3c3021]" dangerouslySetInnerHTML={{ __html: product.offerText }}></span>
+            </div>
+          )}
 
-          {/* Action Buttons */}
-          <div className="flex gap-3 mb-6">
-            <button onClick={handleAddToCart} className="flex-1 bg-[#3a2c1f] hover:bg-[#2b1f15] text-white font-bold py-4 rounded-sm flex items-center justify-center gap-2 transition-colors text-sm">
-               ADD TO CART
-            </button>
-            <button onClick={handleBuyNow} className="flex-1 bg-secondary border border-[#3a2c1f] hover:bg-gray-50 text-[#3a2c1f] font-bold py-4 rounded-sm transition-colors text-sm">
-              BUY NOW
+          {/* Action Row */}
+          <div className="flex gap-3 mb-6 items-stretch h-14">
+            
+            {/* Quantity Selector */}
+            <div className="flex items-center border border-[#e8dcb9] rounded-sm bg-white overflow-hidden w-28 shrink-0">
+              <button 
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="w-10 h-full flex items-center justify-center text-[#1a2936] hover:bg-gray-50 transition-colors font-bold text-lg"
+              >
+                −
+              </button>
+              <div className="flex-1 h-full flex items-center justify-center font-bold text-[15px] text-[#1a2936] bg-[#fdfdfc] border-x border-[#e8dcb9]">
+                {quantity}
+              </div>
+              <button 
+                onClick={() => setQuantity(quantity + 1)}
+                className="w-10 h-full flex items-center justify-center text-[#1a2936] hover:bg-gray-50 transition-colors font-bold text-lg"
+              >
+                +
+              </button>
+            </div>
+
+            {quantityInCart > 0 ? (
+              <button 
+                onClick={() => navigate('/cart')}
+                className="flex-1 font-bold rounded-sm flex items-center justify-center gap-2 transition-colors text-sm bg-green-600 hover:bg-green-700 text-white"
+              >
+                GO TO CART
+              </button>
+            ) : (
+              <button 
+                onClick={handleAddToCart} 
+                disabled={isOutOfStock || isAddingToCart || addedSuccess}
+                className={`flex-1 font-bold rounded-sm flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                  addedSuccess ? 'bg-green-600 text-white' : 'bg-[#3a2c1f] hover:bg-[#2b1f15] text-white'
+                }`}
+              >
+                 {isAddingToCart ? <Loader2 className="w-5 h-5 animate-spin text-white" /> : (addedSuccess ? '✓ ADDED TO CART' : (isOutOfStock ? 'OUT OF STOCK' : 'ADD TO CART'))}
+              </button>
+            )}
+            <button 
+              onClick={handleBuyNow} 
+              disabled={isOutOfStock || isBuyingNow}
+              className="flex-1 bg-secondary border border-[#3a2c1f] hover:bg-gray-50 text-[#3a2c1f] font-bold rounded-sm flex items-center justify-center gap-2 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isBuyingNow ? <Loader2 className="w-5 h-5 animate-spin text-[#3a2c1f]" /> : 'BUY NOW'}
             </button>
           </div>
 
@@ -415,22 +467,7 @@ export default function ProductDetails() {
             </div>
           </div>
 
-          {/* Pincode Checker */}
-          <div className="bg-[#24424e] rounded-t overflow-hidden relative mb-0">
-            <div className="flex items-center bg-secondary m-1 rounded-sm border border-gray-200 p-1 pl-3 gap-2">
-              <Truck className="w-4 h-4 text-gray-400" />
-              <input 
-                type="text" 
-                placeholder="Unlock Fast Delivery - Check Eligibility" 
-                className="flex-1 text-[13px] outline-none placeholder-gray-400 py-2"
-              />
-              <button className="bg-[#1b3447] text-white p-2 rounded-sm"><Search className="w-4 h-4"/></button>
-            </div>
-            <div className="bg-[#24424e] px-4 py-2 flex items-center justify-between text-white text-[11px]">
-              <span>Enter pincode to check delivery</span>
-              <span className="opacity-80">powered by <strong className="text-yellow-400">GoKwik</strong></span>
-            </div>
-          </div>
+
 
           {/* How to Consume Box */}
           <div className="bg-[#f7f2dc] border-t-0 border border-[#e8dcb9] rounded-b-md p-6 flex flex-col items-center">
@@ -584,8 +621,12 @@ export default function ProductDetails() {
           </div>
 
           <div className="flex-1 flex justify-end">
-            <button onClick={handleBuyNow} className="bg-[#3a2c1f] hover:bg-[#2b1f15] text-white font-bold py-3.5 px-8 rounded flex items-center gap-2 transition-colors text-[13px] uppercase tracking-wider ml-4">
-              BUY NOW - ₹{currentPackData.priceDisplay.toLocaleString('en-IN')}
+            <button 
+              onClick={handleBuyNow} 
+              disabled={isOutOfStock || isBuyingNow}
+              className="bg-[#3a2c1f] hover:bg-[#2b1f15] text-white font-bold py-3.5 px-8 rounded flex items-center justify-center gap-2 transition-colors text-[13px] uppercase tracking-wider ml-4 disabled:opacity-50 disabled:cursor-not-allowed min-w-[200px]"
+            >
+              {isBuyingNow ? <Loader2 className="w-5 h-5 animate-spin text-white" /> : `BUY NOW - ₹${currentPackData.priceDisplay.toLocaleString('en-IN')}`}
             </button>
           </div>
           

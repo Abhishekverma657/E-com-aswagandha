@@ -17,9 +17,13 @@ export default function Login() {
     setSubmitting(true);
     setError(null);
     try {
-      await login(email, password);
-      // Redirect to shop on successful login
-      navigate('/shop');
+      const userData = await login(email, password);
+      // Redirect to admin console if admin, else shop
+      if (userData && userData.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/shop');
+      }
     } catch (err) {
       console.error(err);
       setError(err.message || 'Invalid email or password');

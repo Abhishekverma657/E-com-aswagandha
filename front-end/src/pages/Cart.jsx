@@ -68,7 +68,7 @@ export default function Cart() {
                         {item.category || "Wellness"}
                       </span>
                       <button 
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item.id, item.packName)}
                         className="text-xs text-danger/80 hover:text-danger flex items-center gap-1 transition-colors pt-2 font-medium font-sans"
                         aria-label="Remove Item"
                       >
@@ -92,13 +92,13 @@ export default function Cart() {
                   <div className="col-span-1 flex justify-center">
                     <div className="flex items-center border border-primary/10 bg-secondary rounded-xs">
                       <button 
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)} 
+                        onClick={() => updateQuantity(item.id, item.quantity - 1, item.packName)} 
                         className="px-3 py-1.5 hover:bg-primary/5 transition-colors text-primary"
                         aria-label="Decrease Quantity"
                       >-</button>
                       <span className="px-4 py-1.5 font-bold min-w-[2.2rem] text-center text-xs font-sans">{item.quantity}</span>
                       <button 
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)} 
+                        onClick={() => updateQuantity(item.id, item.quantity + 1, item.packName)} 
                         className="px-3 py-1.5 hover:bg-primary/5 transition-colors text-primary"
                         aria-label="Increase Quantity"
                       >+</button>

@@ -13,6 +13,8 @@ export default function Checkout() {
   const shippingCost = cartTotal >= shippingThreshold ? 0 : 50;
   const totalAmount = cartTotal + shippingCost;
 
+  const isCodAvailableForOrder = cartItems.every(item => item.codAvailable !== false);
+
   const [formData, setFormData] = useState({
     firstName: user ? user.name.split(' ')[0] : '',
     lastName: user ? user.name.split(' ').slice(1).join(' ') : '',
@@ -22,15 +24,32 @@ export default function Checkout() {
     city: '',
     state: '',
     zipCode: '',
-    paymentMethod: 'COD' // default Cash on Delivery
+    paymentMethod: isCodAvailableForOrder ? 'COD' : 'CARD'
   });
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [saveAddress, setSaveAddress] = useState(false);
+  const [isAddingNewAddress, setIsAddingNewAddress] = useState(!user || !user.addresses || user.addresses.length === 0);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -58,18 +77,103 @@ export default function Checkout() {
     };
 
     try {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderPayload)
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to place order');
+      if (user && saveAddress) {
+        const token = localStorage.getItem('nagouri_token');
+        if (token) {
+          fetch('/api/users/addresses', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              address: formData.address,
+              city: formData.city,
+              state: formData.state,
+              zipCode: formData.zipCode,
+              phone: formData.phone,
+              isDefault: false
+            })
+          }).catch(console.error);
+        }
+      }
 
-      // Clear the cart
-      clearCart();
-      // Redirect to confirmation screen using the custom orderId returned from API
-      navigate(`/order-confirmation/${data.orderId}`);
+      if (formData.paymentMethod === 'CARD') {
+        const resScript = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+        if (!resScript) {
+          throw new Error('Razorpay SDK failed to load. Are you online?');
+        }
+
+        const createRes = await fetch('/api/payment/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: totalAmount })
+        });
+        const createData = await createRes.json();
+        if (!createRes.ok) throw new Error(createData.error || 'Failed to create payment order');
+
+        const { order, keyId } = createData;
+
+        const options = {
+          key: keyId,
+          amount: order.amount,
+          currency: order.currency,
+          name: "Nagouri",
+          description: "Premium Ayurvedic Formulations",
+          order_id: order.id,
+          handler: async function (response) {
+            try {
+              const verifyRes = await fetch('/api/payment/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  orderPayload
+                })
+              });
+              const verifyData = await verifyRes.json();
+              if (!verifyRes.ok) throw new Error(verifyData.error || 'Payment verification failed');
+              
+              clearCart();
+              navigate(`/order-confirmation/${verifyData.orderId}`);
+            } catch (err) {
+              console.error(err);
+              setError(err.message);
+              setSubmitting(false);
+            }
+          },
+          prefill: {
+            name: `${formData.firstName} ${formData.lastName}`,
+            email: formData.email,
+            contact: formData.phone
+          },
+          theme: {
+            color: "#1e3a34"
+          }
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.on('payment.failed', function (response) {
+          setError('Payment failed: ' + response.error.description);
+          setSubmitting(false);
+        });
+        paymentObject.open();
+      } else {
+        const res = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to place order');
+
+        clearCart();
+        navigate(`/order-confirmation/${data.orderId}`);
+      }
     } catch (err) {
       console.error(err);
       setError(err.message);
@@ -119,6 +223,8 @@ export default function Checkout() {
                       key={addr._id}
                       type="button"
                       onClick={() => {
+                        setSelectedAddressId(addr._id);
+                        setIsAddingNewAddress(false);
                         setFormData({
                           firstName: addr.firstName,
                           lastName: addr.lastName,
@@ -130,8 +236,9 @@ export default function Checkout() {
                           zipCode: addr.zipCode,
                           paymentMethod: formData.paymentMethod
                         });
+                        setSaveAddress(false);
                       }}
-                      className="bg-secondary p-4 border border-primary/10 hover:border-accent transition-all text-left text-xs rounded-xs font-sans space-y-1.5 cursor-pointer shadow-xs hover:shadow-md"
+                      className={`p-4 border transition-all text-left text-xs rounded-xs font-sans space-y-1.5 cursor-pointer shadow-xs hover:shadow-md ${selectedAddressId === addr._id ? 'border-accent bg-accent/5' : 'bg-secondary border-primary/10 hover:border-accent'}`}
                     >
                       <div className="font-bold text-primary flex justify-between">
                         <span>{addr.firstName} {addr.lastName}</span>
@@ -143,6 +250,29 @@ export default function Checkout() {
                     </button>
                   ))}
                 </div>
+                {!isAddingNewAddress && (
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setIsAddingNewAddress(true);
+                      setSelectedAddressId(null);
+                      setFormData({
+                        firstName: user ? user.name.split(' ')[0] : '',
+                        lastName: user ? user.name.split(' ').slice(1).join(' ') : '',
+                        email: user ? user.email : '',
+                        phone: '',
+                        address: '',
+                        city: '',
+                        state: '',
+                        zipCode: '',
+                        paymentMethod: formData.paymentMethod
+                      });
+                    }}
+                    className="mt-5 text-[11px] font-bold uppercase tracking-wider text-accent hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    + Add a New Address
+                  </button>
+                )}
               </div>
             )}
 
@@ -153,7 +283,9 @@ export default function Checkout() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6 font-sans text-sm">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {isAddingNewAddress && (
+                <div className="space-y-6 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-primary uppercase tracking-wider block">First Name</label>
                   <input 
@@ -253,11 +385,31 @@ export default function Checkout() {
                 </div>
               </div>
 
+              {user && (
+                <div className="flex items-center gap-2 mt-2 mb-6">
+                  <input
+                    type="checkbox"
+                    id="saveAddress"
+                    checked={saveAddress}
+                    onChange={(e) => setSaveAddress(e.target.checked)}
+                    className="accent-accent w-4 h-4 cursor-pointer"
+                  />
+                  <label htmlFor="saveAddress" className="text-xs text-primary cursor-pointer font-bold uppercase tracking-wider">
+                    Save this address for future orders
+                  </label>
+                </div>
+              )}
+              </div>
+              )}
+
               <h2 className="font-serif text-2xl font-bold text-primary border-b border-primary/5 pb-4 pt-6 mb-6 tracking-wide">Payment Method</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Cash on Delivery */}
-                <label className={`border p-5 rounded-xs flex items-center justify-between cursor-pointer transition-all ${formData.paymentMethod === 'COD' ? 'border-accent bg-accent/5' : 'border-primary/10 hover:border-accent/40'}`}>
+                <label className={`border p-5 rounded-xs flex items-center justify-between transition-all ${
+                  !isCodAvailableForOrder ? 'opacity-50 cursor-not-allowed bg-secondary/50' : 
+                  formData.paymentMethod === 'COD' ? 'border-accent bg-accent/5 cursor-pointer' : 'border-primary/10 hover:border-accent/40 cursor-pointer'
+                }`}>
                   <div className="flex items-center gap-3">
                     <input 
                       type="radio" 
@@ -265,14 +417,17 @@ export default function Checkout() {
                       value="COD" 
                       checked={formData.paymentMethod === 'COD'}
                       onChange={handleInputChange}
-                      className="accent-accent"
+                      disabled={!isCodAvailableForOrder}
+                      className="accent-accent disabled:opacity-50"
                     />
                     <div className="text-left">
                       <span className="font-bold text-primary block">Cash on Delivery (COD)</span>
-                      <span className="text-[10px] text-dark/60">Pay with cash upon delivery</span>
+                      <span className="text-[10px] text-dark/60">
+                        {isCodAvailableForOrder ? 'Pay with cash upon delivery' : 'Not available for one or more items in cart'}
+                      </span>
                     </div>
                   </div>
-                  <Truck className="w-5 h-5 text-accent" />
+                  <Truck className={`w-5 h-5 ${!isCodAvailableForOrder ? 'text-dark/40' : 'text-accent'}`} />
                 </label>
 
                 {/* Card Mock */}
@@ -297,24 +452,10 @@ export default function Checkout() {
 
               {formData.paymentMethod === 'CARD' && (
                 <div className="p-5 bg-secondary/20 border border-primary/5 rounded-xs space-y-4 animate-fade-in text-left">
-                  <span className="text-[10px] bg-accent/15 text-accent font-bold px-2 py-0.5 uppercase tracking-wider rounded-xs inline-block mb-2">Secure Online Payment Simulator</span>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-primary/70 uppercase">Card Number</label>
-                      <input type="text" placeholder="xxxx xxxx xxxx xxxx" className="w-full border border-primary/10 bg-secondary p-2.5 outline-none rounded-xs" disabled />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-primary/70 uppercase">Expiry Date</label>
-                        <input type="text" placeholder="MM/YY" className="w-full border border-primary/10 bg-secondary p-2.5 outline-none rounded-xs" disabled />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-primary/70 uppercase">CVV</label>
-                        <input type="password" placeholder="***" className="w-full border border-primary/10 bg-secondary p-2.5 outline-none rounded-xs" disabled />
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-[10px] text-dark/50 leading-relaxed italic">Note: Online payment integration is currently simulated. Placing the order will complete without real money transactions.</p>
+                  <span className="text-[10px] bg-accent/15 text-accent font-bold px-2 py-0.5 uppercase tracking-wider rounded-xs inline-block mb-2">Secure Online Payment</span>
+                  <p className="text-xs text-dark/65 font-medium leading-relaxed">
+                    You will be redirected to the secure Razorpay payment gateway to complete your transaction after clicking 'Complete Order'.
+                  </p>
                 </div>
               )}
 

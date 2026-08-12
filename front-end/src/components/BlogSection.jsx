@@ -2,52 +2,14 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useContent } from '../context/ContentContext';
 
 export default function BlogSection() {
+  const { content } = useContent();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const blogs = [
-    {
-      id: 1,
-      imageTitle: "Why You Feel More Tired During the Rainy Season",
-      title: "Fatigue in Monsoon: Why It Happens & What Helps",
-      excerpt: "There's something magical about the monsoon in India, the smell of wet earth, hot chai, pakoras. Plus, the sound of r...",
-      readTime: "6 MIN READ",
-      image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 2,
-      imageTitle: "How to Reduce Inflammation in the Body Naturally",
-      title: "How to Reduce Inflammation in the Body Naturally",
-      excerpt: "Have you ever felt tired even after enough sleep? Or noticed that your body aches fo...",
-      readTime: "7 MIN READ",
-      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 3,
-      imageTitle: "SUPPORTING BRAIN FUNCTION NATURALLY FOR VEGETARIANS",
-      title: "Cognitive Health: Supporting Brain Function Naturally for Vegetarians",
-      excerpt: "By mid-morning, many people start to feel mentally tired. You may have had your tea...",
-      readTime: "5 MIN READ",
-      image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 4,
-      imageTitle: "The Science Behind Ashwagandha and Stress",
-      title: "How Ashwagandha Helps Regulate Cortisol Levels",
-      excerpt: "Stress is an inevitable part of modern life. But did you know that an ancient herb can...",
-      readTime: "4 MIN READ",
-      image: "https://images.unsplash.com/photo-1611078505530-eb37827e85c2?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 5,
-      imageTitle: "Understanding Your Gut Microbiome",
-      title: "The Gut-Brain Connection: Why Digestion Matters",
-      excerpt: "Your gut is often called your second brain. Here's why keeping it healthy is crucial for your...",
-      readTime: "8 MIN READ",
-      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop"
-    }
-  ];
+  const blogs = content?.blogSection?.length > 0 ? content.blogSection.map((b, i) => ({...b, id: i})) : [];
+  if (blogs.length === 0) return null;
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % blogs.length);
@@ -57,11 +19,11 @@ export default function BlogSection() {
     setCurrentIndex((prev) => (prev - 1 + blogs.length) % blogs.length);
   };
 
-  const visibleBlogs = [
+  const visibleBlogs = blogs.length > 2 ? [
     blogs[currentIndex],
     blogs[(currentIndex + 1) % blogs.length],
     blogs[(currentIndex + 2) % blogs.length]
-  ];
+  ] : blogs;
 
   return (
     <section className="py-24 px-4 sm:px-6 bg-secondary relative overflow-hidden">
@@ -120,18 +82,19 @@ export default function BlogSection() {
                 {/* Content Box */}
                 <div className="p-6 md:p-8 flex flex-col flex-1 justify-between">
                   <div>
-                    <h4 className="font-sans font-bold text-gray-900 text-lg md:text-xl leading-snug mb-3 line-clamp-2">
+                    <h3 className="font-bold text-gray-900 text-[17px] leading-tight group-hover:text-primary transition-colors">
                       {blog.title}
-                    </h4>
-                    <p className="font-sans font-light text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
-                      {blog.excerpt}
-                    </p>
+                    </h3>
                   </div>
-                  
-                  <div className="flex items-center text-[10px] font-sans font-bold text-gray-900 tracking-widest uppercase">
-                    {blog.readTime}
-                    <ArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </div>
+                  <p className="text-sm text-gray-600 line-clamp-3 mb-6 flex-grow font-light">
+                    {blog.excerpt}
+                  </p>
+                  <Link 
+                    to={blog.link || "#"}
+                    className="flex items-center gap-2 text-primary font-bold text-xs tracking-widest uppercase hover:text-accent transition-colors mt-auto"
+                  >
+                    READ ARTICLE <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
 
               </motion.div>

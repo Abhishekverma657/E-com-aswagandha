@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Package, Clipboard, Plus, Trash2, Edit3, Save, X, Loader2, ArrowLeft, TrendingUp, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { Package, Clipboard, Plus, Trash2, Edit3, Save, X, Loader2, ArrowLeft, TrendingUp, AlertTriangle, CheckCircle, Clock, Eye, ListTree, Settings, LayoutTemplate } from 'lucide-react';
+import AdminStorefront from './AdminStorefront';
 
 export default function AdminDashboard() {
-  const { user, token } = useAuth();
+  const { user, token, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -12,28 +13,29 @@ export default function AdminDashboard() {
   
   // Data lists
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [viewingOrder, setViewingOrder] = useState(null);
 
-  // Modal / form states for Inventory CRUD
-  const [editingProduct, setEditingProduct] = useState(null); // 'new' or product object
-  const [productForm, setProductForm] = useState({
-    title: '',
-    price: '',
-    originalPrice: '',
-    image: '',
-    imageFile: null,
-    imageName: '',
-    category: '',
-    description: '',
-    benefitsInput: '', // comma-separated strings
-    ingredients: '',
-    usage: '',
-    sourcing: ''
+
+
+  // Category Management states
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryDesc, setNewCategoryDesc] = useState('');
+
+  // Settings Management states
+  const [siteSettings, setSiteSettings] = useState({
+    paymentKeys: {
+      razorpayKeyId: '',
+      razorpayKeySecret: '',
+      stripePublicKey: '',
+      stripeSecretKey: ''
+    }
   });
-  const [savingProduct, setSavingProduct] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
 
   // Authenticate Admin Role
   const isAuthorized = user && user.role === 'admin';
@@ -66,6 +68,24 @@ export default function AdminDashboard() {
         setLoadingProducts(false);
       });
 
+    // Fetch Categories
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(console.error);
+
+    // Fetch Settings
+    fetch('/api/admin/settings', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.paymentKeys) {
+          setSiteSettings(data);
+        }
+      })
+      .catch(console.error);
+
     // Fetch Orders
     fetch('/api/admin/orders', {
       headers: {
@@ -90,7 +110,7 @@ export default function AdminDashboard() {
   // Calculations for Admin Analytics Summary Widget
   const metrics = useMemo(() => {
     const totalSales = orders.reduce((sum, order) => sum + order.totalAmount, 0);
-    const pendingOrders = orders.filter(o => o.status === 'Pending' || o.status === 'Processing').length;
+    const pendingOrders = orders.filter(o => ['Order in process', 'Order accepted', 'Packed', 'Dispatch', 'On road', 'Delivering today'].includes(o.status)).length;
     const completedOrders = orders.filter(o => o.status === 'Delivered').length;
     return {
       totalSales,
@@ -101,104 +121,7 @@ export default function AdminDashboard() {
     };
   }, [orders, products]);
 
-  // Product CRUD Handlers
-  const openProductForm = (product = null) => {
-    if (product === 'new') {
-      setEditingProduct('new');
-      setProductForm({
-        title: '',
-        price: '',
-        originalPrice: '',
-        image: '/vitality-gummies.png',
-        imageFile: null,
-        imageName: '',
-        category: 'Ashwagandha',
-        description: '',
-        benefitsInput: '',
-        ingredients: '',
-        usage: '',
-        sourcing: ''
-      });
-    } else {
-      setEditingProduct(product);
-      setProductForm({
-        title: product.title,
-        price: product.price,
-        originalPrice: product.originalPrice || '',
-        image: product.image,
-        imageFile: null,
-        imageName: '',
-        category: product.category,
-        description: product.description,
-        benefitsInput: product.benefits ? product.benefits.join(', ') : '',
-        ingredients: product.ingredients || '',
-        usage: product.usage || '',
-        sourcing: product.sourcing || ''
-      });
-    }
-  };
 
-  const handleImageFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProductForm(prev => ({
-        ...prev,
-        imageFile: reader.result,
-        imageName: file.name
-      }));
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const closeProductForm = () => {
-    setEditingProduct(null);
-  };
-
-  const handleProductSubmit = async (e) => {
-    e.preventDefault();
-    setSavingProduct(true);
-
-    const payload = {
-      ...productForm,
-      price: parseFloat(productForm.price),
-      originalPrice: productForm.originalPrice ? parseFloat(productForm.originalPrice) : null,
-      benefits: productForm.benefitsInput.split(',').map(b => b.trim()).filter(Boolean)
-    };
-
-    const url = editingProduct === 'new' 
-      ? '/api/admin/products' 
-      : `/api/admin/products/${editingProduct.id}`;
-    const method = editingProduct === 'new' ? 'POST' : 'PUT';
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to save product');
-
-      // Refresh products list
-      if (editingProduct === 'new') {
-        setProducts(prev => [...prev, data]);
-      } else {
-        setProducts(prev => prev.map(p => p.id === data.id ? data : p));
-      }
-      setEditingProduct(null);
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-    } finally {
-      setSavingProduct(false);
-    }
-  };
 
   const handleDeleteProduct = async (prodId) => {
     if (!window.confirm('Are you sure you want to delete this product from the inventory? This cannot be undone.')) return;
@@ -216,6 +139,13 @@ export default function AdminDashboard() {
       console.error(err);
       alert(err.message);
     }
+  };
+
+  const getStatusColor = (status) => {
+    if (status === 'Delivered') return 'bg-green-50 border-green-200 text-green-700';
+    if (['Packed', 'Dispatch', 'On road', 'Delivering today', 'Order accepted'].includes(status)) return 'bg-blue-50 border-blue-200 text-blue-700';
+    if (status === 'Order in process') return 'bg-yellow-50 border-yellow-200 text-yellow-700';
+    return 'bg-red-50 border-red-200 text-red-700';
   };
 
   // Order Status Handler
@@ -249,6 +179,64 @@ export default function AdminDashboard() {
     });
   };
 
+  // Category Management Handlers
+  const handleAddCategory = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/admin/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: newCategoryName, description: newCategoryDesc })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setCategories(prev => [data, ...prev]);
+      setNewCategoryName('');
+      setNewCategoryDesc('');
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleDeleteCategory = async (catId) => {
+    if (!window.confirm("Are you sure you want to delete this category?")) return;
+    try {
+      const res = await fetch(`/api/admin/categories/${catId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("Failed to delete category");
+      setCategories(prev => prev.filter(c => c._id !== catId));
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  // Settings Management Handlers
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+    setSavingSettings(true);
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(siteSettings)
+      });
+      if (!res.ok) throw new Error("Failed to save settings");
+      alert("Settings saved successfully!");
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
   // Guard for Non-Admin access
   if (!isAuthorized) {
     return (
@@ -274,8 +262,59 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="bg-secondary min-h-screen pt-[184px] pb-24 text-left font-sans text-sm text-primary">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="bg-secondary min-h-screen flex text-left font-sans text-sm text-primary">
+      {/* Sidebar */}
+      <aside className="w-64 bg-primary text-secondary flex flex-col fixed h-full z-10 shadow-lg">
+        <div className="p-6 border-b border-secondary/10 flex items-center justify-between">
+          <Link to="/" className="text-xl font-serif font-bold text-accent tracking-widest uppercase">Nagouri</Link>
+        </div>
+        
+        <nav className="flex-1 py-8 px-4 space-y-2">
+          <button 
+            onClick={() => setActiveTab('inventory')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'inventory' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
+          >
+            <Package className="w-4 h-4" /> Inventory
+          </button>
+          <button 
+            onClick={() => setActiveTab('orders')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'orders' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
+          >
+            <Clipboard className="w-4 h-4" /> Orders
+          </button>
+          <button 
+            onClick={() => setActiveTab('categories')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'categories' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
+          >
+            <ListTree className="w-4 h-4" /> Categories
+          </button>
+          <button 
+            onClick={() => setActiveTab('storefront')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'storefront' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
+          >
+            <LayoutTemplate className="w-4 h-4" /> Storefront CMS
+          </button>
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'settings' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
+          >
+            <Settings className="w-4 h-4" /> Settings
+          </button>
+        </nav>
+
+        <div className="p-4 border-t border-secondary/10">
+          <button 
+            onClick={() => { logout(); navigate('/login'); }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold text-secondary/70 hover:text-red-400 hover:bg-secondary/5 cursor-pointer"
+          >
+             Log Out
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="flex-1 ml-64 p-8 md:p-12 min-h-screen">
+        <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
@@ -283,9 +322,9 @@ export default function AdminDashboard() {
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary tracking-wide">Admin Console</h1>
             <p className="text-dark/50 text-xs mt-1">Sourcing inventory metrics, adaptogen formulations, and shipment logs.</p>
           </div>
-          {!editingProduct && activeTab === 'inventory' && (
+          {activeTab === 'inventory' && (
             <button 
-              onClick={() => openProductForm('new')}
+              onClick={() => navigate('/admin/product/new')}
               className="bg-primary text-secondary hover:bg-primary-light font-bold py-3.5 px-6 text-xs uppercase tracking-widest transition-all rounded-xs flex items-center gap-1.5 cursor-pointer shadow-md"
             >
               <Plus className="w-4 h-4 text-accent" />
@@ -341,197 +380,9 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Tab Selection */}
-        <div className="flex border-b border-primary/10 mb-8 font-serif text-base tracking-wide">
-          <button 
-            onClick={() => setActiveTab('inventory')}
-            className={`pb-3 px-6 font-bold transition-all relative cursor-pointer ${
-              activeTab === 'inventory' ? 'text-accent border-b-2 border-accent' : 'text-primary/50 hover:text-primary'
-            }`}
-          >
-            Manage Inventory
-          </button>
-          <button 
-            onClick={() => setActiveTab('orders')}
-            className={`pb-3 px-6 font-bold transition-all relative cursor-pointer ${
-              activeTab === 'orders' ? 'text-accent border-b-2 border-accent' : 'text-primary/50 hover:text-primary'
-            }`}
-          >
-            Manage Orders
-          </button>
-        </div>
-
         {/* TAB CONTENT: INVENTORY CRUD */}
         {activeTab === 'inventory' && (
           <div className="space-y-8 animate-fade-in">
-            {editingProduct && (
-              <div className="bg-secondary p-8 border border-accent/20 rounded-sm shadow-md space-y-6">
-                <div className="flex justify-between items-center border-b border-primary/5 pb-4">
-                  <h3 className="font-serif text-2xl font-bold text-primary">
-                    {editingProduct === 'new' ? 'Create New Formulation' : 'Modify Formulation'}
-                  </h3>
-                  <button onClick={closeProductForm} className="text-dark/50 hover:text-red-500 transition-colors">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <form onSubmit={handleProductSubmit} className="space-y-6 text-xs font-sans">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Product Title</label>
-                      <input 
-                        type="text" 
-                        value={productForm.title}
-                        onChange={(e) => setProductForm(prev => ({ ...prev, title: e.target.value }))}
-                        placeholder="e.g. Pure Himalayan Shilajit Gold Resin"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
-                        required 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Category</label>
-                      <select 
-                        value={productForm.category}
-                        onChange={(e) => setProductForm(prev => ({ ...prev, category: e.target.value }))}
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs"
-                      >
-                        <option value="Ashwagandha">Ashwagandha</option>
-                        <option value="Shilajit">Shilajit</option>
-                        <option value="Gummies">Gummies</option>
-                        <option value="Combos">Combos</option>
-                        <option value="Stress & Sleep">Stress & Sleep</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Sale Price (₹)</label>
-                      <input 
-                        type="number" 
-                        value={productForm.price}
-                        onChange={(e) => setProductForm(prev => ({ ...prev, price: e.target.value }))}
-                        placeholder="799"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
-                        required 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Original Price (₹)</label>
-                      <input 
-                        type="number" 
-                        value={productForm.originalPrice}
-                        onChange={(e) => setProductForm(prev => ({ ...prev, originalPrice: e.target.value }))}
-                        placeholder="1199"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Product Image</label>
-                      <div className="flex flex-col gap-2">
-                        {/* File upload input */}
-                        <div className="flex items-center gap-2">
-                          <input 
-                            type="file" 
-                            accept="image/*"
-                            onChange={handleImageFileChange}
-                            className="text-xs text-primary/80 file:mr-3 file:py-2.5 file:px-4 file:rounded-xs file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-wider file:bg-accent/15 file:text-accent hover:file:bg-accent hover:file:text-primary transition-all cursor-pointer w-full"
-                          />
-                        </div>
-                        {/* Manual URL entry fallback */}
-                        <div className="space-y-1">
-                          <span className="text-[9px] text-dark/45 font-bold block uppercase tracking-wider">Or enter image URL path:</span>
-                          <input 
-                            type="text" 
-                            value={productForm.image}
-                            onChange={(e) => setProductForm(prev => ({ ...prev, image: e.target.value }))}
-                            placeholder="/nagori-ashwagandha.png"
-                            className="w-full border border-primary/10 bg-secondary/15 p-2 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs text-[10px]" 
-                          />
-                        </div>
-                        {productForm.imageName && (
-                          <span className="text-[10px] text-green-600 font-bold block">✓ Selected: {productForm.imageName}</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="font-bold uppercase tracking-wider block">Benefits Summary (Comma-separated)</label>
-                    <input 
-                      type="text" 
-                      value={productForm.benefitsInput}
-                      onChange={(e) => setProductForm(prev => ({ ...prev, benefitsInput: e.target.value }))}
-                      placeholder="Lowers Cortisol, Supports sleep, Boosts stamina"
-                      className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs" 
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="font-bold uppercase tracking-wider block">Description</label>
-                    <textarea 
-                      value={productForm.description}
-                      onChange={(e) => setProductForm(prev => ({ ...prev, description: e.target.value }))}
-                      placeholder="Detailed sourcing explanation and benefits of this formulation..."
-                      rows="4"
-                      className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
-                      required 
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Ingredients Specification</label>
-                      <textarea 
-                        value={productForm.ingredients}
-                        onChange={(e) => setProductForm(prev => ({ ...prev, ingredients: e.target.value }))}
-                        placeholder="100% pure standardized Withanolides..."
-                        rows="2"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Usage Recommendation</label>
-                      <textarea 
-                        value={productForm.usage}
-                        onChange={(e) => setProductForm(prev => ({ ...prev, usage: e.target.value }))}
-                        placeholder="Take 1 capsule twice daily..."
-                        rows="2"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-bold uppercase tracking-wider block">Sourcing Location details</label>
-                      <textarea 
-                        value={productForm.sourcing}
-                        onChange={(e) => setProductForm(prev => ({ ...prev, sourcing: e.target.value }))}
-                        placeholder="Directly harvested from dry soils of Nagaur, Rajasthan..."
-                        rows="2"
-                        className="w-full border border-primary/10 bg-secondary/15 p-3.5 focus:outline-none focus:border-accent focus:bg-secondary transition-all text-primary font-medium rounded-xs resize-none" 
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <button 
-                      type="submit" 
-                      disabled={savingProduct}
-                      className="bg-primary text-secondary hover:bg-primary-light font-bold py-3.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50"
-                    >
-                      {savingProduct ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Save className="w-4 h-4 text-accent" />}
-                      <span>{editingProduct === 'new' ? 'Publish Formula' : 'Update Formula'}</span>
-                    </button>
-                    <button 
-                      type="button" 
-                      onClick={closeProductForm}
-                      className="bg-secondary border border-primary/10 hover:border-accent text-primary font-bold py-3.5 px-8 uppercase tracking-[0.2em] text-xs transition-all duration-300 rounded-sm shadow-xs cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
 
             {loadingProducts ? (
               <div className="text-center py-20 bg-secondary border border-primary/5 rounded-sm">
@@ -549,6 +400,7 @@ export default function AdminDashboard() {
                         <th className="px-6 py-4">Formula Details</th>
                         <th className="px-6 py-4">Category</th>
                         <th className="px-6 py-4">Price</th>
+                        <th className="px-6 py-4">Stock</th>
                         <th className="px-6 py-4 text-right">Actions</th>
                       </tr>
                     </thead>
@@ -568,20 +420,36 @@ export default function AdminDashboard() {
                           <td className="px-6 py-4">
                             <span className="bg-secondary px-2.5 py-1 text-[10px] uppercase font-bold tracking-wider rounded-xs border border-primary/5 text-primary/75">{prod.category}</span>
                           </td>
-                          <td className="px-6 py-4 font-bold text-primary">₹{prod.price.toLocaleString('en-IN')}</td>
+                          <td className="px-6 py-4">
+                            <span className="font-bold text-primary block">₹{prod.price.toLocaleString('en-IN')}</span>
+                            {prod.originalPrice > prod.price && (
+                              <div className="flex items-center gap-1 mt-0.5">
+                                <span className="text-[9px] text-dark/40 line-through">₹{prod.originalPrice.toLocaleString('en-IN')}</span>
+                                <span className="text-[9px] text-red-500 font-bold">
+                                  ({Math.round(((prod.originalPrice - prod.price) / prod.originalPrice) * 100)}% OFF)
+                                </span>
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`px-2.5 py-1 text-[10px] uppercase font-bold tracking-wider rounded-xs border ${prod.stockQuantity > 0 ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200'}`}>
+                              {prod.stockQuantity > 0 ? prod.stockQuantity : 'Out of Stock'}
+                            </span>
+                          </td>
                           <td className="px-6 py-4 text-right">
-                            <div className="flex justify-end gap-3 text-[10px] uppercase tracking-wider font-bold">
+                            <div className="flex gap-2">
                               <button 
-                                onClick={() => openProductForm(prod)}
-                                className="text-primary/60 hover:text-accent transition-colors flex items-center gap-1 cursor-pointer"
+                                onClick={() => navigate(`/admin/product/${prod.id}`)}
+                                className="text-primary/60 hover:text-accent p-2 bg-secondary/30 rounded-xs transition-colors"
+                                title="Modify Inventory Details"
                               >
-                                <Edit3 className="w-3.5 h-3.5" /> Edit
+                                <Edit3 className="w-4 h-4" />
                               </button>
                               <button 
                                 onClick={() => handleDeleteProduct(prod.id)}
-                                className="text-red-500 hover:text-red-700 transition-colors flex items-center gap-1 cursor-pointer"
+                                className="text-red-500 hover:text-red-700 p-2 bg-red-50 rounded-xs transition-colors"
                               >
-                                <Trash2 className="w-3.5 h-3.5" /> Delete
+                                <Trash2 className="w-4 h-4" />
                               </button>
                             </div>
                           </td>
@@ -592,6 +460,74 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* TAB CONTENT: CATEGORIES MANAGEMENT */}
+        {activeTab === 'categories' && (
+          <div className="animate-fade-in space-y-6">
+            <div className="bg-secondary border border-primary/5 rounded-sm p-6 shadow-sm">
+              <h3 className="font-serif font-bold text-lg text-primary mb-4">Add New Category</h3>
+              <form onSubmit={handleAddCategory} className="flex gap-4 items-end">
+                <div className="flex-1 space-y-2">
+                  <label className="font-bold text-xs uppercase tracking-wider block">Category Name</label>
+                  <input 
+                    type="text" 
+                    value={newCategoryName} 
+                    onChange={(e) => setNewCategoryName(e.target.value)} 
+                    className="w-full border border-primary/10 bg-secondary/15 p-3 focus:outline-none focus:border-accent text-primary font-medium rounded-xs" 
+                    required 
+                  />
+                </div>
+                <div className="flex-2 space-y-2">
+                  <label className="font-bold text-xs uppercase tracking-wider block">Description (Optional)</label>
+                  <input 
+                    type="text" 
+                    value={newCategoryDesc} 
+                    onChange={(e) => setNewCategoryDesc(e.target.value)} 
+                    className="w-full border border-primary/10 bg-secondary/15 p-3 focus:outline-none focus:border-accent text-primary font-medium rounded-xs" 
+                  />
+                </div>
+                <button type="submit" className="bg-primary text-secondary hover:bg-primary-light font-bold py-3 px-6 uppercase tracking-widest text-xs transition-colors rounded-xs cursor-pointer flex items-center gap-2 h-[46px]">
+                  <Plus className="w-4 h-4" /> Add
+                </button>
+              </form>
+            </div>
+
+            <div className="bg-secondary border border-primary/5 rounded-sm shadow-md overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs text-left border-collapse">
+                  <thead>
+                    <tr className="bg-secondary/45 text-[10px] uppercase font-bold tracking-wider text-dark/60 border-b border-primary/5">
+                      <th className="px-6 py-4">Name</th>
+                      <th className="px-6 py-4">Description</th>
+                      <th className="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-primary/5 font-sans font-light">
+                    {categories.map((cat) => (
+                      <tr key={cat._id} className="hover:bg-secondary/15 transition-colors">
+                        <td className="px-6 py-4 font-bold text-primary">{cat.name}</td>
+                        <td className="px-6 py-4 text-dark/60">{cat.description}</td>
+                        <td className="px-6 py-4 text-right">
+                          <button 
+                            onClick={() => handleDeleteCategory(cat._id)}
+                            className="text-red-500 hover:text-red-700 transition-colors flex items-center justify-end gap-1 cursor-pointer w-full"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" /> Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                    {categories.length === 0 && (
+                      <tr>
+                        <td colSpan="3" className="px-6 py-8 text-center text-dark/50">No categories found.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 
@@ -619,6 +555,7 @@ export default function AdminDashboard() {
                         <th className="px-6 py-4">Total Paid</th>
                         <th className="px-6 py-4">Placed Date</th>
                         <th className="px-6 py-4">Tracking Status</th>
+                        <th className="px-6 py-4 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-primary/5 font-sans font-light">
@@ -643,21 +580,28 @@ export default function AdminDashboard() {
                             <select 
                               value={order.status}
                               onChange={(e) => handleOrderStatusUpdate(order.orderId, e.target.value)}
-                              className={`border px-2 py-1.5 font-bold uppercase tracking-wider text-[10px] rounded-xs focus:outline-none cursor-pointer ${
-                                order.status === 'Delivered' 
-                                  ? 'bg-green-50 border-green-200 text-green-700' 
-                                  : order.status === 'Shipped' 
-                                  ? 'bg-blue-50 border-blue-200 text-blue-700' 
-                                  : order.status === 'Processing'
-                                  ? 'bg-yellow-50 border-yellow-200 text-yellow-700'
-                                  : 'bg-red-50 border-red-200 text-red-700'
-                              }`}
+                              className={`border px-2 py-1.5 font-bold uppercase tracking-wider text-[10px] rounded-xs focus:outline-none cursor-pointer ${getStatusColor(order.status)}`}
                             >
-                              <option value="Pending">Pending</option>
-                              <option value="Processing">Processing</option>
-                              <option value="Shipped">Shipped</option>
+                              <option value="Order in process">Order in process</option>
+                              <option value="Order accepted">Order accepted</option>
+                              <option value="Order rejected">Order rejected</option>
+                              <option value="Packed">Packed</option>
+                              <option value="Dispatch">Dispatch</option>
+                              <option value="On road">On road</option>
+                              <option value="Delivering today">Delivering today</option>
                               <option value="Delivered">Delivered</option>
+                              <option value="Out of stock">Out of stock</option>
+                              <option value="Order cancel from admin">Order cancel from admin</option>
+                              <option value="Order cancel">Order cancel</option>
                             </select>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <button 
+                              onClick={() => setViewingOrder(order)}
+                              className="text-primary/60 hover:text-accent transition-colors flex items-center justify-end gap-1 cursor-pointer ml-auto text-[10px] uppercase font-bold tracking-wider"
+                            >
+                              <Eye className="w-3.5 h-3.5" /> View
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -666,10 +610,198 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
+
+            {/* Order Details Modal */}
+            {viewingOrder && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-secondary/80 backdrop-blur-sm p-4">
+                <div className="bg-secondary border border-primary/10 shadow-2xl rounded-sm w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-fade-in relative">
+                  <div className="sticky top-0 bg-secondary px-8 py-6 border-b border-primary/10 flex justify-between items-center z-10">
+                    <div>
+                      <h3 className="font-serif text-2xl font-bold text-primary">Order Details</h3>
+                      <span className="text-[10px] uppercase font-bold text-dark/50 tracking-wider">Ref: {viewingOrder.orderId}</span>
+                    </div>
+                    <button onClick={() => setViewingOrder(null)} className="text-dark/50 hover:text-red-500 transition-colors p-2 cursor-pointer">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  
+                  <div className="p-8 space-y-8 text-sm">
+                    {/* Customer & Shipping Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div>
+                        <h4 className="text-[10px] uppercase font-bold text-dark/45 tracking-wider mb-3">Customer Information</h4>
+                        <div className="bg-secondary/35 p-4 border border-primary/5 rounded-xs space-y-1.5">
+                          <p className="font-bold text-primary">{viewingOrder.firstName} {viewingOrder.lastName}</p>
+                          <p className="text-dark/60"><span className="font-semibold text-primary/70">Email:</span> {viewingOrder.email}</p>
+                          <p className="text-dark/60"><span className="font-semibold text-primary/70">Phone:</span> {viewingOrder.phone}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-[10px] uppercase font-bold text-dark/45 tracking-wider mb-3">Shipping Address</h4>
+                        <div className="bg-secondary/35 p-4 border border-primary/5 rounded-xs space-y-1.5">
+                          <p className="text-dark/60"><span className="font-semibold text-primary/70">Street:</span> <span className="font-bold text-primary">{viewingOrder.address}</span></p>
+                          <p className="text-dark/60"><span className="font-semibold text-primary/70">City/State:</span> {viewingOrder.city}, {viewingOrder.state}</p>
+                          <p className="text-dark/60"><span className="font-semibold text-primary/70">ZIP Code:</span> {viewingOrder.zipCode}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Payment Info */}
+                    <div>
+                      <h4 className="text-[10px] uppercase font-bold text-dark/45 tracking-wider mb-3">Payment & Tracking</h4>
+                      <div className="bg-secondary/35 p-4 border border-primary/5 rounded-xs flex flex-wrap gap-x-12 gap-y-4">
+                        <div>
+                          <p className="text-[10px] uppercase text-dark/45 mb-1">Method</p>
+                          <p className="font-bold text-primary">{viewingOrder.paymentMethod === 'COD' ? 'Cash on Delivery' : 'Credit/Debit Card'}</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] uppercase text-dark/45 mb-1">Status</p>
+                          <span className={`inline-block px-2 py-0.5 font-bold uppercase tracking-wider text-[10px] rounded-xs border ${getStatusColor(viewingOrder.status)}`}>
+                            {viewingOrder.status}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-[10px] uppercase text-dark/45 mb-1">Order Date</p>
+                          <p className="font-bold text-primary">{formatDate(viewingOrder.createdAt)}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Items List */}
+                    <div>
+                      <h4 className="text-[10px] uppercase font-bold text-dark/45 tracking-wider mb-3">Formulas Sourced ({viewingOrder.items.length})</h4>
+                      <div className="bg-secondary border border-primary/5 rounded-xs overflow-hidden">
+                        <table className="w-full text-xs text-left">
+                          <thead className="bg-secondary/45 text-[9px] uppercase text-dark/60">
+                            <tr>
+                              <th className="px-4 py-3 font-bold">Item</th>
+                              <th className="px-4 py-3 font-bold text-center">Qty</th>
+                              <th className="px-4 py-3 font-bold text-right">Price</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-primary/5 font-light text-primary">
+                            {viewingOrder.items.map((item, idx) => (
+                              <tr key={idx}>
+                                <td className="px-4 py-3 font-medium">{item.title}</td>
+                                <td className="px-4 py-3 text-center">{item.quantity}</td>
+                                <td className="px-4 py-3 text-right">₹{item.price.toLocaleString('en-IN')}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    {/* Cost Breakdown */}
+                    <div className="flex justify-end pt-4 border-t border-primary/5">
+                      <div className="w-64 space-y-2">
+                        <div className="flex justify-between text-xs text-dark/60">
+                          <span>Subtotal</span>
+                          <span>₹{(viewingOrder.totalAmount - viewingOrder.shippingCost).toLocaleString('en-IN')}</span>
+                        </div>
+                        <div className="flex justify-between text-xs text-dark/60">
+                          <span>Shipping</span>
+                          <span>{viewingOrder.shippingCost === 0 ? 'Free' : `₹${viewingOrder.shippingCost}`}</span>
+                        </div>
+                        <div className="flex justify-between text-sm font-bold text-primary pt-2 border-t border-primary/5 mt-2">
+                          <span>Total Paid</span>
+                          <span className="text-accent text-base">₹{viewingOrder.totalAmount.toLocaleString('en-IN')}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-      </div>
+        {/* TAB CONTENT: STOREFRONT CMS */}
+        {activeTab === 'storefront' && (
+          <AdminStorefront token={token} />
+        )}
+
+        {/* TAB CONTENT: SETTINGS MANAGEMENT */}
+        {activeTab === 'settings' && (
+          <div className="animate-fade-in space-y-6">
+            <div className="bg-secondary border border-primary/5 rounded-sm shadow-md overflow-hidden">
+              <div className="p-6 border-b border-primary/5 bg-secondary/30">
+                <h3 className="font-serif font-bold text-lg text-primary">Payment Configuration</h3>
+                <p className="text-dark/50 text-xs mt-1">Manage API keys for Razorpay and Stripe to enable online payments.</p>
+              </div>
+              <form onSubmit={handleSaveSettings} className="p-6 space-y-8">
+                
+                {/* Razorpay Section */}
+                <div className="space-y-4">
+                  <h4 className="font-bold text-sm uppercase tracking-wider text-primary border-b border-primary/10 pb-2">Razorpay Settings</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="font-bold text-xs uppercase tracking-wider block">Key ID</label>
+                      <input 
+                        type="text" 
+                        value={siteSettings.paymentKeys.razorpayKeyId} 
+                        onChange={(e) => setSiteSettings(prev => ({...prev, paymentKeys: {...prev.paymentKeys, razorpayKeyId: e.target.value}}))} 
+                        placeholder="rzp_test_..."
+                        className="w-full border border-primary/10 bg-secondary/15 p-3 focus:outline-none focus:border-accent text-primary font-medium rounded-xs" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="font-bold text-xs uppercase tracking-wider block">Key Secret</label>
+                      <input 
+                        type="password" 
+                        value={siteSettings.paymentKeys.razorpayKeySecret} 
+                        onChange={(e) => setSiteSettings(prev => ({...prev, paymentKeys: {...prev.paymentKeys, razorpayKeySecret: e.target.value}}))} 
+                        placeholder="••••••••••••••••"
+                        className="w-full border border-primary/10 bg-secondary/15 p-3 focus:outline-none focus:border-accent text-primary font-medium rounded-xs" 
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stripe Section */}
+                <div className="space-y-4">
+                  <h4 className="font-bold text-sm uppercase tracking-wider text-primary border-b border-primary/10 pb-2">Stripe Settings</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="font-bold text-xs uppercase tracking-wider block">Publishable Key</label>
+                      <input 
+                        type="text" 
+                        value={siteSettings.paymentKeys.stripePublicKey} 
+                        onChange={(e) => setSiteSettings(prev => ({...prev, paymentKeys: {...prev.paymentKeys, stripePublicKey: e.target.value}}))} 
+                        placeholder="pk_test_..."
+                        className="w-full border border-primary/10 bg-secondary/15 p-3 focus:outline-none focus:border-accent text-primary font-medium rounded-xs" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="font-bold text-xs uppercase tracking-wider block">Secret Key</label>
+                      <input 
+                        type="password" 
+                        value={siteSettings.paymentKeys.stripeSecretKey} 
+                        onChange={(e) => setSiteSettings(prev => ({...prev, paymentKeys: {...prev.paymentKeys, stripeSecretKey: e.target.value}}))} 
+                        placeholder="sk_test_..."
+                        className="w-full border border-primary/10 bg-secondary/15 p-3 focus:outline-none focus:border-accent text-primary font-medium rounded-xs" 
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 flex justify-end">
+                  <button 
+                    type="submit" 
+                    disabled={savingSettings}
+                    className="bg-primary text-secondary hover:bg-primary-light font-bold py-3.5 px-8 uppercase tracking-widest text-xs transition-colors rounded-xs cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                  >
+                    {savingSettings ? <Loader2 className="w-4 h-4 animate-spin text-accent" /> : <Save className="w-4 h-4 text-accent" />}
+                    Save Settings
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+        </div>
+      </main>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useContent } from '../context/ContentContext';
 import logoImage from '../assets/logo.png';
 
 export default function Navbar() {
@@ -11,6 +12,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { cartCount } = useCart();
   const { user, logout } = useAuth();
+  const { content } = useContent();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -80,11 +82,15 @@ export default function Navbar() {
           </button>
 
           {/* Logo (Left) */}
-          <Link 
-            to="/" 
-            className="flex flex-col items-center justify-center text-center lg:min-w-[150px] mr-4"
-          >
-            <img src={logoImage} alt="Nagori Logo" className="h-10 md:h-12 object-contain mb-1" />
+          <Link to="/" className="flex flex-col items-center justify-center -translate-y-1">
+            {content?.branding?.logoUrl ? (
+              <img src={content.branding.logoUrl} alt="Logo" className="h-10 md:h-12 object-contain mb-1" />
+            ) : (
+              <h1 className="font-serif text-3xl font-bold tracking-widest text-primary leading-none">
+                {content?.branding?.siteTitle?.toUpperCase() || 'NAGOURI'}<sup className="text-sm font-sans">®</sup>
+              </h1>
+            )}
+            <span className="font-sans font-light tracking-[0.2em] text-[10px] text-gray-500 uppercase">NATURE'S BEST</span>
           </Link>
 
           {/* Desktop Navigation (Center) */}

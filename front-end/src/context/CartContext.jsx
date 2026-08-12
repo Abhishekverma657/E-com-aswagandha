@@ -31,7 +31,18 @@ export function CartProvider({ children }) {
           const syncedCart = user.cart.map(dbItem => {
             const product = allProducts.find(p => p.id === dbItem.id);
             if (product) {
-              return { ...product, quantity: dbItem.quantity };
+              let activePrice = product.price;
+              let activeTitle = product.title;
+              let activeOriginalPrice = product.originalPrice;
+              if (dbItem.packName && product.packs && product.packs.length > 0) {
+                 const pack = product.packs.find(p => p.name === dbItem.packName);
+                 if (pack) {
+                   activePrice = pack.price;
+                   activeOriginalPrice = pack.originalPrice;
+                   activeTitle = `${product.title} - ${pack.name}`;
+                 }
+              }
+              return { ...product, title: activeTitle, price: activePrice, originalPrice: activeOriginalPrice, quantity: dbItem.quantity, packName: dbItem.packName };
             }
             return null;
           }).filter(Boolean);
@@ -52,7 +63,7 @@ export function CartProvider({ children }) {
     const activeToken = tokenRef.current;
     const activeUser = userRef.current;
     if (activeToken && activeUser) {
-      const cartPayload = cart.map(item => ({ id: item.id, quantity: item.quantity }));
+      const cartPayload = cart.map(item => ({ id: item.id, quantity: item.quantity, packName: item.packName }));
       fetch('/api/users/cart', {
         method: 'PUT',
         headers: {
@@ -64,16 +75,27 @@ export function CartProvider({ children }) {
     }
   };
 
-  const addToCart = (product, quantity = 1) => {
+  const addToCart = (product, quantity = 1, packName = null) => {
     setCartItems(prev => {
-      const existing = prev.find(item => item.id === product.id);
+      const existing = prev.find(item => item.id === product.id && item.packName === packName);
       let newCart;
       if (existing) {
         newCart = prev.map(item => 
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+          (item.id === product.id && item.packName === packName) ? { ...item, quantity: item.quantity + quantity } : item
         );
       } else {
-        newCart = [...prev, { ...product, quantity }];
+        let activePrice = product.price;
+        let activeTitle = product.title;
+        let activeOriginalPrice = product.originalPrice;
+        if (packName && product.packs && product.packs.length > 0) {
+           const pack = product.packs.find(p => p.name === packName);
+           if (pack) {
+             activePrice = pack.price;
+             activeOriginalPrice = pack.originalPrice;
+             activeTitle = `${product.title} - ${pack.name}`;
+           }
+        }
+        newCart = [...prev, { ...product, title: activeTitle, price: activePrice, originalPrice: activeOriginalPrice, quantity, packName }];
       }
       
       // Save locally
@@ -86,20 +108,20 @@ export function CartProvider({ children }) {
     });
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (productId, packName = null) => {
     setCartItems(prev => {
-      const newCart = prev.filter(item => item.id !== productId);
+      const newCart = prev.filter(item => !(item.id === productId && item.packName === packName));
       localStorage.setItem('desi_cart', JSON.stringify(newCart));
       syncCartToDb(newCart);
       return newCart;
     });
   };
 
-  const updateQuantity = (productId, newQuantity) => {
+  const updateQuantity = (productId, newQuantity, packName = null) => {
     if (newQuantity < 1) return;
     setCartItems(prev => {
       const newCart = prev.map(item => 
-        item.id === productId ? { ...item, quantity: newQuantity } : item
+        (item.id === productId && item.packName === packName) ? { ...item, quantity: newQuantity } : item
       );
       localStorage.setItem('desi_cart', JSON.stringify(newCart));
       syncCartToDb(newCart);

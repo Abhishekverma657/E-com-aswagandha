@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, ShieldCheck, CheckCircle2, ChevronDown, Award, ArrowRight, Leaf, Beaker, Heart, Check } from 'lucide-react';
-import Slider1 from '../assets/Slider1.jpeg';
-import Slider2 from '../assets/slider.png';
+import * as LucideIcons from 'lucide-react';
+import { useContent } from '../context/ContentContext';
 import ProductTabs from '../components/ProductTabs';
 import Bestsellers from '../components/Bestsellers';
 import Gallery from '../components/Gallery';
@@ -15,19 +15,10 @@ import BlogSection from '../components/BlogSection';
 import TrustBanner from '../components/TrustBanner';
 
 export default function Home() {
-
+  const { content, loadingContent } = useContent();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const heroSlides = [
-    {
-      id: 1,
-      image: Slider2
-    },
-    {
-      id: 2,
-      image: Slider1
-    }
-  ];
+  const heroSlides = content?.heroSliders?.length > 0 ? content.heroSliders : [];
 
   // Auto-advance slides
   useEffect(() => {
@@ -44,14 +35,14 @@ export default function Home() {
         
         {heroSlides.map((slide, index) => (
           <div 
-            key={slide.id}
+            key={slide._id || index}
             className={`col-start-1 row-start-1 transition-opacity duration-1000 ${
               index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
             <img 
               src={slide.image} 
-              alt={`Slide ${slide.id}`} 
+              alt={slide.altText || `Slide ${index + 1}`} 
               className="w-full h-auto block"
             />
           </div>
@@ -75,29 +66,26 @@ export default function Home() {
       </section>
 
       {/* 2. TRUST BADGES STRIP */}
-      <section className="bg-primary text-secondary py-6 px-6 relative z-20 shadow-md">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between items-center gap-6 text-xs md:text-sm font-sans uppercase tracking-widest font-semibold">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-accent" />
-            <span>Ayush Dept. Licensed</span>
+      {content?.trustBadges && content.trustBadges.length > 0 && (
+        <section className="bg-primary text-secondary py-6 px-6 relative z-20 shadow-md">
+          <div className="max-w-7xl mx-auto flex flex-wrap justify-center md:justify-between items-center gap-6 text-xs md:text-sm font-sans uppercase tracking-widest font-semibold">
+            {content.trustBadges.map((badge, idx) => {
+              const IconComp = LucideIcons[badge.iconName] || LucideIcons.CheckCircle2;
+              return (
+                <React.Fragment key={idx}>
+                  <div className="flex items-center gap-2">
+                    <IconComp className="w-5 h-5 text-accent" />
+                    <span>{badge.text}</span>
+                  </div>
+                  {idx < content.trustBadges.length - 1 && (
+                    <div className="hidden md:block w-px h-6 bg-secondary/20"></div>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </div>
-          <div className="hidden md:block w-px h-6 bg-secondary/20"></div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-accent" />
-            <span>NABL Lab Tested</span>
-          </div>
-          <div className="hidden md:block w-px h-6 bg-secondary/20"></div>
-          <div className="flex items-center gap-2">
-            <Leaf className="w-5 h-5 text-accent" />
-            <span>100% Vegetarian</span>
-          </div>
-          <div className="hidden lg:block w-px h-6 bg-secondary/20"></div>
-          <div className="hidden lg:flex items-center gap-2">
-            <Award className="w-5 h-5 text-accent" />
-            <span>Over 1 Lakh Happy Customers</span>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 2.5 CLARITY TYPOGRAPHY SECTION */}
       <section className="py-20 md:py-32 px-6 bg-secondary relative text-center flex flex-col items-center justify-center">

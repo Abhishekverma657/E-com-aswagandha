@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { ContentProvider } from './context/ContentContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -21,37 +22,53 @@ import AdminDashboard from './pages/AdminDashboard';
 import Blogs from './pages/Blogs';
 import TrackOrder from './pages/TrackOrder';
 import Authenticate from './pages/Authenticate';
+import AdminProductForm from './pages/AdminProductForm';
+
+function MainLayout() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  return (
+    <>
+      <ScrollToTop />
+      {!isAdminRoute && <Navbar />}
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/saved-products" element={<Wishlist />} />
+          <Route path="/orders" element={<OrdersList />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/product/:id" element={<AdminProductForm />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/track-order" element={<TrackOrder />} />
+          <Route path="/authenticate" element={<Authenticate />} />
+        </Routes>
+      </main>
+      {!isAdminRoute && <WhatsAppFAB />}
+      {!isAdminRoute && <Footer />}
+    </>
+  );
+}
+
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <ScrollToTop />
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/saved-products" element={<Wishlist />} />
-            <Route path="/orders" element={<OrdersList />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/track-order" element={<TrackOrder />} />
-            <Route path="/authenticate" element={<Authenticate />} />
-          </Routes>
-        </main>
-        <WhatsAppFAB />
-        <Footer />
-      </Router>
-    </CartProvider>
+    <ContentProvider>
+      <CartProvider>
+        <Router>
+          <MainLayout />
+        </Router>
+      </CartProvider>
+    </ContentProvider>
   );
 }
 

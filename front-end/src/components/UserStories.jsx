@@ -1,68 +1,19 @@
-import { Play, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { useContent } from '../context/ContentContext';
 
 export default function UserStories() {
-  const stories = [
-    {
-      id: 1,
-      name: "Gautam Hasija",
-      handle: "@gautamhasijafitnesss · 122K views",
-      quote: "",
-      videoImage: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop",
-      product: {
-        title: "Testoboost - Lift Harder, Last Longer",
-        price: 1399,
-        originalPrice: 1898,
-        image: "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=200&auto=format&fit=crop"
-      }
-    },
-    {
-      id: 2,
-      name: "Akash Gupta",
-      handle: "@akashgupta1517 · 321K views",
-      quote: "Supports faster muscle recovery & strength",
-      videoImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop",
-      product: {
-        title: "Magnesium Glycinate - From USA",
-        price: 1799,
-        originalPrice: 2598,
-        image: "https://images.unsplash.com/photo-1584362917165-526a968579e8?q=80&w=200&auto=format&fit=crop"
-      }
-    },
-    {
-      id: 3,
-      name: "Aadi Nagar",
-      handle: "@aadi.nagar · 249K views",
-      quote: "",
-      videoImage: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
-      product: {
-        title: "Multivitamin Tablets for Men",
-        price: 1099,
-        originalPrice: 1398,
-        image: "https://images.unsplash.com/photo-1577401239170-897942555fb3?q=80&w=200&auto=format&fit=crop"
-      }
-    },
-    {
-      id: 4,
-      name: "Ravi Pawar",
-      handle: "@ravipawar_official · 170K views",
-      quote: "",
-      videoImage: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop",
-      product: {
-        title: "Testoboost - Lift Harder, Last Longer",
-        price: 1399,
-        originalPrice: 1898,
-        image: "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=200&auto=format&fit=crop"
-      }
-    }
-  ];
+  const { content } = useContent();
+
+  const stories = content?.userStories?.length > 0 ? content.userStories : [];
+
+  if (stories.length === 0) return null;
 
   return (
     <section className="py-24 px-4 sm:px-6 bg-secondary relative overflow-hidden">
-      <div className="max-w-[1400px] mx-auto relative">
+      <div className="max-w-7xl mx-auto relative">
         
         {/* Header Area */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 px-4 md:px-0">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 px-4 md:px-0">
           <div>
             <div className="flex items-center gap-3 mb-3">
               <div className="h-[1px] w-6 bg-gray-400"></div>
@@ -73,72 +24,33 @@ export default function UserStories() {
               <span className="font-sans font-light text-gray-400">hear it from others</span>
             </h2>
           </div>
-          <div className="mt-12 text-center md:hidden">
-            <Link 
-              to="/reviews" 
-              className="inline-block bg-primary hover:bg-primary-light text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
-            >
-              VIEW ALL STORIES
-            </Link>
-          </div>
         </div>
 
-        {/* Carousel Container */}
-        <div className="relative group">
-          
-          {/* Left Navigation Arrow */}
-          <button className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 w-12 h-12 bg-secondary rounded-full shadow-[0_0_15px_rgba(0,0,0,0.1)] flex items-center justify-center text-gray-600 hover:text-black hidden md:flex">
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          {/* Grid / Stories */}
-          <div className="flex overflow-x-auto gap-4 md:gap-6 pb-8 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {stories.map(story => (
-              <div key={story.id} className="min-w-[300px] sm:min-w-[320px] md:min-w-[340px] flex-shrink-0 snap-start relative rounded-xl overflow-hidden shadow-lg border border-gray-100 flex flex-col h-[550px] group cursor-pointer">
-                
-                {/* Background Image / Video Thumbnail */}
-                <div className="absolute inset-0 z-0">
-                  <img src={story.videoImage} alt={story.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80"></div>
-                </div>
-
-                {/* Top Info */}
-                <div className="relative z-10 p-5">
-                  <h4 className="text-white font-bold text-lg leading-tight shadow-sm">{story.name}</h4>
-                  <p className="text-white/80 text-[11px] mt-0.5">{story.handle}</p>
-                </div>
-
-                {/* Center Quote & Play Button */}
-                <div className="relative z-10 flex-1 flex flex-col items-center justify-center p-6">
-                  {story.quote && (
-                    <div className="bg-secondary text-black font-bold text-sm px-4 py-2 rounded-sm shadow-md mb-6 transform -rotate-2">
-                      {story.quote}
-                    </div>
+        {/* Grid / Stories */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {stories.map((story, idx) => (
+            <div key={idx} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full relative">
+              <Quote className="absolute top-6 right-6 w-10 h-10 text-primary/5" />
+              <div className="flex items-center gap-4 mb-6 relative z-10">
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/10">
+                  {story.image ? (
+                    <img src={story.image} alt={story.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-primary/5 flex items-center justify-center text-primary/30">?</div>
                   )}
-                  <div className="w-16 h-16 rounded-full border border-white/40 bg-secondary/10 backdrop-blur-md flex items-center justify-center transition-transform group-hover:scale-110">
-                    <Play className="w-6 h-6 text-white fill-white ml-1" />
-                  </div>
                 </div>
-
-
-
+                <div>
+                  <h4 className="font-sans font-bold text-gray-900">{story.name}</h4>
+                  <p className="text-xs text-gray-500 uppercase tracking-widest">{story.location}</p>
+                </div>
               </div>
-            ))}
-          </div>
-
-          {/* Right Navigation Arrow */}
-          <button className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20 w-12 h-12 bg-secondary rounded-full shadow-[0_0_15px_rgba(0,0,0,0.1)] flex items-center justify-center text-gray-600 hover:text-black hidden md:flex">
-            <ChevronRight className="w-6 h-6" />
-          </button>
-
+              <p className="text-gray-700 font-serif text-lg leading-relaxed italic flex-grow">
+                "{story.quote}"
+              </p>
+            </div>
+          ))}
         </div>
       </div>
-      
-      <style dangerouslySetInnerHTML={{__html: `
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}} />
     </section>
   );
 }
