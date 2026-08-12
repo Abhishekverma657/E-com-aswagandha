@@ -18,5 +18,5 @@ If you are developing a production application, we recommend using TypeScript wi
 ---
 
 ## Test Admin Credentials
-Email: admin@nagouri.com
+Email: admin@nagori.com
 Password: AdminPassword123!

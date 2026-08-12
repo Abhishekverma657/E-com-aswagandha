@@ -99,7 +99,7 @@ export default function Login() {
         </form>
 
         <div className="text-center font-sans text-xs text-dark/60 border-t border-primary/5 pt-6">
-          <span>New to Nagouri Ashwagandha? </span>
+          <span>New to Nagori Ashwagandha? </span>
           <Link to="/signup" className="text-accent hover:underline font-bold">Create Account</Link>
         </div>
       </div>

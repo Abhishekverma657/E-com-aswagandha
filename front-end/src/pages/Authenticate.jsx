@@ -17,7 +17,7 @@ export default function Authenticate() {
           
           <div className="relative z-10">
             <h1 className="font-serif text-3xl md:text-4xl font-bold mb-2">Authenticate Product</h1>
-            <p className="text-white/70 font-sans text-sm font-light">Verify the authenticity of your Nagouri product using the scratch code on the packaging.</p>
+            <p className="text-white/70 font-sans text-sm font-light">Verify the authenticity of your Nagori product using the scratch code on the packaging.</p>
           </div>
         </div>
         
@@ -27,7 +27,7 @@ export default function Authenticate() {
             <div className="bg-gray-50 border border-gray-200 rounded p-4 text-sm text-gray-600 mb-6 flex items-start gap-3">
               <ShieldCheck className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
               <p>
-                Every genuine Nagouri product comes with a scratchable authentication sticker. 
+                Every genuine Nagori product comes with a scratchable authentication sticker. 
                 Scratch the silver foil to reveal your unique 12-digit code.
               </p>
             </div>
