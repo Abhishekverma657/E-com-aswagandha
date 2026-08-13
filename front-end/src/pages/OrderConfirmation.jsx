@@ -9,7 +9,7 @@ export default function OrderConfirmation() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/orders/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/orders/${id}`)
       .then(res => {
         if (!res.ok) throw new Error("Order not found");
         return res.json();

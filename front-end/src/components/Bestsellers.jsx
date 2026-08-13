@@ -8,7 +8,7 @@ export default function Bestsellers() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/products')
+    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
       .then(res => res.json())
       .then(data => {
         // Fetch up to 4 products to display in the bestsellers section

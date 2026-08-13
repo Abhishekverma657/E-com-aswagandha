@@ -80,7 +80,7 @@ export default function Checkout() {
       if (user && saveAddress) {
         const token = localStorage.getItem('nagouri_token');
         if (token) {
-          fetch('/api/users/addresses', {
+          fetch(`${import.meta.env.VITE_API_URL}/api/users/addresses`, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export default function Checkout() {
           throw new Error('Razorpay SDK failed to load. Are you online?');
         }
 
-        const createRes = await fetch('/api/payment/create-order', {
+        const createRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/create-order`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount: totalAmount })
@@ -125,7 +125,7 @@ export default function Checkout() {
           order_id: order.id,
           handler: async function (response) {
             try {
-              const verifyRes = await fetch('/api/payment/verify', {
+              const verifyRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/verify`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -163,7 +163,7 @@ export default function Checkout() {
         });
         paymentObject.open();
       } else {
-        const res = await fetch('/api/orders', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderPayload)

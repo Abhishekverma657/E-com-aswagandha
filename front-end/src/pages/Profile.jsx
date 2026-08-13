@@ -43,7 +43,7 @@ export default function Profile() {
     setUpdatingProfile(true);
     setProfileMsg(null);
     try {
-      const res = await fetch('/api/users/profile', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -101,8 +101,8 @@ export default function Profile() {
     setUpdatingAddress(true);
     setAddressError(null);
     const url = editingAddress === 'new' 
-      ? '/api/users/addresses' 
-      : `/api/users/addresses/${editingAddress._id}`;
+      ? `${import.meta.env.VITE_API_URL}/api/users/addresses` 
+      : `${import.meta.env.VITE_API_URL}/api/users/addresses/${editingAddress._id}`;
     const method = editingAddress === 'new' ? 'POST' : 'PUT';
 
     try {
@@ -130,7 +130,7 @@ export default function Profile() {
   const handleDeleteAddress = async (addressId) => {
     if (!window.confirm('Are you sure you want to delete this address?')) return;
     try {
-      const res = await fetch(`/api/users/addresses/${addressId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/addresses/${addressId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

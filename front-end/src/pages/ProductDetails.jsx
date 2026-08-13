@@ -59,7 +59,7 @@ export default function ProductDetails() {
   useEffect(() => {
     setLoading(true);
     setError(false);
-    fetch(`/api/products/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`)
       .then(async (res) => {
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();

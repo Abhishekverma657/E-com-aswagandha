@@ -57,7 +57,7 @@ export default function AdminDashboard() {
     }
 
     // Fetch Products
-    fetch('/api/products')
+    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
       .then(res => res.json())
       .then(data => {
         setProducts(data);
@@ -69,13 +69,13 @@ export default function AdminDashboard() {
       });
 
     // Fetch Categories
-    fetch('/api/categories')
+    fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(console.error);
 
     // Fetch Settings
-    fetch('/api/admin/settings', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/settings`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
       .catch(console.error);
 
     // Fetch Orders
-    fetch('/api/admin/orders', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/orders`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
   const handleDeleteProduct = async (prodId) => {
     if (!window.confirm('Are you sure you want to delete this product from the inventory? This cannot be undone.')) return;
     try {
-      const res = await fetch(`/api/admin/products/${prodId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/products/${prodId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -151,7 +151,7 @@ export default function AdminDashboard() {
   // Order Status Handler
   const handleOrderStatusUpdate = async (orderId, newStatus) => {
     try {
-      const res = await fetch(`/api/admin/orders/${orderId}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
   const handleAddCategory = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/admin/categories', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/categories`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ export default function AdminDashboard() {
   const handleDeleteCategory = async (catId) => {
     if (!window.confirm("Are you sure you want to delete this category?")) return;
     try {
-      const res = await fetch(`/api/admin/categories/${catId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/categories/${catId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -220,7 +220,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     setSavingSettings(true);
     try {
-      const res = await fetch('/api/admin/settings', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

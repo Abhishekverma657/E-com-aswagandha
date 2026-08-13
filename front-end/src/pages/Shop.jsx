@@ -14,8 +14,8 @@ export default function Shop() {
     const fetchData = async () => {
       try {
         const [prodRes, catRes] = await Promise.all([
-          fetch('/api/products'),
-          fetch('/api/categories')
+          fetch(`${import.meta.env.VITE_API_URL}/api/products`),
+          fetch(`${import.meta.env.VITE_API_URL}/api/categories`)
         ]);
         const prodData = await prodRes.json();
         const catData = await catRes.json();

@@ -10,7 +10,7 @@ export const ContentProvider = ({ children }) => {
   const fetchContent = async () => {
     setLoadingContent(true);
     try {
-      const res = await fetch('/api/content');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/content`);
       if (!res.ok) throw new Error('Failed to fetch storefront content');
       const data = await res.json();
       setContent(data);

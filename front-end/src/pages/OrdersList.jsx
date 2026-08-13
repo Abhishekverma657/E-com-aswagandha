@@ -24,7 +24,7 @@ export default function OrdersList() {
 
     const fetchOrders = async () => {
       try {
-        const res = await fetch('/api/users/orders', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/orders`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -50,7 +50,7 @@ export default function OrdersList() {
     }
     setSubmittingRating(true);
     try {
-      const res = await fetch(`/api/orders/${ratingModal.orderId}/rate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${ratingModal.orderId}/rate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function OrdersList() {
     if (!window.confirm("Are you sure you want to cancel this order?")) return;
     
     try {
-      const res = await fetch(`/api/orders/${orderId}/cancel`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}/cancel`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`

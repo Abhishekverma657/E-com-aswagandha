@@ -43,7 +43,7 @@ export default function AdminProductForm() {
     }
 
     if (isEditing) {
-      fetch(`/api/products/${id}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/products/${id}`)
         .then(res => {
           if (!res.ok) throw new Error("Product not found");
           return res.json();
@@ -176,8 +176,8 @@ export default function AdminProductForm() {
     };
 
     const url = isEditing
-      ? `/api/admin/products/${id}`
-      : '/api/admin/products';
+      ? `${import.meta.env.VITE_API_URL}/api/admin/products/${id}`
+      : `${import.meta.env.VITE_API_URL}/api/admin/products`;
     const method = isEditing ? 'PUT' : 'POST';
 
     try {

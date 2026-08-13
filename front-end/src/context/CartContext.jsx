@@ -22,7 +22,7 @@ export function CartProvider({ children }) {
   // Synchronize cart from DB ONLY on user login/logout to prevent recursive update loops
   useEffect(() => {
     if (user && user.cart) {
-      fetch('/api/products')
+      fetch(`${import.meta.env.VITE_API_URL}/api/products`)
         .then(res => {
           if (!res.ok) throw new Error("Failed to fetch products");
           return res.json();
@@ -64,7 +64,7 @@ export function CartProvider({ children }) {
     const activeUser = userRef.current;
     if (activeToken && activeUser) {
       const cartPayload = cart.map(item => ({ id: item.id, quantity: item.quantity, packName: item.packName }));
-      fetch('/api/users/cart', {
+      fetch(`${import.meta.env.VITE_API_URL}/api/users/cart`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

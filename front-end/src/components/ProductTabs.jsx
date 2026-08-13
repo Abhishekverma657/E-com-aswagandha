@@ -8,7 +8,7 @@ export default function ProductTabs() {
 
   // For this design, we'll split the products into two mock categories based on the fetched data
   useEffect(() => {
-    fetch('/api/products')
+    fetch(`${import.meta.env.VITE_API_URL}/api/products`)
       .then(res => {
         if (!res.ok) throw new Error("Failed to fetch products");
         return res.json();

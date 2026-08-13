@@ -22,7 +22,7 @@ export default function Wishlist() {
 
     const fetchSavedProducts = async () => {
       try {
-        const res = await fetch('/api/users/saved-products', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/saved-products`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

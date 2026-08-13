@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
         return;
       }
       try {
-        const res = await fetch('/api/auth/me', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = async (email, password) => {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -52,7 +52,7 @@ export function AuthProvider({ children }) {
   };
 
   const signup = async (name, email, password) => {
-    const res = await fetch('/api/auth/signup', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })
@@ -76,7 +76,7 @@ export function AuthProvider({ children }) {
   const toggleSavedProduct = async (productId) => {
     if (!token) return false;
     try {
-      const res = await fetch('/api/users/saved', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/saved`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -14,7 +14,7 @@ export default function AdminStorefront({ token }) {
 
   const fetchContent = async () => {
     try {
-      const res = await fetch('/api/content');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/content`);
       if (!res.ok) throw new Error('Failed to load content settings');
       const data = await res.json();
       setContent(data);
@@ -29,7 +29,7 @@ export default function AdminStorefront({ token }) {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch('/api/admin/content', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/content`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
