@@ -26,6 +26,14 @@ const contentSettingsSchema = new mongoose.Schema({
       quote: { type: String }
     }
   ],
+  videoReviews: [
+    {
+      videoUrl: { type: String },
+      creatorName: { type: String },
+      views: { type: String },
+      caption: { type: String }
+    }
+  ],
   theDifference: {
     title: { type: String, default: 'Why Nagouri is Different' },
     subtitle: { type: String, default: 'We focus on authenticity and purity.' },

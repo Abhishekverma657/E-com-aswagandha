@@ -8,6 +8,7 @@ import ProductTabs from '../components/ProductTabs';
 import Bestsellers from '../components/Bestsellers';
 import Gallery from '../components/Gallery';
 import UserStories from '../components/UserStories';
+import VideoReviews from '../components/VideoReviews';
 import TheDifference from '../components/TheDifference';
 import FoundersNote from '../components/FoundersNote';
 import FaqSection from '../components/FaqSection';
@@ -88,7 +89,7 @@ export default function Home() {
       )}
 
       {/* 2.5 CLARITY TYPOGRAPHY SECTION */}
-      <section className="py-20 md:py-32 px-6 bg-secondary relative text-center flex flex-col items-center justify-center">
+      <section className="py-12 md:py-20 px-6 bg-secondary relative text-center flex flex-col items-center justify-center">
         <div className="max-w-4xl mx-auto space-y-8">
           
           {/* Main Headline */}
@@ -97,25 +98,43 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-4xl md:text-5xl lg:text-6xl text-gray-900 leading-[1.15] tracking-tight"
+            className="text-4xl md:text-5xl lg:text-6xl text-gray-900 leading-[1.2] tracking-tight flex flex-col items-center"
           >
-            <span className="font-sans font-light text-gray-500">Your</span> <span className="font-sans font-bold">Health</span>
-            <br />
-            <span className="font-sans font-light text-gray-500 text-3xl md:text-5xl">Deserves</span> <span className="font-sans font-bold text-[#132012]">Clarity,</span>
-            <br />
-            <span className="font-sans font-bold text-[#132012]">Not Compromises</span>
+            <div className="flex flex-col items-start">
+              {/* Line 1 */}
+              <div className="flex items-baseline gap-2 md:gap-3">
+                <span className="font-sans font-light text-gray-500 text-3xl md:text-4xl lg:text-5xl">Your</span>
+                <span className="font-sans font-bold text-gray-900">Wellness</span>
+              </div>
+              
+              {/* Line 2 (Staggered to start under 'Wellness') */}
+              <div className="flex items-baseline gap-2 md:gap-3 mt-1 md:mt-2 ml-16 md:ml-24 lg:ml-28">
+                <span className="font-sans font-light text-gray-500 text-2xl md:text-3xl lg:text-4xl">Deserves</span>
+                <span className="font-sans font-bold text-[#132012]">Better,</span>
+              </div>
+              
+              {/* Line 3 (Slightly left of Line 2) */}
+              <div className="mt-1 md:mt-2 ml-4 md:ml-8 lg:ml-12">
+                <span className="font-sans font-bold text-[#132012]">Not Empty Promises</span>
+              </div>
+            </div>
           </motion.h2>
 
           {/* Subtext */}
-          <motion.p 
+          <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-700 font-sans font-light max-w-3xl mx-auto leading-relaxed pt-6"
+            className="text-lg md:text-xl text-gray-700 font-sans font-light max-w-4xl mx-auto leading-relaxed pt-8 flex flex-col items-center text-center gap-1 md:gap-2"
           >
-            Too many choices. Too many promises. Not enough clarity. That's why we built <strong className="font-bold text-gray-900">Nagouri Ayurveda</strong> — to keep <strong className="font-bold text-gray-900">supplements transparent, decisions easier.</strong>
-          </motion.p>
+            <p>
+              Too many products. Too many claims. Not enough trust. That’s why we built <strong className="font-bold text-gray-900">Nagouri Ayurveda</strong>
+            </p>
+            <p>
+              — to keep <strong className="font-bold text-gray-900 underline decoration-gray-900/40 decoration-1 underline-offset-4">Ayurveda authentic, ingredients transparent, and your choices simpler.</strong>
+            </p>
+          </motion.div>
 
           {/* Divider with text */}
           <motion.div 
@@ -123,10 +142,10 @@ export default function Home() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex items-center justify-center gap-4 pt-12 pb-6 max-w-2xl mx-auto"
+            className="flex items-center justify-center gap-4 pt-12 pb-6 max-w-2xl mx-auto w-full"
           >
             <div className="h-[1px] bg-gray-400 flex-1"></div>
-            <span className="text-[11px] md:text-xs font-sans font-bold text-gray-800 tracking-[0.2em] uppercase">And help you move</span>
+            <span className="text-[11px] md:text-xs font-sans font-bold text-gray-800 tracking-[0.2em] uppercase">AND HELP YOU MOVE</span>
             <div className="h-[1px] bg-gray-400 flex-1"></div>
           </motion.div>
 
@@ -138,14 +157,14 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-2xl md:text-3xl font-sans font-bold text-gray-900 uppercase tracking-wide"
           >
-            Towards a better you
+            TOWARDS A HEALTHIER YOU
           </motion.h3>
           
         </div>
       </section>
 
       {/* 3. PRODUCT TABS SECTION */}
-      <section className="py-24 px-6 bg-secondary relative">
+      <section className="py-12 px-6 bg-secondary relative">
         <div className="max-w-7xl mx-auto">
           <ProductTabs />
           
@@ -162,6 +181,9 @@ export default function Home() {
 
       {/* 3.5 BESTSELLERS */}
       <Bestsellers />
+
+      {/* 3.6 VIDEO REVIEWS */}
+      <VideoReviews />
 
       {/* 3.75 USER STORIES */}
       <UserStories />

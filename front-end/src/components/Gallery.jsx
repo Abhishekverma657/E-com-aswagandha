@@ -8,7 +8,7 @@ export default function Gallery() {
   const images = [photo1, photo2, photo3, photo4];
 
   return (
-    <section className="py-24 px-6 bg-secondary/30 relative">
+    <section className="py-12 md:py-16 px-6 bg-secondary/30 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2 

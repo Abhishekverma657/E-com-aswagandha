@@ -9,7 +9,7 @@ export default function UserStories() {
   if (stories.length === 0) return null;
 
   return (
-    <section className="py-24 px-4 sm:px-6 bg-secondary relative overflow-hidden">
+    <section className="py-12 md:py-16 px-4 sm:px-6 bg-secondary relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative">
         
         {/* Header Area */}

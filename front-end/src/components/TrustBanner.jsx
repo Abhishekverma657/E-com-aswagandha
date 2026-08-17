@@ -10,7 +10,7 @@ export default function TrustBanner() {
   ];
 
   return (
-    <section className="py-24 px-4 sm:px-6">
+    <section className="py-12 md:py-16 px-4 sm:px-6">
       <div className="max-w-[1200px] mx-auto bg-gradient-to-br from-primary-light to-primary rounded-xl overflow-hidden shadow-2xl py-16 px-6 md:px-12 text-center">
         
         <h2 className="text-3xl md:text-4xl lg:text-5xl text-white font-sans tracking-tight mb-4">

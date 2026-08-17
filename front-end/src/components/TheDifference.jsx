@@ -10,7 +10,7 @@ export default function TheDifference() {
   if (!theDifference) return null;
 
   return (
-    <section className="py-24 px-4 sm:px-6 bg-secondary relative">
+    <section className="py-12 md:py-16 px-4 sm:px-6 bg-secondary relative">
       <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
         
         {/* Left Content */}

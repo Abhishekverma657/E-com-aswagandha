@@ -83,7 +83,7 @@ export default function AdminStorefront({ token }) {
         {/* Vertical Tabs */}
         <div className="w-56 shrink-0 flex flex-col gap-2">
           {[
-            'branding', 'heroSliders', 'trustBadges', 'userStories',
+            'branding', 'heroSliders', 'trustBadges', 'videoReviews', 'userStories',
             'theDifference', 'foundersNote', 'faqSection', 'blogSection', 'footer'
           ].map(tab => (
             <button
@@ -244,6 +244,98 @@ export default function AdminStorefront({ token }) {
                         className="w-full bg-secondary border border-primary/10 px-3 py-1.5 text-xs outline-none" 
                       />
                     </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* VIDEO REVIEWS */}
+          {activeSubTab === 'videoReviews' && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center border-b border-primary/10 pb-2">
+                <h3 className="text-xl font-serif font-bold text-primary">Video Reviews</h3>
+                <button 
+                  onClick={() => setContent({...content, videoReviews: [...(content.videoReviews || []), { videoUrl: '', creatorName: '', views: '', caption: '' }]})}
+                  className="text-xs bg-primary text-secondary px-3 py-1.5 rounded uppercase tracking-widest font-bold flex items-center gap-1"
+                >
+                  <Plus className="w-3 h-3" /> Add Video
+                </button>
+              </div>
+              <div className="space-y-4">
+                {(content.videoReviews || []).map((review, idx) => (
+                  <div key={idx} className="border border-primary/10 p-4 rounded flex gap-4 bg-primary/5">
+                    <div className="w-32 shrink-0 flex flex-col gap-2">
+                      <div className="aspect-[9/16] bg-secondary border border-primary/10 flex items-center justify-center overflow-hidden rounded relative">
+                        {review.videoUrl ? (
+                          <video src={review.videoUrl} className="w-full h-full object-cover" muted />
+                        ) : (
+                          <span className="text-[10px] text-primary/40 font-bold tracking-widest uppercase">No Video</span>
+                        )}
+                      </div>
+                      <label className="text-center bg-primary/10 text-primary py-1 text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:bg-primary/20 rounded">
+                        Upload Video
+                        <input type="file" accept="video/*" className="hidden" 
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                const newArr = [...(content.videoReviews || [])];
+                                newArr[idx].videoUrl = reader.result;
+                                setContent({...content, videoReviews: newArr});
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+                    <div className="flex-1 grid grid-cols-2 gap-4">
+                      <div className="col-span-1">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 block mb-1">Creator Name</label>
+                        <input type="text" value={review.creatorName || ''} 
+                          onChange={(e) => {
+                            const newArr = [...content.videoReviews];
+                            newArr[idx].creatorName = e.target.value;
+                            setContent({...content, videoReviews: newArr});
+                          }}
+                          className="w-full bg-secondary border border-primary/10 px-3 py-1.5 text-xs outline-none" 
+                        />
+                      </div>
+                      <div className="col-span-1">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 block mb-1">Views</label>
+                        <input type="text" value={review.views || ''} placeholder="e.g. 589K Views"
+                          onChange={(e) => {
+                            const newArr = [...content.videoReviews];
+                            newArr[idx].views = e.target.value;
+                            setContent({...content, videoReviews: newArr});
+                          }}
+                          className="w-full bg-secondary border border-primary/10 px-3 py-1.5 text-xs outline-none" 
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-primary/60 block mb-1">Caption (Optional)</label>
+                        <textarea value={review.caption || ''} 
+                          onChange={(e) => {
+                            const newArr = [...content.videoReviews];
+                            newArr[idx].caption = e.target.value;
+                            setContent({...content, videoReviews: newArr});
+                          }}
+                          className="w-full bg-secondary border border-primary/10 px-3 py-1.5 text-xs outline-none min-h-[60px]" 
+                        />
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        const newArr = [...content.videoReviews];
+                        newArr.splice(idx, 1);
+                        setContent({...content, videoReviews: newArr});
+                      }}
+                      className="text-red-500 hover:bg-red-50 p-2 rounded self-start"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 ))}
               </div>
