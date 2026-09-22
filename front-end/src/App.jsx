@@ -23,6 +23,9 @@ import Blogs from './pages/Blogs';
 import TrackOrder from './pages/TrackOrder';
 import Authenticate from './pages/Authenticate';
 import AdminProductForm from './pages/AdminProductForm';
+import WelfareSociety from './pages/WelfareSociety';
+import OurStory from './pages/OurStory';
+import BlogDetail from './pages/BlogDetail';
 
 function MainLayout() {
   const location = useLocation();
@@ -39,6 +42,8 @@ function MainLayout() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<About />} />
+          <Route path="/our-story" element={<OurStory />} />
+          <Route path="/welfare-society" element={<WelfareSociety />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation/:id" element={<OrderConfirmation />} />
@@ -50,6 +55,9 @@ function MainLayout() {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/product/:id" element={<AdminProductForm />} />
           <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blog" element={<Blogs />} />
+          <Route path="/blogs/:id" element={<BlogDetail />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/track-order" element={<TrackOrder />} />
           <Route path="/authenticate" element={<Authenticate />} />
         </Routes>

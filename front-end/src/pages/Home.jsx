@@ -30,7 +30,7 @@ export default function Home() {
   }, [heroSlides.length]);
 
   return (
-    <div className="w-full bg-secondary overflow-hidden pt-[184px]">
+    <div className="w-full bg-secondary overflow-hidden pt-[190px] md:pt-[200px]">
       {/* 1. HERO SECTION (SLIDER) */}
       <section className="grid relative w-full bg-secondary/30 overflow-hidden">
         
@@ -129,7 +129,7 @@ export default function Home() {
             className="text-lg md:text-xl text-gray-700 font-sans font-light max-w-4xl mx-auto leading-relaxed pt-8 flex flex-col items-center text-center gap-1 md:gap-2"
           >
             <p>
-              Too many products. Too many claims. Not enough trust. That’s why we built <strong className="font-bold text-gray-900">Nagouri Ayurveda</strong>
+              Too many products. Too many claims. Not enough trust. That’s why we built <strong className="font-bold text-gray-900">Nagori Ayurveda</strong>
             </p>
             <p>
               — to keep <strong className="font-bold text-gray-900 underline decoration-gray-900/40 decoration-1 underline-offset-4">Ayurveda authentic, ingredients transparent, and your choices simpler.</strong>

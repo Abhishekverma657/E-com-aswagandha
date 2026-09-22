@@ -33,20 +33,26 @@ export default function BlogSection() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-[1px] w-6 bg-gray-400"></div>
-              <span className="text-[11px] font-sans font-bold text-gray-600 tracking-[0.2em] uppercase">Learn With Us</span>
+              <div className="h-[1px] w-6 bg-accent"></div>
+              <span className="text-[11px] font-sans font-bold text-gray-700 tracking-[0.2em] uppercase">
+                {content?.blogSectionHeader?.badge || 'Learn With Us'}
+              </span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl text-gray-900 leading-[1.1] tracking-tight">
-              <span className="font-sans font-light text-gray-500">Simple reads for</span><br/>
-              <strong className="font-sans font-bold">better health decisions</strong>
+              <span className="font-sans font-light text-gray-500">
+                {content?.blogSectionHeader?.titlePrefix || 'Simple reads for'}
+              </span><br/>
+              <strong className="font-sans font-bold text-primary">
+                {content?.blogSectionHeader?.titleHighlight || 'better health decisions'}
+              </strong>
             </h2>
           </div>
-          <div className="mt-8 text-center md:hidden">
+          <div className="mt-8 md:mt-0">
             <Link 
-              to="/blog" 
-              className="inline-block bg-primary hover:bg-primary-light text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors"
+              to={content?.blogSectionHeader?.buttonLink || '/blogs'} 
+              className="inline-block bg-primary hover:bg-primary-light text-white font-sans font-bold text-[13px] px-8 py-3.5 rounded-md transition-colors shadow-md hover:shadow-lg"
             >
-              VIEW ALL ARTICLES
+              {content?.blogSectionHeader?.buttonText || 'VIEW ALL ARTICLES'}
             </Link>
           </div>
         </div>
@@ -66,31 +72,40 @@ export default function BlogSection() {
               >
                 
                 {/* Image Box */}
-                <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                   <img 
-                    src={blog.image} 
-                    alt={blog.title} 
+                    src={blog.image || 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=800&auto=format&fit=crop'} 
+                    alt={blog.title || 'Blog'} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
-                    <h3 className="text-white font-serif text-2xl font-bold leading-tight">
-                      {blog.imageTitle}
-                    </h3>
-                  </div>
+                  {(blog.imageTitle || blog.category) && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-5">
+                      <span className="bg-primary/90 text-white text-[11px] uppercase tracking-widest font-bold px-3 py-1 rounded-full shadow">
+                        {blog.imageTitle || blog.category}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Content Box */}
                 <div className="p-6 md:p-8 flex flex-col flex-1 justify-between">
                   <div>
-                    <h3 className="font-bold text-gray-900 text-[17px] leading-tight group-hover:text-primary transition-colors">
-                      {blog.title}
+                    {blog.date && (
+                      <p className="text-[11px] font-sans font-bold text-accent uppercase tracking-wider mb-2">
+                        {blog.date} {blog.readTime ? `• ${blog.readTime}` : ''}
+                      </p>
+                    )}
+                    <h3 className="font-serif font-bold text-gray-900 text-xl leading-snug group-hover:text-primary transition-colors mb-3">
+                      {blog.title || 'Ayurvedic Formulations & Wellness'}
                     </h3>
                   </div>
-                  <p className="text-sm text-gray-600 line-clamp-3 mb-6 flex-grow font-light">
-                    {blog.excerpt}
-                  </p>
+                  {blog.excerpt && (
+                    <p className="text-sm text-gray-600 line-clamp-3 mb-6 font-light leading-relaxed">
+                      {blog.excerpt}
+                    </p>
+                  )}
                   <Link 
-                    to={blog.link || "#"}
+                    to={`/blog/${blog._id || blog.id}`}
                     className="flex items-center gap-2 text-primary font-bold text-xs tracking-widest uppercase hover:text-accent transition-colors mt-auto"
                   >
                     READ ARTICLE <ArrowRight className="w-4 h-4" />

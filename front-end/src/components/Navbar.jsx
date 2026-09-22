@@ -59,8 +59,12 @@ export default function Navbar() {
 
         {/* Text Content */}
         <div className="relative z-10 flex flex-col items-center">
-          <span className="font-bold tracking-wide border-b border-white pb-0.5 mb-1 inline-block">Ashwagandha KSM-66, now at 600 mg</span>
-          <span className="font-medium tracking-wide text-gray-200 text-[11px] md:text-[12px]">Order today, Get it Tomorrow.</span>
+          <span className="font-bold tracking-widest border-b border-white pb-0.5 mb-1 inline-block text-[13px] md:text-[14px]">
+            {content?.branding?.announcementLine1 || 'NA-1143™'}
+          </span>
+          <span className="font-medium tracking-wide text-gray-200 text-[11px] md:text-[12px]">
+            {content?.branding?.announcementLine2 || 'GI Tag Premium Nagori Ashwagandha Powder & Capsules'}
+          </span>
         </div>
       </div>
 
@@ -82,19 +86,21 @@ export default function Navbar() {
           </button>
 
           {/* Logo (Left) */}
-          <Link to="/" className="flex flex-col items-center justify-center -translate-y-1">
+          <Link to="/" className="flex flex-col items-center justify-center -translate-y-0.5">
             {content?.branding?.logoUrl ? (
-              <img src={content.branding.logoUrl} alt="Logo" className="h-10 md:h-12 object-contain mb-1" />
+              <img src={content.branding.logoUrl} alt="Logo" className="h-10 md:h-11 object-contain" />
             ) : (
               <h1 className="font-serif text-3xl font-bold tracking-widest text-primary leading-none">
-                {content?.branding?.siteTitle?.toUpperCase() || 'NAGOURI'}<sup className="text-sm font-sans">®</sup>
+                {(content?.branding?.siteTitle?.replace(/nagouri/gi, 'Nagori') || 'NAGORI').toUpperCase()}<sup className="text-sm font-sans">®</sup>
               </h1>
             )}
-            <span className="font-sans font-light tracking-[0.2em] text-[10px] text-gray-500 uppercase">NATURE'S BEST</span>
+            <span className="font-sans font-medium tracking-[0.15em] text-[8.5px] md:text-[9.5px] text-gray-500 uppercase mt-1 whitespace-nowrap">
+              {content?.branding?.tagline || "India's Heritage - Global Wellness"}
+            </span>
           </Link>
 
           {/* Desktop Navigation (Center) */}
-          <div className="hidden lg:flex flex-1 justify-center space-x-6 xl:space-x-8 items-center font-sans text-[13px] font-semibold text-gray-800 h-full">
+          <div className="hidden lg:flex flex-1 justify-center space-x-5 xl:space-x-7 items-center font-sans text-[12.5px] xl:text-[13px] font-semibold text-gray-800 h-full whitespace-nowrap">
             
             {/* ALL PRODUCTS Dropdown */}
             <div className="group h-full flex items-center py-2 cursor-pointer relative" key={`products-${location.pathname}`}>
@@ -110,6 +116,14 @@ export default function Navbar() {
                 </ul>
               </div>
             </div>
+
+            <Link to="/about" className="hover:text-accent transition-colors py-2 uppercase">
+              ABOUT US
+            </Link>
+
+            <Link to="/welfare-society" className="hover:text-accent transition-colors py-2 uppercase">
+              WELFARE SOCIETY
+            </Link>
 
             <Link to="/blogs" className="hover:text-accent transition-colors py-2 uppercase">
               BLOGS
@@ -129,7 +143,7 @@ export default function Navbar() {
               </div>
             </div>
 
-            <Link to="/about" className="hover:text-accent transition-colors py-2 uppercase">
+            <Link to="/our-story" className="hover:text-accent transition-colors py-2 uppercase">
               OUR STORY
             </Link>
           </div>
@@ -221,11 +235,13 @@ export default function Navbar() {
              <Link to="/shop" className="w-full py-4 border-b border-gray-100 flex justify-between items-center">
                ALL PRODUCTS <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90" />
              </Link>
+             <Link to="/about" className="w-full py-4 border-b border-gray-100">ABOUT US</Link>
+             <Link to="/welfare-society" className="w-full py-4 border-b border-gray-100">THE NAGAURI WELFARE SOCIETY</Link>
              <Link to="/blogs" className="w-full py-4 border-b border-gray-100">BLOGS</Link>
              <Link to="/track-order" className="w-full py-4 border-b border-gray-100 flex justify-between items-center">
                VERIFY ORDER <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90" />
              </Link>
-             <Link to="/about" className="w-full py-4 border-b border-gray-100">OUR STORY</Link>
+             <Link to="/our-story" className="w-full py-4 border-b border-gray-100">OUR STORY</Link>
              
              {user ? (
                <div className="pt-6 pb-2 bg-gray-50/50 -mx-6 px-6 mt-4">

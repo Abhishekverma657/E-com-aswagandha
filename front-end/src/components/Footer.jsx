@@ -60,11 +60,13 @@ export default function Footer() {
           <div>
             <Link to="/" className="block mb-6">
               {content?.branding?.logoUrl ? (
-                <img src={content.branding.logoUrl} alt="Logo" className="h-10 mb-2" />
+                <img src={content.branding.logoUrl} alt="Logo" className="h-10" />
               ) : (
-                <h2 className="font-serif text-3xl font-bold tracking-widest text-gray-900 leading-none">{content?.branding?.siteTitle?.toUpperCase() || 'NAGOURI'}<sup className="text-sm font-sans">®</sup></h2>
+                <h2 className="font-serif text-3xl font-bold tracking-widest text-gray-900 leading-none">{(content?.branding?.siteTitle?.replace(/nagouri/gi, 'Nagori') || 'NAGORI').toUpperCase()}<sup className="text-sm font-sans">®</sup></h2>
               )}
-              <span className="font-sans font-light tracking-[0.2em] text-[10px] text-gray-500 uppercase mt-1 block">NATURE'S BEST</span>
+              <span className="font-sans font-medium tracking-[0.15em] text-[10px] text-gray-500 uppercase mt-1.5 block">
+                {content?.branding?.tagline || "India's Heritage - Global Wellness"}
+              </span>
             </Link>
             
             <div className="flex items-center gap-4">
@@ -103,25 +105,37 @@ export default function Footer() {
         </div>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 py-12">
           
+          {/* About Us */}
+          <div>
+            <h3 className="font-sans font-bold text-[15px] text-gray-900 mb-6 tracking-wide uppercase">ABOUT US</h3>
+            <ul className="space-y-3.5 font-sans font-light text-gray-600 text-sm">
+              <li><Link to="/about" className="hover:text-black transition-colors">Company Overview</Link></li>
+              <li><Link to="/our-story" className="hover:text-black transition-colors">Our Story</Link></li>
+              <li><a href="/#directors-note" className="hover:text-black transition-colors">Director's Note</a></li>
+              <li><a href="/#the-difference" className="hover:text-black transition-colors">Why Nagori</a></li>
+              <li><Link to="/authenticate" className="hover:text-black transition-colors">Purity & Testing</Link></li>
+            </ul>
+          </div>
+
           {/* Shop */}
           <div>
             <h3 className="font-sans font-bold text-[15px] text-gray-900 mb-6 tracking-wide">SHOP</h3>
-            <ul className="space-y-4 font-sans font-light text-gray-600 text-sm">
-              <li><Link to="/best-sellers" className="hover:text-black transition-colors">Best Sellers</Link></li>
-              <li><Link to="/new-launches" className="hover:text-black transition-colors">New Launches</Link></li>
-              <li><Link to="/combos" className="hover:text-black transition-colors">Combos</Link></li>
-              <li><Link to="/build-box" className="hover:text-black transition-colors">Build Your Own Box</Link></li>
-              <li><Link to="/merchandise" className="hover:text-black transition-colors">Merchandise</Link></li>
-              <li><Link to="/shop-all" className="hover:text-black transition-colors">Shop All</Link></li>
+            <ul className="space-y-3.5 font-sans font-light text-gray-600 text-sm">
+              <li><Link to="/shop" className="hover:text-black transition-colors">Best Sellers</Link></li>
+              <li><Link to="/shop" className="hover:text-black transition-colors">New Launches</Link></li>
+              <li><Link to="/shop" className="hover:text-black transition-colors">Combos</Link></li>
+              <li><Link to="/shop" className="hover:text-black transition-colors">Build Your Own Box</Link></li>
+              <li><Link to="/shop" className="hover:text-black transition-colors">Merchandise</Link></li>
+              <li><Link to="/shop" className="hover:text-black transition-colors">Shop All</Link></li>
             </ul>
           </div>
 
           {/* Quick Links */}
           <div>
             <h3 className="font-sans font-bold text-[15px] text-gray-900 mb-6 tracking-wide">QUICK LINKS</h3>
-            <ul className="space-y-4 font-sans font-light text-gray-600 text-sm">
+            <ul className="space-y-3.5 font-sans font-light text-gray-600 text-sm">
               <li><Link to="/blogs" className="hover:text-black transition-colors">Blogs</Link></li>
               <li><Link to="/our-story" className="hover:text-black transition-colors">Our Story</Link></li>
               <li><Link to="/track-order" className="hover:text-black transition-colors">Track Your Order</Link></li>
@@ -133,13 +147,30 @@ export default function Footer() {
           {/* Help */}
           <div>
             <h3 className="font-sans font-bold text-[15px] text-gray-900 mb-6 tracking-wide">HELP</h3>
-            <ul className="space-y-4 font-sans font-light text-gray-600 text-sm">
+            <ul className="space-y-3.5 font-sans font-light text-gray-600 text-sm">
               <li><Link to="/contact" className="hover:text-black transition-colors">Contact Us</Link></li>
               <li><Link to="/shipping" className="hover:text-black transition-colors">Shipping Policy</Link></li>
               <li><Link to="/returns" className="hover:text-black transition-colors">Return & Refunds</Link></li>
               <li><Link to="/terms" className="hover:text-black transition-colors">Terms & Conditions</Link></li>
               <li><Link to="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link></li>
               <li><Link to="/ask-expert" className="hover:text-black transition-colors">Ask An Expert</Link></li>
+            </ul>
+          </div>
+
+          {/* The Nagauri Welfare Society */}
+          <div>
+            <h3 className="font-sans font-bold text-[13.5px] text-gray-900 mb-4 tracking-wide uppercase leading-tight">
+              THE NAGAURI WELFARE SOCIETY
+            </h3>
+            <p className="text-[12px] text-gray-500 mb-4 leading-relaxed font-light">
+              Dedicated to the fair livelihood & welfare of 500+ indigenous farmers in Nagaur.
+            </p>
+            <ul className="space-y-2.5 font-sans font-medium text-primary text-xs">
+              <li><Link to="/welfare-society" className="hover:text-accent transition-colors block">→ Farmers Welfare</Link></li>
+              <li><Link to="/welfare-society" className="hover:text-accent transition-colors block">→ Fair Trade Direct</Link></li>
+              <li><Link to="/welfare-society" className="hover:text-accent transition-colors block">→ Soil Conservation</Link></li>
+              <li><Link to="/welfare-society" className="hover:text-accent transition-colors block">→ Health Initiatives</Link></li>
+              <li className="pt-1.5"><Link to="/welfare-society" className="inline-block text-[11px] uppercase font-bold text-accent hover:underline">Read Mission &raquo;</Link></li>
             </ul>
           </div>
 
@@ -152,7 +183,7 @@ export default function Footer() {
                 <p className="font-sans font-bold text-[11px] text-gray-900 uppercase tracking-wider mb-2">CALL OR WHATSAPP US</p>
                 <div className="flex items-center gap-2 text-gray-600 font-sans font-light text-sm">
                   <Phone className="w-4 h-4" />
-                  <span>{content?.footer?.phone || "+91-78628-26024"}</span>
+                  <span>{content?.footer?.phone || "+91-77426-04334"}</span>
                 </div>
               </div>
 
@@ -160,7 +191,7 @@ export default function Footer() {
                 <p className="font-sans font-bold text-[11px] text-gray-900 uppercase tracking-wider mb-2">WRITE TO US:</p>
                 <div className="flex items-center gap-2 text-gray-600 font-sans font-light text-sm">
                   <Mail className="w-4 h-4" />
-                  <a href={`mailto:${content?.footer?.email || "support@nagouri.com"}`} className="hover:text-black transition-colors">{content?.footer?.email || "support@nagouri.com"}</a>
+                  <a href={`mailto:${content?.footer?.email || "support@nagori.com"}`} className="hover:text-black transition-colors">{content?.footer?.email || "support@nagori.com"}</a>
                 </div>
               </div>
 
@@ -179,7 +210,7 @@ export default function Footer() {
 
         {/* Footer Bottom */}
         <div className="py-8 border-t border-[#e6e2d6] text-center font-sans font-light text-[12px] text-gray-500">
-          <p>© {new Date().getFullYear()} {content?.branding?.siteTitle || 'Nagouri'} Pure Ayurveda. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {content?.branding?.siteTitle?.replace(/nagouri/gi, 'Nagori') || 'Nagori'} Pure Ayurveda. All rights reserved.</p>
         </div>
 
       </div>

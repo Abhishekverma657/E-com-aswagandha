@@ -95,13 +95,13 @@ export default function ProductCard({ id, title, subtitle, price, image, rating 
           {/* Title */}
           <Link to={`/product/${id}`} className="block">
             <h3 className="font-sans text-[15px] md:text-[16px] text-gray-900 font-bold hover:text-accent transition-colors duration-300 leading-tight">
-              {title}
+              {title?.replace(/nagouri/gi, 'Nagori')}
             </h3>
           </Link>
           
           {/* Subtitle */}
           <p className="text-[12px] md:text-[13px] text-gray-500 font-sans font-light leading-snug line-clamp-2">
-            {displaySubtitle}
+            {displaySubtitle?.replace(/nagouri/gi, 'Nagori')}
           </p>
 
           {/* Reviews Star Ribbon */}

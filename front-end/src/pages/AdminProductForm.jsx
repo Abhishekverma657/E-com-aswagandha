@@ -216,7 +216,7 @@ export default function AdminProductForm() {
       {/* Sidebar */}
       <aside className="w-64 bg-primary text-secondary flex flex-col fixed h-full z-10 shadow-lg">
         <div className="p-6 border-b border-secondary/10 flex items-center justify-between">
-          <Link to="/" className="text-xl font-serif font-bold text-accent tracking-widest uppercase">Nagouri</Link>
+          <Link to="/" className="text-xl font-serif font-bold text-accent tracking-widest uppercase">Nagori</Link>
         </div>
         
         <nav className="flex-1 py-8 px-4 space-y-2">

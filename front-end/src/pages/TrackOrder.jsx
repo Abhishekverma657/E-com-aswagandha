@@ -4,7 +4,7 @@ import { Search } from 'lucide-react';
 
 export default function TrackOrder() {
   return (
-    <div className="min-h-screen bg-secondary pt-32 pb-24 px-6 flex items-center justify-center">
+    <div className="min-h-screen bg-secondary pt-[210px] md:pt-[225px] pb-24 px-6 flex items-center justify-center">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

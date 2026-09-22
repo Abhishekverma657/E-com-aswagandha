@@ -78,7 +78,7 @@ export default function Checkout() {
 
     try {
       if (user && saveAddress) {
-        const token = localStorage.getItem('nagouri_token');
+        const token = localStorage.getItem('nagori_token') || localStorage.getItem('nagouri_token');
         if (token) {
           fetch(`${import.meta.env.VITE_API_URL}/api/users/addresses`, {
             method: 'POST',
@@ -120,7 +120,7 @@ export default function Checkout() {
           key: keyId,
           amount: order.amount,
           currency: order.currency,
-          name: "Nagouri",
+          name: "Nagori",
           description: "Premium Ayurvedic Formulations",
           order_id: order.id,
           handler: async function (response) {

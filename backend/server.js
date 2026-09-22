@@ -35,6 +35,84 @@ const JWT_SECRET = process.env.JWT_SECRET || 'nagouri_premium_secret_key_123!';
 // Connect to MongoDB Atlas
 connectDB();
 
+// Ensure ourStory assets exist in front-end/public/ourstory on startup
+try {
+  const srcStoryDir = path.resolve(__dirname, '../front-end/src/assets/ourstory');
+  const destStoryDir = path.resolve(__dirname, '../front-end/public/ourstory');
+  if (!fs.existsSync(destStoryDir)) {
+    fs.mkdirSync(destStoryDir, { recursive: true });
+  }
+  const files = ['image1.jpg.jpeg', 'image2.jpg.jpeg', 'image3.jpg.jpeg', 'image4.jpg.jpeg', 'image5.jpg.jpeg', 'image6.jpg.jpeg'];
+  for (const f of files) {
+    const destFile = path.join(destStoryDir, f.replace('.jpg.jpeg', '.jpeg'));
+    const srcFile = path.join(srcStoryDir, f);
+    if (!fs.existsSync(destFile) && fs.existsSync(srcFile)) {
+      fs.copyFileSync(srcFile, destFile);
+    }
+  }
+} catch (e) {
+  console.error('Error copying ourStory assets on startup:', e.message);
+}
+
+// Auto-seed Our Story images in MongoDB at startup
+async function autoSeedOurStoryImages() {
+  try {
+    const content = await ContentSettings.findOne();
+    if (content) {
+      let needsSave = false;
+      if (!content.ourStory || !content.ourStory.chapters || content.ourStory.chapters.length === 0 || !content.ourStory.chapters[0].image) {
+        content.ourStory = {
+          heroTitle: content.ourStory?.heroTitle || 'Our Story',
+          heroSubtitle: content.ourStory?.heroSubtitle || 'Rooted in tradition. Crafted for today.',
+          intro: 'What started as a humble pursuit to harness the true power of Ayurveda has blossomed into a movement for transparent, uncompromising wellness.',
+          chapters: [
+            {
+              title: 'The Genesis of Nagori',
+              subtitle: 'Arid Soil. Exceptional Potency.',
+              content: 'What started as a humble pursuit to harness the true power of Ayurveda has blossomed into a movement for transparent, uncompromising wellness. We realized that modern supplements lacked the soul and purity of ancient practices.',
+              image: '/ourstory/image1.jpeg'
+            },
+            {
+              title: 'A Problem of Trust',
+              subtitle: 'Absolute Transparency.',
+              content: "It's hard to trust supplement brands today. You're often left wondering—Is this safe? Is it actually working? We built Nagori to answer these questions with absolute transparency. No hidden proprietary blends, just honest ingredients.",
+              image: '/ourstory/image2.jpeg'
+            },
+            {
+              title: 'Sourced from Nature',
+              subtitle: 'Centuries of Vedic Wisdom.',
+              content: "For generations, our ancestors relied on the earth's purity. We've made it our mission to bridge that ancient wisdom with modern lifestyles, ensuring every formulation is as potent as it is pure.",
+              image: '/ourstory/image3.jpeg'
+            },
+            {
+              title: 'Uncompromising Purity',
+              subtitle: 'Zero Synthetic Fillers.',
+              content: 'No shortcuts. No synthetic fillers. Just the raw, transformative power of nature, respectfully sourced and expertly blended. We oversee every step to guarantee the highest quality.',
+              image: '/ourstory/image4.jpeg'
+            }
+          ],
+          bottomCard1: {
+            title: content.ourStory?.bottomCard1?.title || 'Crafted with Care',
+            image: content.ourStory?.bottomCard1?.image || '/ourstory/image5.jpeg'
+          },
+          bottomCard2: {
+            title: content.ourStory?.bottomCard2?.title || 'Real Results',
+            image: content.ourStory?.bottomCard2?.image || '/ourstory/image6.jpeg'
+          }
+        };
+        needsSave = true;
+      }
+      if (needsSave) {
+        await content.save();
+        console.log('Auto-seeded Our Story images successfully into ContentSettings in MongoDB Atlas');
+      }
+    }
+  } catch (err) {
+    console.error('Error auto-seeding ourStory images:', err.message);
+  }
+}
+setTimeout(autoSeedOurStoryImages, 2500);
+
 // Middleware
 app.use(cors(
 
@@ -462,13 +540,201 @@ app.put('/api/settings', auth, admin, async (req, res) => {
 
 // --- Content Settings (CMS) Endpoints ---
 
-// 1. Get Public Content
+// 1. Get Public Content (with auto-seed for ourStory images)
 app.get('/api/content', async (req, res) => {
   try {
-    const content = await ContentSettings.findOne();
+    let content = await ContentSettings.findOne();
     if (!content) {
-      return res.status(404).json({ error: 'Content settings not found' });
+      content = new ContentSettings();
     }
+
+    // Ensure ourStory assets exist in public folder
+    try {
+      const srcStoryDir = path.resolve(__dirname, '../front-end/src/assets/ourstory');
+      const destStoryDir = path.resolve(__dirname, '../front-end/public/ourstory');
+      if (!fs.existsSync(destStoryDir)) {
+        fs.mkdirSync(destStoryDir, { recursive: true });
+      }
+      const files = ['image1.jpg.jpeg', 'image2.jpg.jpeg', 'image3.jpg.jpeg', 'image4.jpg.jpeg', 'image5.jpg.jpeg', 'image6.jpg.jpeg'];
+      for (const f of files) {
+        const destFile = path.join(destStoryDir, f.replace('.jpg.jpeg', '.jpeg'));
+        const srcFile = path.join(srcStoryDir, f);
+        if (!fs.existsSync(destFile) && fs.existsSync(srcFile)) {
+          fs.copyFileSync(srcFile, destFile);
+        }
+      }
+    } catch (e) {
+      console.error('Error copying ourStory assets to public:', e.message);
+    }
+
+    // Auto-seed default images for ourStory if empty or missing images
+    let needsSave = false;
+    if (!content.ourStory || !content.ourStory.chapters || content.ourStory.chapters.length === 0 || !content.ourStory.chapters[0].image) {
+      content.ourStory = {
+        heroTitle: content.ourStory?.heroTitle || 'Our Story',
+        heroSubtitle: content.ourStory?.heroSubtitle || 'Rooted in tradition. Crafted for today.',
+        intro: 'What started as a humble pursuit to harness the true power of Ayurveda has blossomed into a movement for transparent, uncompromising wellness. We realized that modern supplements lacked the soul and purity of ancient practices.',
+        chapters: [
+          {
+            title: 'The Genesis of Nagori',
+            subtitle: 'Arid Soil. Exceptional Potency.',
+            content: 'What started as a humble pursuit to harness the true power of Ayurveda has blossomed into a movement for transparent, uncompromising wellness. We realized that modern supplements lacked the soul and purity of ancient practices.',
+            image: '/ourstory/image1.jpeg'
+          },
+          {
+            title: 'A Problem of Trust',
+            subtitle: 'Absolute Transparency.',
+            content: "It's hard to trust supplement brands today. You're often left wondering—Is this safe? Is it actually working? We built Nagori to answer these questions with absolute transparency. No hidden proprietary blends, just honest ingredients.",
+            image: '/ourstory/image2.jpeg'
+          },
+          {
+            title: 'Sourced from Nature',
+            subtitle: 'Centuries of Vedic Wisdom.',
+            content: "For generations, our ancestors relied on the earth's purity. We've made it our mission to bridge that ancient wisdom with modern lifestyles, ensuring every formulation is as potent as it is pure.",
+            image: '/ourstory/image3.jpeg'
+          },
+          {
+            title: 'Uncompromising Purity',
+            subtitle: 'Zero Synthetic Fillers.',
+            content: 'No shortcuts. No synthetic fillers. Just the raw, transformative power of nature, respectfully sourced and expertly blended. We oversee every step to guarantee the highest quality.',
+            image: '/ourstory/image4.jpeg'
+          }
+        ],
+        bottomCard1: {
+          title: content.ourStory?.bottomCard1?.title || 'Crafted with Care',
+          image: content.ourStory?.bottomCard1?.image || '/ourstory/image5.jpeg'
+        },
+        bottomCard2: {
+          title: content.ourStory?.bottomCard2?.title || 'Real Results',
+          image: content.ourStory?.bottomCard2?.image || '/ourstory/image6.jpeg'
+        }
+      };
+      needsSave = true;
+    }
+
+    // Auto-seed default directors for aboutUs if empty or missing
+    if (!content.aboutUs || !content.aboutUs.directors || content.aboutUs.directors.length === 0 || !content.aboutUs.directors[0]?.name) {
+      if (!content.aboutUs) {
+        content.aboutUs = {};
+      }
+      content.aboutUs.heroTitle = content.aboutUs.heroTitle || 'About Nagori Ayurveda';
+      content.aboutUs.heroSubtitle = content.aboutUs.heroSubtitle || 'Purity, Science & Authentic Ayurvedic Heritage';
+      content.aboutUs.companyOverview = content.aboutUs.companyOverview || 'Nagori Ayurveda was founded with a singular purpose: to deliver the purest, single-origin Ayurvedic botanicals directly from the fertile, arid soils of Nagaur, Rajasthan. We bridge ancient Vedic wisdom with modern clinical validation.';
+      content.aboutUs.mission = content.aboutUs.mission || 'To bridge traditional Vedic wisdom with modern clinical validation, creating uncompromising botanical formulations you can trust daily.';
+      content.aboutUs.vision = content.aboutUs.vision || 'To become the global gold standard for single-origin, high-potency Ayurvedic nutrition.';
+      content.aboutUs.directors = [
+        {
+          name: 'Parul Choudhary',
+          title: 'Director, Nagori',
+          quote: 'Purity, Science & Authentic Ayurvedic Heritage',
+          bio: 'At Nagori Ayurveda, our vision is to provide uncompromised purity and clinically validated potency. Sourced directly from the arid, nutrient-rich soils of Nagaur, Rajasthan, every batch is crafted to honor traditional Ayurvedic wisdom while meeting the strictest modern quality benchmarks. We believe authentic wellness should be transparent, accessible, and life-changing.',
+          image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop'
+        },
+        {
+          name: 'Manak Choudhary',
+          title: 'Director, Nagori',
+          quote: 'From Frustration to True Formulation',
+          bio: 'Growing up in Rajasthan, we saw firsthand the remarkable potency of indigenous Nagori Ashwagandha. But looking at the modern market, we realized most commercial supplements were heavily processed, diluted, or sourced from compromised soils. We established Nagori with a singular mission: to deliver single-origin, high-withanolide Ayurvedic formulations you can take with total confidence every single day.',
+          image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1000&auto=format&fit=crop'
+        }
+      ];
+      needsSave = true;
+    } else {
+      // Ensure quotes are filled if missing
+      let dirUpdated = false;
+      content.aboutUs.directors.forEach((d, idx) => {
+        if (!d.quote) {
+          d.quote = idx === 0 
+            ? 'Purity, Science & Authentic Ayurvedic Heritage' 
+            : 'From Frustration to True Formulation';
+          dirUpdated = true;
+        }
+      });
+      if (dirUpdated) needsSave = true;
+    }
+
+    // Auto-seed blogSectionHeader if missing
+    if (!content.blogSectionHeader || !content.blogSectionHeader.titlePrefix) {
+      content.blogSectionHeader = {
+        badge: content.blogSectionHeader?.badge || 'Learn With Us',
+        titlePrefix: content.blogSectionHeader?.titlePrefix || 'Simple reads for',
+        titleHighlight: content.blogSectionHeader?.titleHighlight || 'better health decisions',
+        buttonText: content.blogSectionHeader?.buttonText || 'View All Articles',
+        buttonLink: content.blogSectionHeader?.buttonLink || '/blogs'
+      };
+      needsSave = true;
+    }
+
+    // Ensure blogSection items have title, category, readTime, date
+    if (content.blogSection && content.blogSection.length > 0) {
+      content.blogSection.forEach((b, idx) => {
+        if (!b.title) {
+          b.title = idx === 0 ? "Frequent Muscle Cramps During Monsoon? Read This First" : "Ayurvedic Potency & Healing";
+          needsSave = true;
+        }
+        if (!b.category) {
+          b.category = idx === 0 ? "Wellness & Vitality" : "Ayurvedic Heritage";
+          needsSave = true;
+        }
+        if (!b.readTime) {
+          b.readTime = "5 min read";
+          needsSave = true;
+        }
+        if (!b.date) {
+          b.date = "July 6, 2026";
+          needsSave = true;
+        }
+        if (!b.content) {
+          b.content = idx === 0 
+            ? "Monsoon in India brings soothing relief from summer heat, the scent of damp earth, and lush greenery. However, high humidity and sudden shifts in temperature frequently trigger neuromuscular fatigue and electrolyte imbalances, leading to painful involuntary muscle spasms and nighttime leg cramps.\n\nAccording to classical Ayurvedic texts, the Varsha Ritu (monsoon season) causes an aggravation of Vata dosha, while Pitta begins to accumulate. When Vata is disturbed, it impairs circulation and depletes Ojas (vital vigor), manifesting as joint stiffness and muscular cramps.\n\nNagori Ashwagandha (Withania somnifera), cultivated in the mineral-dense, arid soils of Nagaur, Rajasthan, contains concentrated withanolides and bioactive alkaloids. Standardized supplementation works as an adaptogenic tonic that helps regulate cortisol, calm excessive neuromuscular excitation, and enhance muscle oxygenation.\n\nKey Recommendations for Monsoon Muscle Health:\n1. Maintain hydration with warm mineral water and herbal infusions.\n2. Supplement daily with single-origin standardized Nagori Ashwagandha capsules after meals.\n3. Incorporate warm sesame oil abhyanga (self-massage) for targeted leg relaxation before bedtime.\n4. Avoid raw or cold foods that exacerbate Vata imbalance during rainy weather."
+            : "Wg Cdr Aman Choudhary RAS and the leadership of The Nagauri Welfare Society have been pioneering sustainable, farmer-first botanical cultivation across Rajasthan. With the prestigious Geographical Indication (GI) Tag granted for Nagori Ashwagandha, traditional farming communities are directly linked to global scientific wellness standards.\n\nThrough fair-trade procurement, native seed conservation, and elimination of middlemen, farmers receive guaranteed fair prices while consumers receive authentic, clinically potent Ayurvedic roots directly from Nagaur's arid heartland.\n\nIn this symposium address, Wg Cdr Aman Choudhary emphasized the necessity of verifiable batch testing, absolute soil-to-shelf traceability, and empowering rural agricultural youth through modern value addition in botanical processing.";
+          needsSave = true;
+        }
+      });
+    }
+
+    // Auto-seed welfareSociety if empty or stats/initiatives are empty
+    if (!content.welfareSociety || !content.welfareSociety.stats || content.welfareSociety.stats.length === 0 || !content.welfareSociety.initiatives || content.welfareSociety.initiatives.length === 0) {
+      content.welfareSociety = {
+        heroTitle: content.welfareSociety?.heroTitle || 'The Nagauri Welfare Society',
+        heroSubtitle: content.welfareSociety?.heroSubtitle || 'Empowering traditional Ashwagandha cultivators of Nagaur, Rajasthan through fair livelihood, ethical farming, and holistic community development.',
+        stats: [
+          { value: '500+', label: 'Farmer Families' },
+          { value: '100%', label: 'Fair Trade Direct' },
+          { value: 'Zero', label: 'Middlemen Cut' },
+          { value: 'GI Tag', label: 'Authentic Heritage' }
+        ],
+        initiatives: [
+          {
+            title: 'Sustainable Agro-Practices',
+            description: 'We provide technical guidance on regenerative arid-zone cultivation, rainwater conservation, and organic certification, ensuring the high alkaloid potency of Nagori roots remains uncompromised.',
+            iconName: 'Sprout'
+          },
+          {
+            title: 'Direct Financial Security',
+            description: 'By purchasing crops directly at guaranteed premium rates above wholesale market volatility, we ensure stable incomes, debt-free farming, and dignified livelihoods for generations.',
+            iconName: 'Users'
+          },
+          {
+            title: 'Community Healthcare & Education',
+            description: 'A fixed share of profits supports mobile medical camps, primary health screenings, and scholarships for children of farming families in rural Nagaur belt.',
+            iconName: 'HeartHandshake'
+          }
+        ],
+        commitments: [
+          'Zero synthetic pesticides or chemicals in protected zones',
+          'Fair on-spot digital payment directly into farmers\' bank accounts',
+          'Preserving native GI Tag Rajasthan heritage root seeds',
+          'Annual farmer recognition and excellence awards'
+        ]
+      };
+      needsSave = true;
+    }
+
+    if (needsSave) {
+      await content.save();
+    }
+
     res.json(content);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -534,6 +800,32 @@ app.put('/api/admin/content', auth, admin, async (req, res) => {
     if (contentData.branding && contentData.branding.logoUrl && contentData.branding.logoUrl.startsWith('data:image')) {
       const s3Url = await uploadImage(contentData.branding.logoUrl);
       contentData.branding.logoUrl = s3Url;
+    }
+
+    // Handle base64 uploads for About Us Directors
+    if (contentData.aboutUs && contentData.aboutUs.directors && contentData.aboutUs.directors.length > 0) {
+      for (let dir of contentData.aboutUs.directors) {
+        if (dir.image && dir.image.startsWith('data:image')) {
+          const s3Url = await uploadImage(dir.image);
+          dir.image = s3Url;
+        }
+      }
+    }
+
+    // Handle base64 uploads for Our Story Chapters & Bottom Visual Showcase
+    if (contentData.ourStory && contentData.ourStory.chapters && contentData.ourStory.chapters.length > 0) {
+      for (let chapter of contentData.ourStory.chapters) {
+        if (chapter.image && chapter.image.startsWith('data:image')) {
+          const s3Url = await uploadImage(chapter.image);
+          chapter.image = s3Url;
+        }
+      }
+    }
+    if (contentData.ourStory?.bottomCard1?.image && contentData.ourStory.bottomCard1.image.startsWith('data:image')) {
+      contentData.ourStory.bottomCard1.image = await uploadImage(contentData.ourStory.bottomCard1.image);
+    }
+    if (contentData.ourStory?.bottomCard2?.image && contentData.ourStory.bottomCard2.image.startsWith('data:image')) {
+      contentData.ourStory.bottomCard2.image = await uploadImage(contentData.ourStory.bottomCard2.image);
     }
 
     Object.assign(content, contentData);

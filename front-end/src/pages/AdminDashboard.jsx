@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Package, Clipboard, Plus, Trash2, Edit3, Save, X, Loader2, ArrowLeft, TrendingUp, AlertTriangle, CheckCircle, Clock, Eye, ListTree, Settings, LayoutTemplate } from 'lucide-react';
+import { Package, Clipboard, Plus, Trash2, Edit3, Save, X, Loader2, ArrowLeft, TrendingUp, AlertTriangle, CheckCircle, Clock, Eye, ListTree, Settings, LayoutTemplate, ChevronLeft, ChevronRight, Menu, LogOut } from 'lucide-react';
 import AdminStorefront from './AdminStorefront';
 
 export default function AdminDashboard() {
@@ -10,6 +10,15 @@ export default function AdminDashboard() {
   const location = useLocation();
 
   const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'inventory'); // 'inventory' or 'orders'
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const navItems = [
+    { id: 'inventory', label: 'Inventory', icon: Package },
+    { id: 'orders', label: 'Orders', icon: Clipboard },
+    { id: 'categories', label: 'Categories', icon: ListTree },
+    { id: 'storefront', label: 'Storefront CMS', icon: LayoutTemplate },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
   
   // Data lists
   const [products, setProducts] = useState([]);
@@ -263,57 +272,78 @@ export default function AdminDashboard() {
 
   return (
     <div className="bg-secondary min-h-screen flex text-left font-sans text-sm text-primary">
-      {/* Sidebar */}
-      <aside className="w-64 bg-primary text-secondary flex flex-col fixed h-full z-10 shadow-lg">
-        <div className="p-6 border-b border-secondary/10 flex items-center justify-between">
-          <Link to="/" className="text-xl font-serif font-bold text-accent tracking-widest uppercase">Nagouri</Link>
+      {/* Collapsible Sidebar */}
+      <aside className={`bg-primary text-secondary flex flex-col fixed h-full z-30 shadow-xl transition-all duration-300 ease-in-out ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
+        <div className={`h-20 border-b border-secondary/10 flex items-center px-4 transition-all duration-300 ${isSidebarCollapsed ? 'justify-center' : 'justify-between'}`}>
+          {!isSidebarCollapsed && (
+            <Link to="/" className="text-xl font-serif font-bold text-accent tracking-widest uppercase truncate ml-2">
+              Nagori
+            </Link>
+          )}
+          <button 
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+            className="p-2 rounded-lg bg-secondary/10 hover:bg-secondary/20 text-accent transition-colors flex items-center justify-center cursor-pointer"
+          >
+            {isSidebarCollapsed ? (
+              <ChevronRight className="w-5 h-5" />
+            ) : (
+              <ChevronLeft className="w-5 h-5" />
+            )}
+          </button>
         </div>
         
-        <nav className="flex-1 py-8 px-4 space-y-2">
-          <button 
-            onClick={() => setActiveTab('inventory')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'inventory' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
-          >
-            <Package className="w-4 h-4" /> Inventory
-          </button>
-          <button 
-            onClick={() => setActiveTab('orders')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'orders' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
-          >
-            <Clipboard className="w-4 h-4" /> Orders
-          </button>
-          <button 
-            onClick={() => setActiveTab('categories')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'categories' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
-          >
-            <ListTree className="w-4 h-4" /> Categories
-          </button>
-          <button 
-            onClick={() => setActiveTab('storefront')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'storefront' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
-          >
-            <LayoutTemplate className="w-4 h-4" /> Storefront CMS
-          </button>
-          <button 
-            onClick={() => setActiveTab('settings')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold cursor-pointer ${activeTab === 'settings' ? 'bg-accent text-primary' : 'text-secondary/70 hover:text-secondary hover:bg-secondary/5'}`}
-          >
-            <Settings className="w-4 h-4" /> Settings
-          </button>
+        <nav className="flex-1 py-6 px-3 space-y-2">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                title={isSidebarCollapsed ? item.label : undefined}
+                className={`w-full flex items-center transition-all duration-200 rounded-lg text-xs uppercase tracking-widest font-bold cursor-pointer relative group ${
+                  isSidebarCollapsed ? 'justify-center py-3.5 px-2' : 'gap-3 px-4 py-3'
+                } ${
+                  isActive 
+                    ? 'bg-accent text-primary shadow-md' 
+                    : 'text-secondary/70 hover:text-secondary hover:bg-secondary/10'
+                }`}
+              >
+                <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-primary' : 'text-secondary/80'}`} />
+                {!isSidebarCollapsed && <span className="truncate">{item.label}</span>}
+                {/* Collapsed Tooltip */}
+                {isSidebarCollapsed && (
+                  <div className="absolute left-full ml-3 px-3 py-1.5 bg-[#14231b] text-white text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 border border-white/10">
+                    {item.label}
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </nav>
 
-        <div className="p-4 border-t border-secondary/10">
+        <div className="p-3 border-t border-secondary/10">
           <button 
             onClick={() => { logout(); navigate('/login'); }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xs transition-all text-xs uppercase tracking-widest font-bold text-secondary/70 hover:text-red-400 hover:bg-secondary/5 cursor-pointer"
+            title={isSidebarCollapsed ? "Log Out" : undefined}
+            className={`w-full flex items-center transition-all duration-200 rounded-lg text-xs uppercase tracking-widest font-bold text-secondary/70 hover:text-red-400 hover:bg-red-500/10 cursor-pointer relative group ${
+              isSidebarCollapsed ? 'justify-center py-3.5 px-2' : 'gap-3 px-4 py-3'
+            }`}
           >
-             Log Out
+            <LogOut className="w-5 h-5 shrink-0" />
+            {!isSidebarCollapsed && <span>Log Out</span>}
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-3 px-3 py-1.5 bg-[#14231b] text-red-300 text-xs font-medium rounded-md shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 border border-red-500/20">
+                Log Out
+              </div>
+            )}
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 ml-64 p-8 md:p-12 min-h-screen">
+      <main className={`flex-1 transition-all duration-300 ease-in-out p-8 md:p-12 min-h-screen ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}`}>
         <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}

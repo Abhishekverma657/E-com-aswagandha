@@ -90,7 +90,7 @@ export default function FaqSection() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-bold font-sans text-sm">Nagouri Support</h4>
+                  <h4 className="font-bold font-sans text-sm">Nagori Support</h4>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className="w-2 h-2 bg-[#22c55e] rounded-full"></span>
                     <span className="text-white/70 text-[11px] font-sans font-light">Online - Typically replies instantly</span>
@@ -117,7 +117,7 @@ export default function FaqSection() {
                 </div>
                 <div>
                   <div className="bg-secondary rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
-                    <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagouri</span>
+                    <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagori</span>
                     <p className="text-gray-800 text-sm font-sans font-light leading-relaxed">
                       Hey 👋 Tap a question, and the answer will appear below 👇
                     </p>
@@ -136,7 +136,7 @@ export default function FaqSection() {
                   </div>
                   <div>
                     <div className="bg-secondary rounded-2xl rounded-tl-sm p-4 shadow-sm relative">
-                      <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagouri</span>
+                      <span className="text-[10px] font-bold text-[#1a3626] absolute -top-5 left-1">Nagori</span>
                       <p className="text-gray-800 text-sm font-sans font-medium mb-2 border-b border-gray-100 pb-2">
                         {selectedQuestion.q}
                       </p>

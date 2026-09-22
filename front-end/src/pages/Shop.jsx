@@ -35,7 +35,7 @@ export default function Shop() {
     : products.filter(p => p.category === activeCategory);
 
   return (
-    <div className="bg-secondary min-h-screen pt-[184px] pb-20">
+    <div className="bg-secondary min-h-screen pt-[195px] md:pt-[210px] pb-20">
       
       {/* Hero Banner Section */}
       <div className="w-full relative bg-[#050505] min-h-[300px] md:min-h-[400px] flex items-center overflow-hidden">

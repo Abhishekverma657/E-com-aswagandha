@@ -10,7 +10,7 @@ export default function TheDifference() {
   if (!theDifference) return null;
 
   return (
-    <section className="py-12 md:py-16 px-4 sm:px-6 bg-secondary relative">
+    <section id="the-difference" className="py-12 md:py-16 px-4 sm:px-6 bg-secondary relative">
       <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
         
         {/* Left Content */}
@@ -33,10 +33,10 @@ export default function TheDifference() {
               <span className="text-[11px] font-sans font-bold text-gray-600 tracking-[0.2em] uppercase">The Difference</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl text-gray-900 leading-[1.1] tracking-tight mb-4">
-              <strong className="font-sans font-bold">{theDifference.title}</strong>
+              <strong className="font-sans font-bold">{theDifference.title?.replace(/nagouri/gi, 'Nagori')}</strong>
             </h2>
             <p className="text-gray-600 font-sans font-light leading-relaxed max-w-md text-[15px]">
-              {theDifference.subtitle}
+              {theDifference.subtitle?.replace(/nagouri/gi, 'Nagori')}
             </p>
           </motion.div>
 
@@ -49,9 +49,9 @@ export default function TheDifference() {
                     <IconComp className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-white text-lg font-sans">{item.title}</h4>
+                    <h4 className="font-bold text-white text-lg font-sans">{item.title?.replace(/nagouri/gi, 'Nagori')}</h4>
                     <p className="text-white/70 text-sm mt-1.5 font-sans font-light">
-                      {item.description}
+                      {item.description?.replace(/nagouri/gi, 'Nagori')}
                     </p>
                   </div>
                 </motion.div>

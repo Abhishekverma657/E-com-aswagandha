@@ -186,7 +186,7 @@ export default function ProductDetails() {
   };
 
   return (
-    <div className="bg-secondary min-h-screen pt-[140px] pb-32 font-sans text-gray-900 overflow-x-hidden">
+    <div className="bg-secondary min-h-screen pt-[195px] md:pt-[210px] pb-32 font-sans text-gray-900 overflow-x-hidden">
       
       {/* Breadcrumb - Spans full width */}
       <div className="bg-[#f9fafb] border-b border-gray-100 py-3">
@@ -275,10 +275,10 @@ export default function ProductDetails() {
         >
           
           <h1 className="text-3xl md:text-[34px] font-bold text-[#1a2936] leading-tight mb-2 tracking-tight">
-            {product.title}
+            {product.title?.replace(/nagouri/gi, 'Nagori')}
           </h1>
           <p className="text-[#3c3021] text-[15px] font-medium mb-4">
-            {product.description}
+            {product.description?.replace(/nagouri/gi, 'Nagori')}
           </p>
 
           <div className="flex items-center gap-6 mb-8 border-b border-gray-100 pb-6">

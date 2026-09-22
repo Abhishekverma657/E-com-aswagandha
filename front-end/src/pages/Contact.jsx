@@ -36,9 +36,9 @@ export default function Contact() {
      }
    };
   return (
-    <div className="min-h-screen bg-secondary pt-24 pb-20 text-left">
+    <div className="min-h-screen bg-secondary pt-[190px] md:pt-[205px] pb-20 text-left">
       {/* Header Banner */}
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-12 text-center space-y-4">
+      <div className="max-w-7xl mx-auto px-6 pt-4 pb-12 text-center space-y-4">
         <span className="text-accent uppercase tracking-[0.25em] text-xs font-bold font-sans">Get In Touch</span>
         <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary tracking-wide">Connect With Our Team</h1>
         <div className="w-16 h-[2px] bg-accent mx-auto"></div>
@@ -62,7 +62,7 @@ export default function Contact() {
               </div>
               <div className="flex items-center gap-3">
                 <span className="font-semibold text-primary">Phone:</span>
-                <a href="tel:+917862826024" className="hover:text-accent transition-colors">+91 78628 26024</a>
+                <a href="tel:+917742604334" className="hover:text-accent transition-colors">+91 77426 04334</a>
               </div>
               <div className="flex items-start gap-3">
                 <span className="font-semibold text-primary flex-shrink-0">Farm:</span>
