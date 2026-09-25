@@ -26,6 +26,9 @@ import AdminProductForm from './pages/AdminProductForm';
 import WelfareSociety from './pages/WelfareSociety';
 import OurStory from './pages/OurStory';
 import BlogDetail from './pages/BlogDetail';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+import Disclaimer from './pages/Disclaimer';
 
 function MainLayout() {
   const location = useLocation();
@@ -60,6 +63,9 @@ function MainLayout() {
           <Route path="/blog/:id" element={<BlogDetail />} />
           <Route path="/track-order" element={<TrackOrder />} />
           <Route path="/authenticate" element={<Authenticate />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
         </Routes>
       </main>
       {!isAdminRoute && <WhatsAppFAB />}

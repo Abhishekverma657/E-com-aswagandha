@@ -153,6 +153,7 @@ export default function Footer() {
               <li><Link to="/returns" className="hover:text-black transition-colors">Return & Refunds</Link></li>
               <li><Link to="/terms" className="hover:text-black transition-colors">Terms & Conditions</Link></li>
               <li><Link to="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/disclaimer" className="hover:text-black transition-colors">Disclaimer</Link></li>
               <li><Link to="/ask-expert" className="hover:text-black transition-colors">Ask An Expert</Link></li>
             </ul>
           </div>
