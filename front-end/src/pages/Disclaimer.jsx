@@ -5,7 +5,8 @@ export default function Disclaimer() {
     <div className="bg-[#f4f1ea] min-h-screen pt-32 md:pt-40 pb-16 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 shadow-sm rounded-lg border border-[#e6e2d6]">
         <h1 className="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-8 tracking-wide">Disclaimer</h1>
-        
+
+
         <div className="prose prose-stone max-w-none font-sans font-light text-gray-700 space-y-6">
           <p>
             The information provided on the Nagori website is for general informational and educational purposes only.
